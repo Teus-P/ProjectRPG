@@ -1,6 +1,6 @@
 package com.teus.projectrpg.type;
 
-public enum BodyLocalization {
+public enum BodyLocalizationType {
     HEAD,
     RIGHT_ARM,
     LEFT_ARM,
