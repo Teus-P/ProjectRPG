@@ -1,4 +1,4 @@
-package com.teus.projectrpg.services.BodyLocalization;
+package com.teus.projectrpg.services.bodylocalization;
 
 import com.teus.projectrpg.entity.BodyLocalizationEntity;
 import com.teus.projectrpg.repository.BodyLocalizationRepository;

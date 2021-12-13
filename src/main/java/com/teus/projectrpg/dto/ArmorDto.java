@@ -2,6 +2,7 @@ package com.teus.projectrpg.dto;
 
 import com.teus.projectrpg.type.ArmorCategory;
 import com.teus.projectrpg.type.ArmorPenaltyType;
+import com.teus.projectrpg.type.ArmorQualityType;
 import com.teus.projectrpg.type.BodyLocalizationType;
 import lombok.Data;
 
@@ -16,5 +17,5 @@ public class ArmorDto implements Serializable {
     private final List<BodyLocalizationType> bodyLocalization;
     private final Integer armorPoints;
     private final List<ArmorPenaltyType> penalties;
-//    private final List<ArmorQualities> armorQualities;
+    private final List<ArmorQualityType> qualities;
 }

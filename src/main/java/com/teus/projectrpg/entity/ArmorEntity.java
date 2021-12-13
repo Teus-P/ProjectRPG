@@ -41,13 +41,9 @@ public class ArmorEntity {
             inverseJoinColumns = @JoinColumn(name = "penalty_id"))
     private List<ArmorPenaltyEntity> armorPenalties = new ArrayList<>();
 
-//    @Enumerated(EnumType.STRING)
-//    @ElementCollection
-//    @Column(name = "penalty")
-//    private List<ArmorPenalty> penalty;
-//
-//    @Enumerated(EnumType.STRING)
-//    @ElementCollection
-//    @Column(name = "armor_qualities")
-//    private List<ArmorQualities> armorQualities;
+    @ManyToMany
+    @JoinTable(name = "armor_armor_quality",
+            joinColumns = @JoinColumn(name = "armor_id"),
+            inverseJoinColumns = @JoinColumn(name = "quality_id"))
+    private List<ArmorQualityEntity> armorQualities = new ArrayList<>();
 }

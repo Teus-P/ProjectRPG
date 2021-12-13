@@ -1,4 +1,4 @@
-package com.teus.projectrpg.services.ArmorPenalty;
+package com.teus.projectrpg.services.armorpenalty;
 
 import com.teus.projectrpg.entity.ArmorPenaltyEntity;
 import com.teus.projectrpg.type.ArmorPenaltyType;

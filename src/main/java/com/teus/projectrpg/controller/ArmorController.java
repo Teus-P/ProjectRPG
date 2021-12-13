@@ -3,11 +3,14 @@ package com.teus.projectrpg.controller;
 import com.teus.projectrpg.dto.ArmorDto;
 import com.teus.projectrpg.entity.ArmorEntity;
 import com.teus.projectrpg.entity.ArmorPenaltyEntity;
+import com.teus.projectrpg.entity.ArmorQualityEntity;
 import com.teus.projectrpg.entity.BodyLocalizationEntity;
 import com.teus.projectrpg.repository.ArmorRepository;
-import com.teus.projectrpg.services.ArmorPenalty.ArmorPenaltyService;
-import com.teus.projectrpg.services.BodyLocalization.BodyLocalizationService;
+import com.teus.projectrpg.services.armorpenalty.ArmorPenaltyService;
+import com.teus.projectrpg.services.armorquality.ArmorQualityService;
+import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.type.ArmorPenaltyType;
+import com.teus.projectrpg.type.ArmorQualityType;
 import com.teus.projectrpg.type.BodyLocalizationType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +23,13 @@ public class ArmorController {
     private final ArmorRepository armorRepository;
     private final BodyLocalizationService bodyLocalizationService;
     private final ArmorPenaltyService armorPenaltyService;
+    private final ArmorQualityService armorQualityService;
 
-    public ArmorController(ArmorRepository armorRepository, BodyLocalizationService bodyLocalizationService, ArmorPenaltyService armorPenaltyService) {
+    public ArmorController(ArmorRepository armorRepository, BodyLocalizationService bodyLocalizationService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService) {
         this.armorRepository = armorRepository;
         this.bodyLocalizationService = bodyLocalizationService;
         this.armorPenaltyService = armorPenaltyService;
+        this.armorQualityService = armorQualityService;
     }
 
     @GetMapping("/armor")
@@ -51,6 +56,12 @@ public class ArmorController {
             armorPenaltyEntities.add(armorPenaltyService.findByType(armorPenalty));
         }
         armorEntity.setArmorPenalties(armorPenaltyEntities);
+
+        ArrayList<ArmorQualityEntity> armorQualityEntities = new ArrayList<>();
+        for(ArmorQualityType armorQuality: newArmor.getQualities()) {
+            armorQualityEntities.add(armorQualityService.findByType(armorQuality));
+        }
+        armorEntity.setArmorQualities(armorQualityEntities);
 
         return armorRepository.save(armorEntity);
     }
