@@ -33,8 +33,14 @@ public class ArmorController {
     }
 
     @GetMapping("/armor")
-    List<ArmorEntity> getAll() {
-        return armorRepository.findAll();
+    List<ArmorDto> getAll() {
+        List<ArmorDto> armorDtos = new ArrayList<>();
+
+        for(ArmorEntity armorEntity: armorRepository.findAll()) {
+            armorDtos.add(new ArmorDto(armorEntity));
+        }
+
+        return armorDtos;
     }
 
     @PostMapping("/armor")
