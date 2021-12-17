@@ -22,6 +22,9 @@ public class ArmorEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "name_translation", nullable = false, unique = true)
+    private String nameTranslation;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "armor_category")
     private ArmorCategory armorCategory;

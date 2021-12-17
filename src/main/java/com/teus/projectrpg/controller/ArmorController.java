@@ -48,6 +48,7 @@ public class ArmorController {
         ArmorEntity armorEntity = new ArmorEntity();
         armorEntity.setId(0L);
         armorEntity.setName(newArmor.getName());
+        armorEntity.setNameTranslation(newArmor.getNameTranslation());
         armorEntity.setArmorCategory(newArmor.getArmorCategory());
         armorEntity.setArmorPoints(newArmor.getArmorPoints());
 

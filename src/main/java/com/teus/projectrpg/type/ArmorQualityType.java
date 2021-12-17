@@ -6,4 +6,12 @@ public enum ArmorQualityType {
     ARMOUR_FLAWS,
     PARTIAL,
     WEAKPOINTS,
+    DURABLE,
+    FINE,
+    LIGHTWEIGHT,
+    PRACTICAL,
+    UGLY,
+    SHODDY,
+    UNRELIABLE,
+    BULKY
 }

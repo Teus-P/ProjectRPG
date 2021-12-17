@@ -18,6 +18,7 @@ import java.util.List;
 public class ArmorDto implements Serializable {
     private Long id;
     private String name;
+    private String nameTranslation;
     private ArmorCategory armorCategory;
     private List<BodyLocalizationType> bodyLocalization;
     private Integer armorPoints;
@@ -30,6 +31,7 @@ public class ArmorDto implements Serializable {
     public ArmorDto(ArmorEntity armorEntity) {
         this.id = armorEntity.getId();
         this.name = armorEntity.getName();
+        this.nameTranslation = armorEntity.getNameTranslation();
         this.armorCategory = armorEntity.getArmorCategory();
         this.armorPoints = armorEntity.getArmorPoints();
 
