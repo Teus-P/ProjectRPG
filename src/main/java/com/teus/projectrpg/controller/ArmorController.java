@@ -1,5 +1,7 @@
 package com.teus.projectrpg.controller;
 
+import com.teus.projectrpg.controller.exception.ElementNotFoundException;
+import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.ArmorDto;
 import com.teus.projectrpg.entity.ArmorEntity;
 import com.teus.projectrpg.entity.ArmorPenaltyEntity;
@@ -12,6 +14,8 @@ import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.type.ArmorPenaltyType;
 import com.teus.projectrpg.type.ArmorQualityType;
 import com.teus.projectrpg.type.BodyLocalizationType;
+import org.hibernate.PropertyValueException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,7 +40,7 @@ public class ArmorController {
     List<ArmorDto> getAll() {
         List<ArmorDto> armorDtos = new ArrayList<>();
 
-        for(ArmorEntity armorEntity: armorRepository.findAll()) {
+        for (ArmorEntity armorEntity : armorRepository.findAll()) {
             armorDtos.add(new ArmorDto(armorEntity));
         }
 
@@ -53,28 +57,36 @@ public class ArmorController {
         armorEntity.setArmorPoints(newArmor.getArmorPoints());
 
         ArrayList<BodyLocalizationEntity> bodyLocalizationEntities = new ArrayList<>();
-        for(BodyLocalizationType bodyLocalization: newArmor.getBodyLocalization()) {
+        for (BodyLocalizationType bodyLocalization : newArmor.getBodyLocalization()) {
             bodyLocalizationEntities.add(bodyLocalizationService.findByType(bodyLocalization));
         }
         armorEntity.setBodyLocalizationEntities(bodyLocalizationEntities);
 
         ArrayList<ArmorPenaltyEntity> armorPenaltyEntities = new ArrayList<>();
-        for(ArmorPenaltyType armorPenalty: newArmor.getPenalties()) {
+        for (ArmorPenaltyType armorPenalty : newArmor.getPenalties()) {
             armorPenaltyEntities.add(armorPenaltyService.findByType(armorPenalty));
         }
         armorEntity.setArmorPenalties(armorPenaltyEntities);
 
         ArrayList<ArmorQualityEntity> armorQualityEntities = new ArrayList<>();
-        for(ArmorQualityType armorQuality: newArmor.getQualities()) {
+        for (ArmorQualityType armorQuality : newArmor.getQualities()) {
             armorQualityEntities.add(armorQualityService.findByType(armorQuality));
         }
         armorEntity.setArmorQualities(armorQualityEntities);
 
-        return armorRepository.save(armorEntity);
+        try {
+            return armorRepository.save(armorEntity);
+        } catch (DataIntegrityViolationException e) {
+            throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
+        }
     }
 
     @DeleteMapping("/armor/{id}")
     void deleteArmor(@PathVariable Long id) {
-        armorRepository.deleteById(id);
+        try {
+            armorRepository.deleteById(id);
+        } catch (Exception ex) {
+            throw new ElementNotFoundException(id);
+        }
     }
 }
