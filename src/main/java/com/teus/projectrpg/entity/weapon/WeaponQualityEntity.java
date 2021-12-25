@@ -1,0 +1,27 @@
+package com.teus.projectrpg.entity.weapon;
+
+import com.teus.projectrpg.type.weapon.WeaponQualityType;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "weapon_quality")
+public class WeaponQualityEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "weapon_quality_type")
+    private WeaponQualityType weaponQualityType;
+
+    @OneToMany(mappedBy = "weaponQualityEntity")
+    private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();
+}

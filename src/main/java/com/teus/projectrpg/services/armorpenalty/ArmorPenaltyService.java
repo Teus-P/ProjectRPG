@@ -1,7 +1,7 @@
 package com.teus.projectrpg.services.armorpenalty;
 
-import com.teus.projectrpg.entity.ArmorPenaltyEntity;
-import com.teus.projectrpg.type.ArmorPenaltyType;
+import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
+import com.teus.projectrpg.type.armor.ArmorPenaltyType;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.teus.projectrpg.entity;
+package com.teus.projectrpg.entity.armor;
 
-import com.teus.projectrpg.type.ArmorQualityType;
+import com.teus.projectrpg.type.armor.ArmorQualityType;
 import lombok.Data;
 import lombok.Setter;
 

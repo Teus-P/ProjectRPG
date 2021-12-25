@@ -1,6 +1,6 @@
-package com.teus.projectrpg.entity;
+package com.teus.projectrpg.entity.armor;
 
-import com.teus.projectrpg.type.ArmorCategory;
+import com.teus.projectrpg.type.armor.ArmorCategory;
 import lombok.Getter;
 import lombok.Setter;
 

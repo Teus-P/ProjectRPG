@@ -1,8 +1,7 @@
 package com.teus.projectrpg.services.armorquality;
 
-import com.teus.projectrpg.entity.ArmorPenaltyEntity;
-import com.teus.projectrpg.entity.ArmorQualityEntity;
-import com.teus.projectrpg.type.ArmorQualityType;
+import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
+import com.teus.projectrpg.type.armor.ArmorQualityType;
 
 import java.util.List;
 

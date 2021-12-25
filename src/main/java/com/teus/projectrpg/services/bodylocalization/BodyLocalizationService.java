@@ -1,7 +1,7 @@
 package com.teus.projectrpg.services.bodylocalization;
 
-import com.teus.projectrpg.entity.BodyLocalizationEntity;
-import com.teus.projectrpg.type.BodyLocalizationType;
+import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
+import com.teus.projectrpg.type.armor.BodyLocalizationType;
 
 import java.util.List;
 

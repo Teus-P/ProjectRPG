@@ -1,4 +1,4 @@
-package com.teus.projectrpg.type;
+package com.teus.projectrpg.type.armor;
 
 public enum ArmorCategory {
     SOFT_LEATHER,

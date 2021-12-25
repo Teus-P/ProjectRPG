@@ -1,13 +1,13 @@
 package com.teus.projectrpg.dto;
 
-import com.teus.projectrpg.entity.ArmorEntity;
-import com.teus.projectrpg.entity.ArmorPenaltyEntity;
-import com.teus.projectrpg.entity.ArmorQualityEntity;
-import com.teus.projectrpg.entity.BodyLocalizationEntity;
-import com.teus.projectrpg.type.ArmorCategory;
-import com.teus.projectrpg.type.ArmorPenaltyType;
-import com.teus.projectrpg.type.ArmorQualityType;
-import com.teus.projectrpg.type.BodyLocalizationType;
+import com.teus.projectrpg.entity.armor.ArmorEntity;
+import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
+import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
+import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
+import com.teus.projectrpg.type.armor.ArmorCategory;
+import com.teus.projectrpg.type.armor.ArmorPenaltyType;
+import com.teus.projectrpg.type.armor.ArmorQualityType;
+import com.teus.projectrpg.type.armor.BodyLocalizationType;
 import lombok.Data;
 
 import java.io.Serializable;
