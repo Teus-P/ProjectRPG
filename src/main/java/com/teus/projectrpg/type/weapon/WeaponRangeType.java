@@ -7,6 +7,7 @@ public enum WeaponRangeType {
     MEDIUM,
     PERSONAL,
     SHORT,
+    VARIES,
     VERY_LONG,
     VERY_SHORT
 }

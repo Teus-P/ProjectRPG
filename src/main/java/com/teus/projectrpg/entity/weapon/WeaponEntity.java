@@ -1,6 +1,7 @@
 package com.teus.projectrpg.entity.weapon;
 
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
+import com.teus.projectrpg.type.weapon.WeaponType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class WeaponEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -24,6 +25,10 @@ public class WeaponEntity {
 
     @Column(name = "name_translation", nullable = false, unique = true)
     private String nameTranslation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "weapon_type")
+    private WeaponType weaponType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "weapon_group")

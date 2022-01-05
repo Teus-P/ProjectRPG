@@ -1,7 +1,7 @@
 package com.teus.projectrpg.services.armorquality;
 
 import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
-import com.teus.projectrpg.repository.ArmorQualityRepository;
+import com.teus.projectrpg.repository.armor.ArmorQualityRepository;
 import com.teus.projectrpg.type.armor.ArmorQualityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

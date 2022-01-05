@@ -1,7 +1,7 @@
 package com.teus.projectrpg.services.armorpenalty;
 
 import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
-import com.teus.projectrpg.repository.ArmorPenaltyRepository;
+import com.teus.projectrpg.repository.armor.ArmorPenaltyRepository;
 import com.teus.projectrpg.type.armor.ArmorPenaltyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

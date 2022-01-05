@@ -1,7 +1,7 @@
 package com.teus.projectrpg.services.bodylocalization;
 
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
-import com.teus.projectrpg.repository.BodyLocalizationRepository;
+import com.teus.projectrpg.repository.armor.BodyLocalizationRepository;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

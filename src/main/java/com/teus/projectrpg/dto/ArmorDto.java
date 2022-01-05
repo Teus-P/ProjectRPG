@@ -16,6 +16,7 @@ import java.util.List;
 
 @Data
 public class ArmorDto implements Serializable {
+
     private Long id;
     private String name;
     private String nameTranslation;
