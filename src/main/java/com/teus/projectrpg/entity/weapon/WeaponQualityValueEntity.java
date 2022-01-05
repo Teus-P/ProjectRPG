@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "weapon_quality_value_entity")
 public class WeaponQualityValueEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

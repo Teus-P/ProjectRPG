@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "armor_penalty")
 public class ArmorPenaltyEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
