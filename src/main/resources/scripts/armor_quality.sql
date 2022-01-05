@@ -1,0 +1,12 @@
+INSERT INTO armor_quality (armor_quality_type) VALUES ('FLEXIBLE');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('IMPENETRABLE');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('ARMOUR_FLAWS');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('PARTIAL');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('WEAKPOINTS');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('DURABLE');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('FINE');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('LIGHTWEIGHT');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('PRACTICAL');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('UGLY');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('SHODDY');
+INSERT INTO armor_quality (armor_quality_type) VALUES ('UNRELIABLE');
