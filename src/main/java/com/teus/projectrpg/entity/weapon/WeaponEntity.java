@@ -1,5 +1,6 @@
 package com.teus.projectrpg.entity.weapon;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import com.teus.projectrpg.type.weapon.WeaponType;
 import lombok.Getter;
@@ -43,6 +44,7 @@ public class WeaponEntity {
     @Column(name = "damage")
     private int damage;
 
-    @OneToMany(mappedBy = "weaponEntity")
+    @JsonIgnore
+    @OneToMany(mappedBy = "weaponEntity", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();
 }

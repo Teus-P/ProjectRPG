@@ -6,11 +6,13 @@ import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.services.weapon.WeaponService;
 import com.teus.projectrpg.services.weaponquality.WeaponQualityService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class WeaponController {
@@ -21,6 +23,17 @@ public class WeaponController {
     public WeaponController(WeaponService weaponService, WeaponQualityService weaponQualityService) {
         this.weaponService = weaponService;
         this.weaponQualityService = weaponQualityService;
+    }
+
+    @GetMapping("/weapon")
+    List<WeaponDto> getAll() {
+        List<WeaponDto> weaponDtos = new ArrayList<>();
+
+        for(WeaponEntity weaponEntity : weaponService.findAll()) {
+            weaponDtos.add(new WeaponDto(weaponEntity));
+        }
+
+        return weaponDtos;
     }
 
     @PostMapping("/weapon")

@@ -16,11 +16,11 @@ public class WeaponQualityValueEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "weapon_id")
+    @JoinColumn(name = "weapon_id", nullable = false)
     private WeaponEntity weaponEntity;
 
     @ManyToOne
-    @JoinColumn(name = "weapon_quality_id")
+    @JoinColumn(name = "weapon_quality_id", nullable = false)
     private WeaponQualityEntity weaponQualityEntity;
 
     @Column(name = "value")
