@@ -1,11 +1,15 @@
 package com.teus.projectrpg.controller;
 
+import com.teus.projectrpg.controller.exception.ElementNotFoundException;
+import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.WeaponDto;
 import com.teus.projectrpg.dto.WeaponQualityValueDto;
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.services.weapon.WeaponService;
 import com.teus.projectrpg.services.weaponquality.WeaponQualityService;
+import org.hibernate.PropertyValueException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,7 +62,11 @@ public class WeaponController {
         }
         weaponEntity.setWeaponQualities(weaponQualityValueEntities);
 
-        return weaponService.save(weaponEntity);
+        try{
+            return weaponService.save(weaponEntity);
+        } catch (DataIntegrityViolationException e) {
+            throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
+        }
     }
 
 }

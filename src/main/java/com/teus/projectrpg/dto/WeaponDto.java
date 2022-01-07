@@ -24,6 +24,9 @@ public class WeaponDto implements Serializable {
     private int damage;
     private List<WeaponQualityValueDto> weaponQualities;
 
+    public WeaponDto() {
+    }
+
     public WeaponDto(WeaponEntity weaponEntity) {
         this.id = weaponEntity.getId();
         this.name = weaponEntity.getName();
