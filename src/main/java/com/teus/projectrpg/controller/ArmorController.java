@@ -37,7 +37,7 @@ public class ArmorController {
     }
 
     @GetMapping("/armor")
-    List<ArmorDto> getAll() {
+    List<ArmorDto> getAllArmors() {
         List<ArmorDto> armorDtos = new ArrayList<>();
 
         for (ArmorEntity armorEntity : armorRepository.findAll()) {
@@ -62,17 +62,21 @@ public class ArmorController {
         }
         armorEntity.setBodyLocalizationEntities(bodyLocalizationEntities);
 
-        ArrayList<ArmorPenaltyEntity> armorPenaltyEntities = new ArrayList<>();
-        for (ArmorPenaltyType armorPenalty : newArmor.getPenalties()) {
-            armorPenaltyEntities.add(armorPenaltyService.findByType(armorPenalty));
+        if (newArmor.getPenalties() != null) {
+            ArrayList<ArmorPenaltyEntity> armorPenaltyEntities = new ArrayList<>();
+            for (ArmorPenaltyType armorPenalty : newArmor.getPenalties()) {
+                armorPenaltyEntities.add(armorPenaltyService.findByType(armorPenalty));
+            }
+            armorEntity.setArmorPenalties(armorPenaltyEntities);
         }
-        armorEntity.setArmorPenalties(armorPenaltyEntities);
 
-        ArrayList<ArmorQualityEntity> armorQualityEntities = new ArrayList<>();
-        for (ArmorQualityType armorQuality : newArmor.getQualities()) {
-            armorQualityEntities.add(armorQualityService.findByType(armorQuality));
+        if (newArmor.getQualities() != null) {
+            ArrayList<ArmorQualityEntity> armorQualityEntities = new ArrayList<>();
+            for (ArmorQualityType armorQuality : newArmor.getQualities()) {
+                armorQualityEntities.add(armorQualityService.findByType(armorQuality));
+            }
+            armorEntity.setArmorQualities(armorQualityEntities);
         }
-        armorEntity.setArmorQualities(armorQualityEntities);
 
         try {
             return armorRepository.save(armorEntity);

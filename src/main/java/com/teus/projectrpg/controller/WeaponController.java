@@ -1,6 +1,5 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.controller.exception.ElementNotFoundException;
 import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.WeaponDto;
 import com.teus.projectrpg.dto.WeaponQualityValueDto;
@@ -30,10 +29,10 @@ public class WeaponController {
     }
 
     @GetMapping("/weapon")
-    List<WeaponDto> getAll() {
+    List<WeaponDto> getAllWeapons() {
         List<WeaponDto> weaponDtos = new ArrayList<>();
 
-        for(WeaponEntity weaponEntity : weaponService.findAll()) {
+        for (WeaponEntity weaponEntity : weaponService.findAll()) {
             weaponDtos.add(new WeaponDto(weaponEntity));
         }
 
@@ -52,17 +51,19 @@ public class WeaponController {
         weaponEntity.setIsUsingStrength(newWeapon.getIsUsingStrength());
         weaponEntity.setDamage(newWeapon.getDamage());
 
-        ArrayList<WeaponQualityValueEntity> weaponQualityValueEntities = new ArrayList<>();
-        for (WeaponQualityValueDto weaponQuality : newWeapon.getWeaponQualities()) {
-            WeaponQualityValueEntity newWeaponQualityValue = new WeaponQualityValueEntity();
-            newWeaponQualityValue.setWeaponEntity(weaponEntity);
-            newWeaponQualityValue.setWeaponQualityEntity(weaponQualityService.findByType(weaponQuality.getWeaponQualityType()));
-            newWeaponQualityValue.setValue(weaponQuality.getValue());
-            weaponQualityValueEntities.add(newWeaponQualityValue);
+        if (newWeapon.getWeaponQualities() != null) {
+            ArrayList<WeaponQualityValueEntity> weaponQualityValueEntities = new ArrayList<>();
+            for (WeaponQualityValueDto weaponQuality : newWeapon.getWeaponQualities()) {
+                WeaponQualityValueEntity newWeaponQualityValue = new WeaponQualityValueEntity();
+                newWeaponQualityValue.setWeaponEntity(weaponEntity);
+                newWeaponQualityValue.setWeaponQualityEntity(weaponQualityService.findByType(weaponQuality.getWeaponQualityType()));
+                newWeaponQualityValue.setValue(weaponQuality.getValue());
+                weaponQualityValueEntities.add(newWeaponQualityValue);
+            }
+            weaponEntity.setWeaponQualities(weaponQualityValueEntities);
         }
-        weaponEntity.setWeaponQualities(weaponQualityValueEntities);
 
-        try{
+        try {
             return weaponService.save(weaponEntity);
         } catch (DataIntegrityViolationException e) {
             throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
