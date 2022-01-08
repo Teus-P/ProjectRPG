@@ -4,7 +4,6 @@ public enum WeaponRangeType {
     AVERAGE,
     LONG,
     MASSIVE,
-    MEDIUM,
     PERSONAL,
     SHORT,
     VARIES,

@@ -13,6 +13,7 @@ public enum WeaponGroupType {
     BOW,
     CROSSBOW,
     ENGINEERING,
+    ENTANGLING,
     EXPLOSIVES,
     SLING,
     THROWING
