@@ -28,4 +28,12 @@ public enum WeaponQualityType {
     SLOW,
     TIRING,
     UNDAMAGING,
+    DURABLE,
+    FINE,
+    LIGHTWEIGHT,
+    PRACTICAL,
+    UGLY,
+    SHODDY,
+    UNRELIABLE,
+    BULKY
 }
