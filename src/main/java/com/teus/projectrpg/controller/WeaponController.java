@@ -6,6 +6,7 @@ import com.teus.projectrpg.dto.WeaponQualityValueDto;
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.services.weapon.WeaponService;
+import com.teus.projectrpg.services.weapongroup.WeaponGroupService;
 import com.teus.projectrpg.services.weaponquality.WeaponQualityService;
 import com.teus.projectrpg.services.weapontype.WeaponTypeService;
 import org.hibernate.PropertyValueException;
@@ -23,11 +24,13 @@ public class WeaponController {
 
     private final WeaponService weaponService;
     private final WeaponTypeService weaponTypeService;
+    private final WeaponGroupService weaponGroupService;
     private final WeaponQualityService weaponQualityService;
 
-    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponQualityService weaponQualityService) {
+    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponGroupService weaponGroupService, WeaponQualityService weaponQualityService) {
         this.weaponService = weaponService;
         this.weaponTypeService = weaponTypeService;
+        this.weaponGroupService = weaponGroupService;
         this.weaponQualityService = weaponQualityService;
     }
 
@@ -49,7 +52,7 @@ public class WeaponController {
         weaponEntity.setName(newWeapon.getName());
         weaponEntity.setNameTranslation(newWeapon.getNameTranslation());
         weaponEntity.setWeaponType(weaponTypeService.findByName(newWeapon.getWeaponType()));
-        weaponEntity.setWeaponGroup(newWeapon.getWeaponGroupType());
+        weaponEntity.setWeaponGroup(weaponGroupService.findByName(newWeapon.getWeaponGroupType()));
         weaponEntity.setWeaponRange(newWeapon.getWeaponRange());
         weaponEntity.setIsUsingStrength(newWeapon.getIsUsingStrength());
         weaponEntity.setDamage(newWeapon.getDamage());

@@ -31,7 +31,7 @@ public class WeaponDto implements Serializable {
         this.name = weaponEntity.getName();
         this.nameTranslation = weaponEntity.getNameTranslation();
         this.weaponType = weaponEntity.getWeaponType().getName();
-        this.weaponGroupType = weaponEntity.getWeaponGroup();
+        this.weaponGroupType = weaponEntity.getWeaponGroup().getName();
         this.weaponRange = weaponEntity.getWeaponRange();
         this.isUsingStrength = weaponEntity.getIsUsingStrength();
         this.damage = weaponEntity.getDamage();

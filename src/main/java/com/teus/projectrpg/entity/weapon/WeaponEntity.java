@@ -1,7 +1,6 @@
 package com.teus.projectrpg.entity.weapon;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,8 +31,9 @@ public class WeaponEntity {
     private WeaponTypeEntity weaponType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "weapon_group")
-    private WeaponGroupType weaponGroup;
+    @ManyToOne
+    @JoinColumn(name = "weapon_group_id", nullable = false)
+    private WeaponGroupEntity weaponGroup;
 
     @Column(name = "weapon_range")
     private String weaponRange;
