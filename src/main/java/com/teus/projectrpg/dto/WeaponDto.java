@@ -3,6 +3,7 @@ package com.teus.projectrpg.dto;
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
+import com.teus.projectrpg.type.weapon.WeaponReachType;
 import com.teus.projectrpg.type.weapon.WeaponType;
 import lombok.Data;
 
@@ -18,7 +19,8 @@ public class WeaponDto implements Serializable {
     private String nameTranslation;
     private WeaponType weaponType;
     private WeaponGroupType weaponGroupType;
-    private String weaponRange;
+    private WeaponReachType weaponReach;
+    private int weaponRange;
     private Boolean isUsingStrength;
     private int damage;
     private List<WeaponQualityValueDto> weaponQualities;
@@ -32,6 +34,7 @@ public class WeaponDto implements Serializable {
         this.nameTranslation = weaponEntity.getNameTranslation();
         this.weaponType = weaponEntity.getWeaponType().getName();
         this.weaponGroupType = weaponEntity.getWeaponGroup().getName();
+        this.weaponReach = weaponEntity.getWeaponReach().getName();
         this.weaponRange = weaponEntity.getWeaponRange();
         this.isUsingStrength = weaponEntity.getIsUsingStrength();
         this.damage = weaponEntity.getDamage();

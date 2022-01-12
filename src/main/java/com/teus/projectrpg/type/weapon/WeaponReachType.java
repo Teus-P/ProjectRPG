@@ -1,6 +1,6 @@
 package com.teus.projectrpg.type.weapon;
 
-public enum WeaponRangeType {
+public enum WeaponReachType {
     AVERAGE,
     LONG,
     MASSIVE,

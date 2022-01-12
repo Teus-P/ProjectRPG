@@ -8,6 +8,7 @@ import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.services.weapon.WeaponService;
 import com.teus.projectrpg.services.weapongroup.WeaponGroupService;
 import com.teus.projectrpg.services.weaponquality.WeaponQualityService;
+import com.teus.projectrpg.services.weaponreach.WeaponReachService;
 import com.teus.projectrpg.services.weapontype.WeaponTypeService;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,12 +26,14 @@ public class WeaponController {
     private final WeaponService weaponService;
     private final WeaponTypeService weaponTypeService;
     private final WeaponGroupService weaponGroupService;
+    private final WeaponReachService weaponReachService;
     private final WeaponQualityService weaponQualityService;
 
-    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponGroupService weaponGroupService, WeaponQualityService weaponQualityService) {
+    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponGroupService weaponGroupService, WeaponReachService weaponReachService, WeaponQualityService weaponQualityService) {
         this.weaponService = weaponService;
         this.weaponTypeService = weaponTypeService;
         this.weaponGroupService = weaponGroupService;
+        this.weaponReachService = weaponReachService;
         this.weaponQualityService = weaponQualityService;
     }
 
@@ -53,6 +56,7 @@ public class WeaponController {
         weaponEntity.setNameTranslation(newWeapon.getNameTranslation());
         weaponEntity.setWeaponType(weaponTypeService.findByName(newWeapon.getWeaponType()));
         weaponEntity.setWeaponGroup(weaponGroupService.findByName(newWeapon.getWeaponGroupType()));
+        weaponEntity.setWeaponReach(weaponReachService.findByName(newWeapon.getWeaponReach()));
         weaponEntity.setWeaponRange(newWeapon.getWeaponRange());
         weaponEntity.setIsUsingStrength(newWeapon.getIsUsingStrength());
         weaponEntity.setDamage(newWeapon.getDamage());
