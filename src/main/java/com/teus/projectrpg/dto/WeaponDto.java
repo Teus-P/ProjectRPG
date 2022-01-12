@@ -1,7 +1,6 @@
 package com.teus.projectrpg.dto;
 
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
-import com.teus.projectrpg.entity.weapon.WeaponQualityEntity;
 import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import com.teus.projectrpg.type.weapon.WeaponType;
@@ -31,14 +30,14 @@ public class WeaponDto implements Serializable {
         this.id = weaponEntity.getId();
         this.name = weaponEntity.getName();
         this.nameTranslation = weaponEntity.getNameTranslation();
-        this.weaponType = weaponEntity.getWeaponType();
+        this.weaponType = weaponEntity.getWeaponType().getName();
         this.weaponGroupType = weaponEntity.getWeaponGroup();
         this.weaponRange = weaponEntity.getWeaponRange();
         this.isUsingStrength = weaponEntity.getIsUsingStrength();
         this.damage = weaponEntity.getDamage();
 
         this.weaponQualities = new ArrayList<>();
-        for(WeaponQualityValueEntity weaponQualityValueEntity : weaponEntity.getWeaponQualities()) {
+        for (WeaponQualityValueEntity weaponQualityValueEntity : weaponEntity.getWeaponQualities()) {
             this.weaponQualities.add(new WeaponQualityValueDto(weaponQualityValueEntity));
         }
     }

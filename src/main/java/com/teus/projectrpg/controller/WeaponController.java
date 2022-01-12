@@ -7,6 +7,7 @@ import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.services.weapon.WeaponService;
 import com.teus.projectrpg.services.weaponquality.WeaponQualityService;
+import com.teus.projectrpg.services.weapontype.WeaponTypeService;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +22,12 @@ import java.util.List;
 public class WeaponController {
 
     private final WeaponService weaponService;
+    private final WeaponTypeService weaponTypeService;
     private final WeaponQualityService weaponQualityService;
 
-    public WeaponController(WeaponService weaponService, WeaponQualityService weaponQualityService) {
+    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponQualityService weaponQualityService) {
         this.weaponService = weaponService;
+        this.weaponTypeService = weaponTypeService;
         this.weaponQualityService = weaponQualityService;
     }
 
@@ -45,7 +48,7 @@ public class WeaponController {
         weaponEntity.setId(0L);
         weaponEntity.setName(newWeapon.getName());
         weaponEntity.setNameTranslation(newWeapon.getNameTranslation());
-        weaponEntity.setWeaponType(newWeapon.getWeaponType());
+        weaponEntity.setWeaponType(weaponTypeService.findByName(newWeapon.getWeaponType()));
         weaponEntity.setWeaponGroup(newWeapon.getWeaponGroupType());
         weaponEntity.setWeaponRange(newWeapon.getWeaponRange());
         weaponEntity.setIsUsingStrength(newWeapon.getIsUsingStrength());
