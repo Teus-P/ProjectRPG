@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface WeaponGroupService{
+public interface WeaponGroupService {
+
     List<WeaponGroupEntity> findAll();
+
     WeaponGroupEntity findByName(WeaponGroupType weaponGroupType);
 }

@@ -8,6 +8,8 @@ import java.util.List;
 
 @Service
 public interface WeaponTypeService {
+
     List<WeaponTypeEntity> findAll();
+
     WeaponTypeEntity findByName(WeaponType weaponType);
 }
