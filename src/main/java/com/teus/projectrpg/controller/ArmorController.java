@@ -8,6 +8,7 @@ import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
 import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.repository.armor.ArmorRepository;
+import com.teus.projectrpg.services.armorservices.armor.ArmorService;
 import com.teus.projectrpg.services.armorservices.armorcategory.ArmorCategoryService;
 import com.teus.projectrpg.services.armorservices.armorpenalty.ArmorPenaltyService;
 import com.teus.projectrpg.services.armorservices.armorquality.ArmorQualityService;
@@ -25,14 +26,14 @@ import java.util.List;
 @RestController
 public class ArmorController {
 
-    private final ArmorRepository armorRepository;
+    private final ArmorService armorService;
     private final BodyLocalizationService bodyLocalizationService;
     private final ArmorPenaltyService armorPenaltyService;
     private final ArmorQualityService armorQualityService;
     private final ArmorCategoryService armorCategoryService;
 
-    public ArmorController(ArmorRepository armorRepository, BodyLocalizationService bodyLocalizationService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService, ArmorCategoryService armorCategoryService) {
-        this.armorRepository = armorRepository;
+    public ArmorController(ArmorService armorService, BodyLocalizationService bodyLocalizationService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService, ArmorCategoryService armorCategoryService) {
+        this.armorService = armorService;
         this.bodyLocalizationService = bodyLocalizationService;
         this.armorPenaltyService = armorPenaltyService;
         this.armorQualityService = armorQualityService;
@@ -43,7 +44,7 @@ public class ArmorController {
     List<ArmorDto> getAllArmors() {
         List<ArmorDto> armorDtos = new ArrayList<>();
 
-        for (ArmorEntity armorEntity : armorRepository.findAll()) {
+        for (ArmorEntity armorEntity : armorService.findAll()) {
             armorDtos.add(new ArmorDto(armorEntity));
         }
 
@@ -82,7 +83,7 @@ public class ArmorController {
         }
 
         try {
-            return armorRepository.save(armorEntity);
+            return armorService.save(armorEntity);
         } catch (DataIntegrityViolationException e) {
             throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
         }
@@ -91,7 +92,7 @@ public class ArmorController {
     @DeleteMapping("/armor/{id}")
     void deleteArmor(@PathVariable Long id) {
         try {
-            armorRepository.deleteById(id);
+            armorService.deleteById(id);
         } catch (Exception ex) {
             throw new ElementNotFoundException(id);
         }
