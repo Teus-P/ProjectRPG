@@ -65,8 +65,8 @@ public class WeaponController {
             ArrayList<WeaponQualityValueEntity> weaponQualityValueEntities = new ArrayList<>();
             for (WeaponQualityValueDto weaponQuality : newWeapon.getWeaponQualities()) {
                 WeaponQualityValueEntity newWeaponQualityValue = new WeaponQualityValueEntity();
-                newWeaponQualityValue.setWeaponEntity(weaponEntity);
-                newWeaponQualityValue.setWeaponQualityEntity(weaponQualityService.findByType(weaponQuality.getWeaponQualityType()));
+                newWeaponQualityValue.setWeapon(weaponEntity);
+                newWeaponQualityValue.setWeaponQuality(weaponQualityService.findByType(weaponQuality.getWeaponQualityType()));
                 newWeaponQualityValue.setValue(weaponQuality.getValue());
                 weaponQualityValueEntities.add(newWeaponQualityValue);
             }

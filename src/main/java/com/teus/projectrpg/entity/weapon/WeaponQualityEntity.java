@@ -22,6 +22,6 @@ public class WeaponQualityEntity {
     @Column(name = "weapon_quality_type")
     private WeaponQualityType weaponQualityType;
 
-    @OneToMany(mappedBy = "weaponQualityEntity")
+    @OneToMany(mappedBy = "weaponQuality")
     private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();
 }

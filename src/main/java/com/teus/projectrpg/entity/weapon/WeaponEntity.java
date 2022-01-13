@@ -1,7 +1,6 @@
 package com.teus.projectrpg.entity.weapon;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.teus.projectrpg.type.weapon.WeaponReachType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,6 +50,6 @@ public class WeaponEntity {
     private int damage;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "weaponEntity", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "weapon", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();
 }
