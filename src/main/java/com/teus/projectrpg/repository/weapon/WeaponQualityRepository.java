@@ -5,5 +5,5 @@ import com.teus.projectrpg.type.weapon.WeaponQualityType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WeaponQualityRepository extends JpaRepository<WeaponQualityEntity, Long> {
-    WeaponQualityEntity findWeaponQualityEntityByWeaponQualityType(WeaponQualityType weaponQualityType);
+    WeaponQualityEntity findWeaponQualityEntityByName(WeaponQualityType weaponQualityType);
 }

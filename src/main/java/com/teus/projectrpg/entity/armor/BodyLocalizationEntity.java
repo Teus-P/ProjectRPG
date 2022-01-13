@@ -17,6 +17,6 @@ public class BodyLocalizationEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "body_localization")
-    private BodyLocalizationType bodyLocalization;
+    @Column(name = "name")
+    private BodyLocalizationType name;
 }

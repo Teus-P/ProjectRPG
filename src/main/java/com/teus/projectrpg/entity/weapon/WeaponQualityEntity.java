@@ -19,8 +19,8 @@ public class WeaponQualityEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "weapon_quality_type")
-    private WeaponQualityType weaponQualityType;
+    @Column(name = "name")
+    private WeaponQualityType name;
 
     @OneToMany(mappedBy = "weaponQuality")
     private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();

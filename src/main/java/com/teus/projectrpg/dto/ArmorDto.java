@@ -38,17 +38,17 @@ public class ArmorDto implements Serializable {
 
         this.bodyLocalization = new ArrayList<>();
         for (BodyLocalizationEntity bodyLocalization: armorEntity.getBodyLocalizationEntities()) {
-            this.bodyLocalization.add(bodyLocalization.getBodyLocalization());
+            this.bodyLocalization.add(bodyLocalization.getName());
         }
 
         this.penalties = new ArrayList<>();
         for (ArmorPenaltyEntity armorPenalty: armorEntity.getArmorPenalties()) {
-            this.penalties.add(armorPenalty.getArmorPenaltyType());
+            this.penalties.add(armorPenalty.getName());
         }
 
         this.qualities = new ArrayList<>();
         for (ArmorQualityEntity armorQuality: armorEntity.getArmorQualities()) {
-            this.qualities.add(armorQuality.getArmorQualityType());
+            this.qualities.add(armorQuality.getName());
         }
     }
 }

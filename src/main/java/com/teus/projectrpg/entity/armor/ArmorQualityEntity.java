@@ -18,6 +18,6 @@ public class ArmorQualityEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "armor_quality_type")
-    private ArmorQualityType armorQualityType;
+    @Column(name = "name")
+    private ArmorQualityType name;
 }

@@ -30,6 +30,6 @@ public class ArmorPenaltyServiceImpl implements ArmorPenaltyService{
 
     @Override
     public ArmorPenaltyEntity findByType(ArmorPenaltyType armorPenaltyType) {
-        return armorPenaltyRepository.findArmorPenaltyByArmorPenaltyType(armorPenaltyType);
+        return armorPenaltyRepository.findArmorPenaltyByName(armorPenaltyType);
     }
 }

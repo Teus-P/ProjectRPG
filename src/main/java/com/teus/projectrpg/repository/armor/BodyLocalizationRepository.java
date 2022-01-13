@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BodyLocalizationRepository extends JpaRepository<BodyLocalizationEntity, Long> {
 
-    BodyLocalizationEntity findBodyLocalizationByBodyLocalization(BodyLocalizationType bodyLocalization);
+    BodyLocalizationEntity findBodyLocalizationByName(BodyLocalizationType bodyLocalization);
 }

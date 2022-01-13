@@ -17,7 +17,7 @@ public class WeaponQualityValueDto {
 
     public WeaponQualityValueDto(WeaponQualityValueEntity weaponQualityValueEntity) {
         this.id = weaponQualityValueEntity.getId();
-        this.weaponQualityType = weaponQualityValueEntity.getWeaponQuality().getWeaponQualityType();
+        this.weaponQualityType = weaponQualityValueEntity.getWeaponQuality().getName();
         this.value = weaponQualityValueEntity.getValue();
     }
 }

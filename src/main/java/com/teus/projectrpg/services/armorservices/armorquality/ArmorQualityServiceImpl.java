@@ -30,6 +30,6 @@ public class ArmorQualityServiceImpl implements ArmorQualityService {
 
     @Override
     public ArmorQualityEntity findByType(ArmorQualityType armorQualityType) {
-        return armorQualityRepository.findArmorQualityByArmorQualityType(armorQualityType);
+        return armorQualityRepository.findArmorQualityByName(armorQualityType);
     }
 }

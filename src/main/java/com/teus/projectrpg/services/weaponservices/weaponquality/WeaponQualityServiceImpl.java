@@ -25,6 +25,6 @@ public class WeaponQualityServiceImpl implements WeaponQualityService {
 
     @Override
     public WeaponQualityEntity findByType(WeaponQualityType weaponQualityType) {
-        return weaponQualityRepository.findWeaponQualityEntityByWeaponQualityType(weaponQualityType);
+        return weaponQualityRepository.findWeaponQualityEntityByName(weaponQualityType);
     }
 }

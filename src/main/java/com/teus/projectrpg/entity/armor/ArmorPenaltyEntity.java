@@ -17,6 +17,6 @@ public class ArmorPenaltyEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "penalty")
-    private ArmorPenaltyType armorPenaltyType;
+    @Column(name = "name")
+    private ArmorPenaltyType name;
 }

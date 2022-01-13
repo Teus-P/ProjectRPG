@@ -30,6 +30,6 @@ public class BodyLocalizationServiceImpl implements BodyLocalizationService {
 
     @Override
     public BodyLocalizationEntity findByType(BodyLocalizationType bodyLocalizationType) {
-        return bodyLocalizationRepository.findBodyLocalizationByBodyLocalization(bodyLocalizationType);
+        return bodyLocalizationRepository.findBodyLocalizationByName(bodyLocalizationType);
     }
 }
