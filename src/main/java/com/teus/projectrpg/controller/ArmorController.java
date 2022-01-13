@@ -8,8 +8,9 @@ import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
 import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.repository.armor.ArmorRepository;
-import com.teus.projectrpg.services.armorpenalty.ArmorPenaltyService;
-import com.teus.projectrpg.services.armorquality.ArmorQualityService;
+import com.teus.projectrpg.services.armorservices.armorcategory.ArmorCategoryService;
+import com.teus.projectrpg.services.armorservices.armorpenalty.ArmorPenaltyService;
+import com.teus.projectrpg.services.armorservices.armorquality.ArmorQualityService;
 import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.type.armor.ArmorPenaltyType;
 import com.teus.projectrpg.type.armor.ArmorQualityType;
@@ -28,12 +29,14 @@ public class ArmorController {
     private final BodyLocalizationService bodyLocalizationService;
     private final ArmorPenaltyService armorPenaltyService;
     private final ArmorQualityService armorQualityService;
+    private final ArmorCategoryService armorCategoryService;
 
-    public ArmorController(ArmorRepository armorRepository, BodyLocalizationService bodyLocalizationService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService) {
+    public ArmorController(ArmorRepository armorRepository, BodyLocalizationService bodyLocalizationService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService, ArmorCategoryService armorCategoryService) {
         this.armorRepository = armorRepository;
         this.bodyLocalizationService = bodyLocalizationService;
         this.armorPenaltyService = armorPenaltyService;
         this.armorQualityService = armorQualityService;
+        this.armorCategoryService = armorCategoryService;
     }
 
     @GetMapping("/armor")
@@ -53,7 +56,7 @@ public class ArmorController {
         armorEntity.setId(0L);
         armorEntity.setName(newArmor.getName());
         armorEntity.setNameTranslation(newArmor.getNameTranslation());
-        armorEntity.setArmorCategory(newArmor.getArmorCategory());
+        armorEntity.setArmorCategory(armorCategoryService.findByName(newArmor.getArmorCategoryType()));
         armorEntity.setArmorPoints(newArmor.getArmorPoints());
 
         ArrayList<BodyLocalizationEntity> bodyLocalizationEntities = new ArrayList<>();

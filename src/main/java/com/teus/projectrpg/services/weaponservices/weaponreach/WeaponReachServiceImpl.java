@@ -1,4 +1,4 @@
-package com.teus.projectrpg.services.weaponreach;
+package com.teus.projectrpg.services.weaponservices.weaponreach;
 
 import com.teus.projectrpg.entity.weapon.WeaponReachEntity;
 import com.teus.projectrpg.repository.weapon.WeaponReachRepository;

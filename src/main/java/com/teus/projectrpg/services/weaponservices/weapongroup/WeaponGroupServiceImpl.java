@@ -1,4 +1,4 @@
-package com.teus.projectrpg.services.weapongroup;
+package com.teus.projectrpg.services.weaponservices.weapongroup;
 
 import com.teus.projectrpg.entity.weapon.WeaponGroupEntity;
 import com.teus.projectrpg.repository.weapon.WeaponGroupRepository;

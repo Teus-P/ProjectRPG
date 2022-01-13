@@ -1,6 +1,5 @@
 package com.teus.projectrpg.entity.armor;
 
-import com.teus.projectrpg.type.armor.ArmorCategory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,8 +25,9 @@ public class ArmorEntity {
     private String nameTranslation;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "armor_category")
-    private ArmorCategory armorCategory;
+    @ManyToOne
+    @JoinColumn(name = "armor_category_id", nullable = false)
+    private ArmorCategoryEntity armorCategory;
 
     @ManyToMany
     @JoinTable(name = "armor_body_localizations",

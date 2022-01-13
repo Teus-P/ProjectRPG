@@ -1,6 +1,6 @@
 package com.teus.projectrpg.type.armor;
 
-public enum ArmorCategory {
+public enum ArmorCategoryType {
     SOFT_LEATHER,
     BOILED_LEATHER,
     MAIL,

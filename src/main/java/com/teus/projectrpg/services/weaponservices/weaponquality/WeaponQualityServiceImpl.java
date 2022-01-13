@@ -1,4 +1,4 @@
-package com.teus.projectrpg.services.weaponquality;
+package com.teus.projectrpg.services.weaponservices.weaponquality;
 
 import com.teus.projectrpg.entity.weapon.WeaponQualityEntity;
 import com.teus.projectrpg.repository.weapon.WeaponQualityRepository;

@@ -1,4 +1,4 @@
-package com.teus.projectrpg.services.armorquality;
+package com.teus.projectrpg.services.armorservices.armorquality;
 
 import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
 import com.teus.projectrpg.type.armor.ArmorQualityType;
