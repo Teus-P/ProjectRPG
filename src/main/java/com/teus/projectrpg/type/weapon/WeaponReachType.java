@@ -5,8 +5,9 @@ public enum WeaponReachType {
     LONG,
     MASSIVE,
     PERSONAL,
+    RANGED,
     SHORT,
     VARIES,
     VERY_LONG,
-    VERY_SHORT
+    VERY_SHORT,
 }
