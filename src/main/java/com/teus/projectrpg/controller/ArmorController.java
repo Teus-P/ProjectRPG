@@ -7,7 +7,6 @@ import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
 import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
-import com.teus.projectrpg.repository.armor.ArmorRepository;
 import com.teus.projectrpg.services.armorservices.armor.ArmorService;
 import com.teus.projectrpg.services.armorservices.armorcategory.ArmorCategoryService;
 import com.teus.projectrpg.services.armorservices.armorpenalty.ArmorPenaltyService;
@@ -57,7 +56,7 @@ public class ArmorController {
         armorEntity.setId(0L);
         armorEntity.setName(newArmor.getName());
         armorEntity.setNameTranslation(newArmor.getNameTranslation());
-        armorEntity.setArmorCategory(armorCategoryService.findByName(newArmor.getArmorCategoryType()));
+        armorEntity.setArmorCategory(armorCategoryService.findByName(newArmor.getArmorCategory()));
         armorEntity.setArmorPoints(newArmor.getArmorPoints());
 
         ArrayList<BodyLocalizationEntity> bodyLocalizationEntities = new ArrayList<>();

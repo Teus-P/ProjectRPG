@@ -20,7 +20,7 @@ public class ArmorDto implements Serializable {
     private Long id;
     private String name;
     private String nameTranslation;
-    private ArmorCategoryType armorCategoryType;
+    private ArmorCategoryType armorCategory;
     private List<BodyLocalizationType> bodyLocalization;
     private Integer armorPoints;
     private List<ArmorPenaltyType> penalties;
@@ -33,7 +33,7 @@ public class ArmorDto implements Serializable {
         this.id = armorEntity.getId();
         this.name = armorEntity.getName();
         this.nameTranslation = armorEntity.getNameTranslation();
-        this.armorCategoryType = armorEntity.getArmorCategory().getName();
+        this.armorCategory = armorEntity.getArmorCategory().getName();
         this.armorPoints = armorEntity.getArmorPoints();
 
         this.bodyLocalization = new ArrayList<>();
