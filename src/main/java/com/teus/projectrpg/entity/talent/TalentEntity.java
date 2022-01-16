@@ -21,5 +21,5 @@ public class TalentEntity {
     private TalentType name;
 
     @Column
-    private String max;
+    private String maxLevel;
 }

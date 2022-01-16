@@ -8,7 +8,7 @@ import lombok.Data;
 public class TalentDto {
     private Long id;
     private TalentType name;
-    private String max;
+    private String maxLevel;
 
     public TalentDto() {
 
@@ -17,6 +17,6 @@ public class TalentDto {
     public TalentDto (TalentEntity talentEntity) {
         this.id = talentEntity.getId();
         this.name = talentEntity.getName();
-        this.max = talentEntity.getMax();
+        this.maxLevel = talentEntity.getMaxLevel();
     }
 }
