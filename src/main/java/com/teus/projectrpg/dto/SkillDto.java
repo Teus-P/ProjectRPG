@@ -9,7 +9,7 @@ public class SkillDto {
     private Long id;
     private SkillType name;
 
-    SkillDto() {
+    public SkillDto() {
 
     }
 
