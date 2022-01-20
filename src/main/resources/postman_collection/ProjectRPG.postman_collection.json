@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "713c6580-ac97-4af8-ac40-c687a7a730d4",
+		"name": "ProjectRPG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Armor",
+			"item": [
+				{
+					"name": "createArmors",
+					"item": [
+						{
+							"name": "LEATHER_SKULLCAP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"LEATHER_SKULLCAP\",\r\n    \"nameTranslation\": \"Skórzany hełm\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"HEAD\"\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n        \"PARTIAL\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/armor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"armor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LEATHER_JACK",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"LEATHER_JACK\",\r\n    \"nameTranslation\": \"Skórzana kurta\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"LEFT_ARM\",\r\n        \"RIGHT_ARM\",\r\n        \"BODY\"\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/armor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"armor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LEATHER_JERKIN",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"LEATHER_JERKIN\",\r\n    \"nameTranslation\": \"Skórzany kaftan\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"BODY\"\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/armor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"armor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LEATHER_LEGGINGS",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"LEATHER_LEGGINGS\",\r\n    \"nameTranslation\": \"Skórzane nogawice\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"LEFT_LEG\",\r\n        \"RIGHT_LEG\"\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/armor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"armor"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "getAllArmors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/armor",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"armor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createNewArmor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test_2\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"HEAD\"\r\n    ],\r\n    \"penalties\": [\r\n        \"MINUS_TEN_PERCEPTION\"\r\n    ],\r\n    \"qualities\": [\r\n        \"FLEXIBLE\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/armor",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"armor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteArmor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/armor/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"armor",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Weapon",
+			"item": [
+				{
+					"name": "createWeapons",
+					"item": [
+						{
+							"name": "IMPROVISED_WEAPON",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IMPROVISED_WEAPON\",\r\n    \"nameTranslation\": \"Broń improwizowana\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponReach\": \"VARIES\",\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 1,\r\n    \"weaponQualities\": [\r\n        {\r\n            \"weaponQualityType\": \"UNDAMAGING\",\r\n            \"value\": 1\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/weapon",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"weapon"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HAND_WEAPON",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"HAND_WEAPON\",\r\n    \"nameTranslation\": \"Broń ręczna\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponRange\": \"AVERAGE\",\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 4,\r\n    \"weaponQualities\": [\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/weapon",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"weapon"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "createNewWeapon",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"IMPROVISED_WEAPON\",\r\n    \"nameTranslation\": \"Broń improwizowana\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponRange\": \"VARIES\",\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 1,\r\n    \"weaponQualities\": [\r\n        {\r\n            \"weaponQualityType\": \"UNDAMAGING\",\r\n            \"value\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/weapon",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"weapon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllWeapons",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/weapon",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"weapon"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Skill",
+			"item": [
+				{
+					"name": "getAllSkills",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Talent",
+			"item": [
+				{
+					"name": "getAllTalents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/talent",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"talent"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
