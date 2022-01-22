@@ -31,4 +31,9 @@ public class ArmorServiceImpl implements ArmorService{
     public void deleteById(Long id) {
         armorRepository.deleteById(id);
     }
+
+    @Override
+    public ArmorEntity findByName(String name) {
+        return armorRepository.findArmorEntityByName(name);
+    }
 }

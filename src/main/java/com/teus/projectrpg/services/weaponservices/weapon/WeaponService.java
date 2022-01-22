@@ -9,4 +9,6 @@ public interface WeaponService {
     List<WeaponEntity> findAll();
 
     WeaponEntity save(WeaponEntity weaponEntity);
+
+    WeaponEntity findByName(String name);
 }

@@ -437,3 +437,16 @@ INSERT INTO talent(name, max_level) VALUE ('WATERMAN', 'AGB');
 INSERT INTO talent(name, max_level) VALUE ('WEALTHY', 'NONE');
 INSERT INTO talent(name, max_level) VALUE ('WELL_PREPARED', 'IB');
 INSERT INTO talent(name, max_level) VALUE ('WITCH', 'WPB');
+
+INSERT INTO characteristic(name) VALUE ('WEAPON_SKILL');
+INSERT INTO characteristic(name) VALUE ('BALLISTIC_SKILL');
+INSERT INTO characteristic(name) VALUE ('STRENGTH');
+INSERT INTO characteristic(name) VALUE ('TOUGHNESS');
+INSERT INTO characteristic(name) VALUE ('INITIATIVE');
+INSERT INTO characteristic(name) VALUE ('AGILITY');
+INSERT INTO characteristic(name) VALUE ('DEXTERITY');
+INSERT INTO characteristic(name) VALUE ('INTELLIGENCE');
+INSERT INTO characteristic(name) VALUE ('WILLPOWER');
+INSERT INTO characteristic(name) VALUE ('FELLOWSHIP');
+INSERT INTO characteristic(name) VALUE ('WOUNDS');
+INSERT INTO characteristic(name) VALUE ('MOVEMENT');

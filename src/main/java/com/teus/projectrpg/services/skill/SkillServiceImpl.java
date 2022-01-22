@@ -2,6 +2,7 @@ package com.teus.projectrpg.services.skill;
 
 import com.teus.projectrpg.entity.skill.SkillEntity;
 import com.teus.projectrpg.repository.skill.SkillRepository;
+import com.teus.projectrpg.type.skill.SkillType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,10 @@ public class SkillServiceImpl implements SkillService{
     @Override
     public List<SkillEntity> findAll() {
         return skillRepository.findAll();
+    }
+
+    @Override
+    public SkillEntity findByName(SkillType skillType) {
+        return skillRepository.findSkillEntityByName(skillType);
     }
 }

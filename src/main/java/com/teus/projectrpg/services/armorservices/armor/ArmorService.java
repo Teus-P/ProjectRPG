@@ -11,4 +11,6 @@ public interface ArmorService {
     ArmorEntity save(ArmorEntity armorEntity);
 
     void deleteById(Long id);
+
+    ArmorEntity findByName(String name);
 }

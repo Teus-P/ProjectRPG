@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "713c6580-ac97-4af8-ac40-c687a7a730d4",
+		"_postman_id": "528e2718-c852-4c7f-b28b-0eb2bdb284ca",
 		"name": "ProjectRPG",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -236,7 +236,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"HAND_WEAPON\",\r\n    \"nameTranslation\": \"Broń ręczna\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponRange\": \"AVERAGE\",\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 4,\r\n    \"weaponQualities\": [\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"HAND_WEAPON\",\r\n    \"nameTranslation\": \"Broń ręczna\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponReach\": \"AVERAGE\",\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 4,\r\n    \"weaponQualities\": [\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -324,7 +324,10 @@
 					"name": "getAllSkills",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -346,6 +349,73 @@
 							"port": "8080",
 							"path": [
 								"talent"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Character",
+			"item": [
+				{
+					"name": "createCharacters",
+					"item": [
+						{
+							"name": "MANDAL",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"HAND_WEAPON\",\r\n    \"nameTranslation\": \"Broń ręczna\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponReach\": \"AVERAGE\",\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 4,\r\n    \"weaponQualities\": [\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/character",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"character"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "getAllCharacters",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/character",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"character"
 							]
 						}
 					},

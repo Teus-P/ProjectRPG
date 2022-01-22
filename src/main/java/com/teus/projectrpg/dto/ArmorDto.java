@@ -37,7 +37,7 @@ public class ArmorDto implements Serializable {
         this.armorPoints = armorEntity.getArmorPoints();
 
         this.bodyLocalization = new ArrayList<>();
-        for (BodyLocalizationEntity bodyLocalization: armorEntity.getBodyLocalizationEntities()) {
+        for (BodyLocalizationEntity bodyLocalization: armorEntity.getBodyLocalizations()) {
             this.bodyLocalization.add(bodyLocalization.getName());
         }
 

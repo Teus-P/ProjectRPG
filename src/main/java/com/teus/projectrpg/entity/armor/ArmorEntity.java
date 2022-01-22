@@ -33,7 +33,7 @@ public class ArmorEntity {
     @JoinTable(name = "armor_body_localizations",
             joinColumns = @JoinColumn(name = "armor_id"),
             inverseJoinColumns = @JoinColumn(name = "body_localizations_id"))
-    private List<BodyLocalizationEntity> bodyLocalizationEntities = new ArrayList<>();
+    private List<BodyLocalizationEntity> bodyLocalizations = new ArrayList<>();
 
     @Column(name = "armor_points", nullable = false)
     private Integer armorPoints;

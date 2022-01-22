@@ -2,6 +2,7 @@ package com.teus.projectrpg.services.talent;
 
 import com.teus.projectrpg.entity.talent.TalentEntity;
 import com.teus.projectrpg.repository.talent.TalentRepository;
+import com.teus.projectrpg.type.talent.TalentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,10 @@ public class TalentServiceImpl implements TalentService{
     @Override
     public List<TalentEntity> findAll() {
         return talentRepository.findAll();
+    }
+
+    @Override
+    public TalentEntity findByName(TalentType talent) {
+        return talentRepository.findTalentEntityByName(talent);
     }
 }

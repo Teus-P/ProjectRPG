@@ -26,4 +26,9 @@ public class WeaponServiceImpl implements WeaponService {
     public WeaponEntity save(WeaponEntity weaponEntity) {
         return weaponRepository.save(weaponEntity);
     }
+
+    @Override
+    public WeaponEntity findByName(String name) {
+        return weaponRepository.findWeaponEntityByName(name);
+    }
 }

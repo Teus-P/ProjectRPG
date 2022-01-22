@@ -63,7 +63,7 @@ public class ArmorController {
         for (BodyLocalizationType bodyLocalization : newArmor.getBodyLocalization()) {
             bodyLocalizationEntities.add(bodyLocalizationService.findByType(bodyLocalization));
         }
-        armorEntity.setBodyLocalizationEntities(bodyLocalizationEntities);
+        armorEntity.setBodyLocalizations(bodyLocalizationEntities);
 
         if (newArmor.getPenalties() != null) {
             ArrayList<ArmorPenaltyEntity> armorPenaltyEntities = new ArrayList<>();
