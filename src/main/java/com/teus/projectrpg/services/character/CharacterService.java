@@ -8,4 +8,6 @@ public interface CharacterService {
     List<CharacterEntity> findAll();
 
     CharacterEntity save(CharacterEntity characterEntity);
+
+    void deleteById(Long id);
 }

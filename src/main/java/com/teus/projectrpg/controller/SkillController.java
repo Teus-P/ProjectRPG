@@ -1,8 +1,9 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.dto.SkillDto;
+import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.skill.SkillEntity;
 import com.teus.projectrpg.services.skill.SkillService;
+import com.teus.projectrpg.type.skill.SkillType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,11 +20,11 @@ public class SkillController {
     }
 
     @GetMapping("/skill")
-    List<SkillDto> getAllSkills() {
-        List<SkillDto> skillDtos = new ArrayList<>();
+    List<BaseDto<SkillType, SkillEntity>> getAllSkills() {
+        List<BaseDto<SkillType, SkillEntity>> skillDtos = new ArrayList<>();
 
-        for(SkillEntity skillEntity : skillService.findAll()) {
-            skillDtos.add(new SkillDto(skillEntity));
+        for (SkillEntity skillEntity : skillService.findAll()) {
+            skillDtos.add(new BaseDto<>(skillEntity));
         }
 
         return skillDtos;

@@ -11,6 +11,6 @@ public interface BodyLocalizationService {
 
     void save(BodyLocalizationEntity bodyLocalizationEntity);
 
-    BodyLocalizationEntity findByType(BodyLocalizationType bodyLocalizationType);
+    BodyLocalizationEntity findByName(BodyLocalizationType bodyLocalizationType);
 
 }

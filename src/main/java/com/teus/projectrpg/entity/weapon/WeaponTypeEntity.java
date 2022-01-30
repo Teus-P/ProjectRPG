@@ -1,5 +1,6 @@
 package com.teus.projectrpg.entity.weapon;
 
+import com.teus.projectrpg.entity.base.BaseEntity;
 import com.teus.projectrpg.type.weapon.WeaponType;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "weapon_type")
-public class WeaponTypeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class WeaponTypeEntity extends BaseEntity<WeaponType> {
 
     @Column
     @Enumerated(EnumType.STRING)

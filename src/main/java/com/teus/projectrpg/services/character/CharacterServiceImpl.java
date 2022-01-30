@@ -26,4 +26,9 @@ public class CharacterServiceImpl implements CharacterService {
     public CharacterEntity save(CharacterEntity characterEntity) {
         return characterRepository.save(characterEntity);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        characterRepository.deleteById(id);
+    }
 }

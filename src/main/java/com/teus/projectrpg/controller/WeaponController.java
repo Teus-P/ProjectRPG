@@ -54,9 +54,9 @@ public class WeaponController {
         weaponEntity.setId(0L);
         weaponEntity.setName(newWeapon.getName());
         weaponEntity.setNameTranslation(newWeapon.getNameTranslation());
-        weaponEntity.setWeaponType(weaponTypeService.findByName(newWeapon.getWeaponType()));
-        weaponEntity.setWeaponGroup(weaponGroupService.findByName(newWeapon.getWeaponGroupType()));
-        weaponEntity.setWeaponReach(weaponReachService.findByName(newWeapon.getWeaponReach()));
+        weaponEntity.setWeaponType(weaponTypeService.findByName(newWeapon.getWeaponType().getName()));
+        weaponEntity.setWeaponGroup(weaponGroupService.findByName(newWeapon.getWeaponGroupType().getName()));
+        weaponEntity.setWeaponReach(weaponReachService.findByName(newWeapon.getWeaponReach().getName()));
         weaponEntity.setWeaponRange(newWeapon.getWeaponRange());
         weaponEntity.setIsUsingStrength(newWeapon.getIsUsingStrength());
         weaponEntity.setDamage(newWeapon.getDamage());
@@ -66,7 +66,7 @@ public class WeaponController {
             for (WeaponQualityValueDto weaponQuality : newWeapon.getWeaponQualities()) {
                 WeaponQualityValueEntity newWeaponQualityValue = new WeaponQualityValueEntity();
                 newWeaponQualityValue.setWeapon(weaponEntity);
-                newWeaponQualityValue.setWeaponQuality(weaponQualityService.findByType(weaponQuality.getWeaponQualityType()));
+                newWeaponQualityValue.setWeaponQuality(weaponQualityService.findByType(weaponQuality.getName()));
                 newWeaponQualityValue.setValue(weaponQuality.getValue());
                 weaponQualityValueEntities.add(newWeaponQualityValue);
             }

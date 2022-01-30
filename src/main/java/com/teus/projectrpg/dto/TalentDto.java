@@ -5,18 +5,13 @@ import com.teus.projectrpg.type.talent.TalentType;
 import lombok.Data;
 
 @Data
-public class TalentDto {
-    private Long id;
-    private TalentType name;
+public class TalentDto extends BaseDto<TalentType, TalentEntity>{
     private String maxLevel;
 
-    public TalentDto() {
-
-    }
+    public TalentDto(){}
 
     public TalentDto (TalentEntity talentEntity) {
-        this.id = talentEntity.getId();
-        this.name = talentEntity.getName();
+        super(talentEntity);
         this.maxLevel = talentEntity.getMaxLevel();
     }
 }

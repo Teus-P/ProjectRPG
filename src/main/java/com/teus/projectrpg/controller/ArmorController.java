@@ -2,7 +2,7 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.controller.exception.ElementNotFoundException;
 import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
-import com.teus.projectrpg.dto.ArmorDto;
+import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
 import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
@@ -56,27 +56,27 @@ public class ArmorController {
         armorEntity.setId(0L);
         armorEntity.setName(newArmor.getName());
         armorEntity.setNameTranslation(newArmor.getNameTranslation());
-        armorEntity.setArmorCategory(armorCategoryService.findByName(newArmor.getArmorCategory()));
+        armorEntity.setArmorCategory(armorCategoryService.findByName(newArmor.getArmorCategory().getName()));
         armorEntity.setArmorPoints(newArmor.getArmorPoints());
 
         ArrayList<BodyLocalizationEntity> bodyLocalizationEntities = new ArrayList<>();
-        for (BodyLocalizationType bodyLocalization : newArmor.getBodyLocalization()) {
-            bodyLocalizationEntities.add(bodyLocalizationService.findByType(bodyLocalization));
+        for (BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalization : newArmor.getBodyLocalization()) {
+            bodyLocalizationEntities.add(bodyLocalizationService.findByName(bodyLocalization.getName()));
         }
         armorEntity.setBodyLocalizations(bodyLocalizationEntities);
 
         if (newArmor.getPenalties() != null) {
             ArrayList<ArmorPenaltyEntity> armorPenaltyEntities = new ArrayList<>();
-            for (ArmorPenaltyType armorPenalty : newArmor.getPenalties()) {
-                armorPenaltyEntities.add(armorPenaltyService.findByType(armorPenalty));
+            for (BaseDto<ArmorPenaltyType, ArmorPenaltyEntity> armorPenalty : newArmor.getPenalties()) {
+                armorPenaltyEntities.add(armorPenaltyService.findByType(armorPenalty.getName()));
             }
             armorEntity.setArmorPenalties(armorPenaltyEntities);
         }
 
         if (newArmor.getQualities() != null) {
             ArrayList<ArmorQualityEntity> armorQualityEntities = new ArrayList<>();
-            for (ArmorQualityType armorQuality : newArmor.getQualities()) {
-                armorQualityEntities.add(armorQualityService.findByType(armorQuality));
+            for (BaseDto<ArmorQualityType, ArmorQualityEntity> armorQuality : newArmor.getQualities()) {
+                armorQualityEntities.add(armorQualityService.findByType(armorQuality.getName()));
             }
             armorEntity.setArmorQualities(armorQualityEntities);
         }

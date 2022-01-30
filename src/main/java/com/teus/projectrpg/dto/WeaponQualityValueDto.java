@@ -8,7 +8,7 @@ import lombok.Data;
 public class WeaponQualityValueDto {
 
     private Long id;
-    private WeaponQualityType weaponQualityType;
+    private WeaponQualityType name;
     private int value;
 
     public WeaponQualityValueDto() {
@@ -17,7 +17,7 @@ public class WeaponQualityValueDto {
 
     public WeaponQualityValueDto(WeaponQualityValueEntity weaponQualityValueEntity) {
         this.id = weaponQualityValueEntity.getId();
-        this.weaponQualityType = weaponQualityValueEntity.getWeaponQuality().getName();
+        this.name = weaponQualityValueEntity.getWeaponQuality().getName();
         this.value = weaponQualityValueEntity.getValue();
     }
 }

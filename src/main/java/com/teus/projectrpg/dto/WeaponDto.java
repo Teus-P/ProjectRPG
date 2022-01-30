@@ -1,7 +1,6 @@
 package com.teus.projectrpg.dto;
 
-import com.teus.projectrpg.entity.weapon.WeaponEntity;
-import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
+import com.teus.projectrpg.entity.weapon.*;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import com.teus.projectrpg.type.weapon.WeaponReachType;
 import com.teus.projectrpg.type.weapon.WeaponType;
@@ -17,9 +16,9 @@ public class WeaponDto implements Serializable {
     private Long id;
     private String name;
     private String nameTranslation;
-    private WeaponType weaponType;
-    private WeaponGroupType weaponGroupType;
-    private WeaponReachType weaponReach;
+    private BaseDto<WeaponType, WeaponTypeEntity> weaponType;
+    private BaseDto<WeaponGroupType, WeaponGroupEntity> weaponGroupType;
+    private BaseDto<WeaponReachType, WeaponReachEntity> weaponReach;
     private int weaponRange;
     private Boolean isUsingStrength;
     private int damage;
@@ -32,9 +31,9 @@ public class WeaponDto implements Serializable {
         this.id = weaponEntity.getId();
         this.name = weaponEntity.getName();
         this.nameTranslation = weaponEntity.getNameTranslation();
-        this.weaponType = weaponEntity.getWeaponType().getName();
-        this.weaponGroupType = weaponEntity.getWeaponGroup().getName();
-        this.weaponReach = weaponEntity.getWeaponReach().getName();
+        this.weaponType = new BaseDto<>(weaponEntity.getWeaponType());
+        this.weaponGroupType = new BaseDto<>(weaponEntity.getWeaponGroup());
+        this.weaponReach = new BaseDto<>(weaponEntity.getWeaponReach());
         this.weaponRange = weaponEntity.getWeaponRange();
         this.isUsingStrength = weaponEntity.getIsUsingStrength();
         this.damage = weaponEntity.getDamage();

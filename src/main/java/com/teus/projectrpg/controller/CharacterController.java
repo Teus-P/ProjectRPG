@@ -1,5 +1,6 @@
 package com.teus.projectrpg.controller;
 
+import com.teus.projectrpg.controller.exception.ElementNotFoundException;
 import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
@@ -16,10 +17,7 @@ import com.teus.projectrpg.services.talent.TalentService;
 import com.teus.projectrpg.services.weaponservices.weapon.WeaponService;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +63,7 @@ public class CharacterController {
         for(CharacterCharacteristicDto characterCharacteristicDto : newCharacter.getCharacteristics()) {
             CharacterCharacteristicEntity characterCharacteristicEntity = new CharacterCharacteristicEntity();
             characterCharacteristicEntity.setCharacter(characterEntity);
-            characterCharacteristicEntity.setCharacteristic(characteristicService.findByName(characterCharacteristicDto.getCharacteristic()));
+            characterCharacteristicEntity.setCharacteristic(characteristicService.findByName(characterCharacteristicDto.getCharacteristic().getName()));
             characterCharacteristicEntity.setValue(characterCharacteristicDto.getValue());
             characterCharacteristics.add(characterCharacteristicEntity);
         }
@@ -75,7 +73,7 @@ public class CharacterController {
         for(CharacterSkillDto characterSkillDto : newCharacter.getSkills()) {
             CharacterSkillEntity characterSkillEntity = new CharacterSkillEntity();
             characterSkillEntity.setCharacter(characterEntity);
-            characterSkillEntity.setSkill(skillService.findByName(characterSkillDto.getSkill()));
+            characterSkillEntity.setSkill(skillService.findByName(characterSkillDto.getSkill().getName()));
             characterSkillEntity.setValue(characterSkillDto.getValue());
             characterSkillEntities.add(characterSkillEntity);
         }
@@ -107,6 +105,15 @@ public class CharacterController {
             return characterService.save(characterEntity);
         } catch (DataIntegrityViolationException e) {
             throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
+        }
+    }
+
+    @DeleteMapping("/character/{id}")
+    void deleteCharacter(@PathVariable Long id) {
+        try {
+            characterService.deleteById(id);
+        } catch (Exception ex) {
+            throw new ElementNotFoundException(id);
         }
     }
 }

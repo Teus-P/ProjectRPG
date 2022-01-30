@@ -11,7 +11,6 @@ INSERT INTO armor_penalty(name) VALUES ('MINUS_TWENTY_PERCEPTION');
 
 INSERT INTO armor_quality (name) VALUES ('FLEXIBLE');
 INSERT INTO armor_quality (name) VALUES ('IMPENETRABLE');
-INSERT INTO armor_quality (name) VALUES ('ARMOUR_FLAWS');
 INSERT INTO armor_quality (name) VALUES ('PARTIAL');
 INSERT INTO armor_quality (name) VALUES ('WEAKPOINTS');
 INSERT INTO armor_quality (name) VALUES ('DURABLE');
