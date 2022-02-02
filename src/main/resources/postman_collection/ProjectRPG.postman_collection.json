@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "528e2718-c852-4c7f-b28b-0eb2bdb284ca",
+		"_postman_id": "5e3261f5-b648-404e-9a7b-b8c8325f7be9",
 		"name": "ProjectRPG",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -18,7 +18,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"LEATHER_SKULLCAP\",\r\n    \"nameTranslation\": \"Skórzany hełm\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"HEAD\"\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n        \"PARTIAL\"\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"LEATHER_SKULLCAP\",\r\n    \"nameTranslation\": \"Skórzany hełm\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": {\r\n        \"name\": \"SOFT_LEATHER\"\r\n    },\r\n    \"bodyLocalization\": [\r\n        {\r\n            \"name\": \"HEAD\"\r\n        }\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n        {\r\n            \"name\": \"PARTIAL\"\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -45,7 +45,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"LEATHER_JACK\",\r\n    \"nameTranslation\": \"Skórzana kurta\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"LEFT_ARM\",\r\n        \"RIGHT_ARM\",\r\n        \"BODY\"\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"LEATHER_JACK\",\r\n    \"nameTranslation\": \"Skórzana kurta\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": {\r\n        \"name\": \"SOFT_LEATHER\"\r\n    },\r\n    \"bodyLocalization\": [\r\n        {\r\n            \"name\": \"LEFT_ARM\"\r\n        },\r\n        {\r\n            \"name\": \"RIGHT_ARM\"\r\n        },\r\n        {\r\n            \"name\": \"BODY\"\r\n        }\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -99,7 +99,61 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"LEATHER_LEGGINGS\",\r\n    \"nameTranslation\": \"Skórzane nogawice\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": \"SOFT_LEATHER\",\r\n    \"bodyLocalization\": [\r\n        \"LEFT_LEG\",\r\n        \"RIGHT_LEG\"\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"LEATHER_LEGGINGS\",\r\n    \"nameTranslation\": \"Skórzane nogawice\",\r\n    \"armorPoints\": 1,\r\n    \"armorCategory\": {\r\n        \"name\": \"SOFT_LEATHER\"\r\n    },\r\n    \"bodyLocalization\": [\r\n        {\r\n            \"name\": \"LEFT_LEG\"\r\n        },\r\n        {\r\n            \"name\": \"RIGHT_LEG\"\r\n        }\r\n    ],\r\n    \"penalties\": [],\r\n    \"qualities\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/armor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"armor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BREASTPLATE",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"BREASTPLATE\",\r\n    \"nameTranslation\": \"Kolet\",\r\n    \"armorPoints\": 2,\r\n    \"armorCategory\": {\r\n        \"name\": \"BOILED_LEATHER\"\r\n    },\r\n    \"bodyLocalization\": [\r\n        {\r\n            \"name\": \"BODY\"\r\n        }\r\n    ],\r\n    \"penalties\": [\r\n    ],\r\n    \"qualities\": [\r\n        {\r\n            \"name\": \"WEAKPOINTS\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/armor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"armor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MAIL_COIF",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"MAIL_COIF\",\r\n    \"nameTranslation\": \"Czepiec kolczy\",\r\n    \"armorPoints\": 2,\r\n    \"armorCategory\": {\r\n        \"name\": \"MAIL\"\r\n    },\r\n    \"bodyLocalization\": [\r\n        {\r\n            \"name\": \"HEAD\"\r\n        }\r\n    ],\r\n    \"penalties\": [\r\n        {\r\n            \"name\": \"MINUS_TEN_PERCEPTION\"\r\n        }\r\n    ],\r\n    \"qualities\": [\r\n        {\r\n            \"name\": \"FLEXIBLE\"\r\n        },\r\n        {\r\n            \"name\": \"PARTIAL\"\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -209,7 +263,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"IMPROVISED_WEAPON\",\r\n    \"nameTranslation\": \"Broń improwizowana\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponReach\": \"VARIES\",\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 1,\r\n    \"weaponQualities\": [\r\n        {\r\n            \"weaponQualityType\": \"UNDAMAGING\",\r\n            \"value\": 1\r\n        }\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"IMPROVISED_WEAPON\",\r\n    \"nameTranslation\": \"Broń improwizowana\",\r\n    \"weaponType\": {\r\n        \"name\": \"MELEE\"\r\n        },\r\n    \"weaponGroupType\": {\r\n        \"name\": \"BASIC\"\r\n        },\r\n    \"weaponReach\": {\r\n        \"name\": \"VARIES\"\r\n        },\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 1,\r\n    \"weaponQualities\": [\r\n        {\r\n            \"name\": \"UNDAMAGING\",\r\n            \"value\": 1\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -236,7 +290,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"HAND_WEAPON\",\r\n    \"nameTranslation\": \"Broń ręczna\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponReach\": \"AVERAGE\",\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 4,\r\n    \"weaponQualities\": [\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"HAND_WEAPON\",\r\n    \"nameTranslation\": \"Broń ręczna\",\r\n    \"weaponType\": {\r\n        \"name\": \"MELEE\"\r\n        },\r\n    \"weaponGroupType\": {\r\n        \"name\": \"BASIC\"\r\n        },\r\n    \"weaponReach\": {\r\n        \"name\": \"VARIES\"\r\n        },\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 1,\r\n    \"weaponQualities\": [\r\n        {\r\n            \"name\": \"UNDAMAGING\",\r\n            \"value\": 1\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -326,7 +380,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "localhost:8080/skill",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"skill"
+							]
 						}
 					},
 					"response": []
@@ -369,7 +430,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"HAND_WEAPON\",\r\n    \"nameTranslation\": \"Broń ręczna\",\r\n    \"weaponType\": \"MELEE\",\r\n    \"weaponGroupType\": \"BASIC\",\r\n    \"weaponReach\": \"AVERAGE\",\r\n    \"weaponRange\": 0,\r\n    \"isUsingStrength\": true,\r\n    \"damage\": 4,\r\n    \"weaponQualities\": [\r\n    ]\r\n}",
+									"raw": "{\r\n    \"name\": \"Mandal\",\r\n    \"description\": \"Pierworodny\",\r\n    \"isRightHanded\": true,\r\n    \"characteristics\": [\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"WEAPON_SKILL\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"BALLISTIC_SKILL\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"STRENGTH\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"TOUGHNESS\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"INITIATIVE\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"AGILITY\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"DEXTERITY\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"INTELLIGENCE\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"WILLPOWER\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"FELLOWSHIP\"\r\n            },\r\n            \"value\": 40\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"WOUNDS\"\r\n            },\r\n            \"value\": 12\r\n        },\r\n        {\r\n            \"characteristic\": {\r\n                \"name\": \"MOVEMENT\"\r\n            },\r\n            \"value\": 4\r\n        }\r\n    ],\r\n    \"skills\": [\r\n        {\r\n            \"skill\": {\r\n                \"name\": \"MELEE_BASIC\"\r\n            },\r\n            \"value\": 50\r\n        },\r\n        {\r\n            \"skill\": {\r\n                \"name\": \"DODGE\"\r\n            },\r\n            \"value\": 50\r\n        }\r\n    ],\r\n    \"talents\": [\r\n        {\r\n            \"talent\": {\r\n                \"name\": \"BATTLE_RAGE\"\r\n            },\r\n            \"value\": 1\r\n        }\r\n    ],\r\n    \"weapons\": [\r\n        {\r\n            \"name\": \"HAND_WEAPON\"\r\n        },\r\n        {\r\n            \"name\": \"IMPROVISED_WEAPON\"\r\n        }\r\n    ],\r\n    \"armors\": [\r\n        {\r\n            \"name\": \"LEATHER_JACK\"\r\n        },\r\n        {\r\n            \"name\": \"LEATHER_LEGGINGS\"\r\n        },\r\n        {\r\n            \"name\": \"LEATHER_SKULLCAP\"\r\n        }\r\n    ]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -416,6 +477,34 @@
 							"port": "8080",
 							"path": [
 								"character"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCharacter",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/character/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"character",
+								"3"
 							]
 						}
 					},
