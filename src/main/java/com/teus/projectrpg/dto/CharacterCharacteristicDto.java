@@ -1,7 +1,6 @@
 package com.teus.projectrpg.dto;
 
 import com.teus.projectrpg.entity.character.CharacterCharacteristicEntity;
-import com.teus.projectrpg.entity.character.CharacterEntity;
 import com.teus.projectrpg.entity.characteristic.CharacteristicEntity;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
 import lombok.Data;
@@ -12,7 +11,8 @@ public class CharacterCharacteristicDto {
     private BaseDto<CharacteristicType, CharacteristicEntity> characteristic;
     private int value;
 
-    public CharacterCharacteristicDto() {}
+    public CharacterCharacteristicDto() {
+    }
 
     public CharacterCharacteristicDto(CharacterCharacteristicEntity characterCharacteristicEntity) {
         this.id = characterCharacteristicEntity.getId();
