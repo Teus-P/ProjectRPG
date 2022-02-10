@@ -52,9 +52,12 @@ public class CharacterController {
         return characterDtos;
     }
 
-    @PostMapping("/character")
-    CharacterEntity createNewCharacter(@RequestBody CharacterDto newCharacter) {
+    @PutMapping("/character")
+    CharacterEntity putCharacter(@RequestBody CharacterDto newCharacter) {
         CharacterEntity characterEntity = new CharacterEntity();
+        if(newCharacter.getId() != null) {
+            characterEntity.setId(newCharacter.getId());
+        }
         characterEntity.setName(newCharacter.getName());
         characterEntity.setDescription(newCharacter.getDescription());
         characterEntity.setIsRightHanded(newCharacter.getIsRightHanded());

@@ -30,15 +30,27 @@ public class CharacterEntity {
     private Boolean isRightHanded;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "character", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(
+            mappedBy = "character",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
     private List<CharacterCharacteristicEntity> characteristics = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "character", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(
+            mappedBy = "character",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
     private List<CharacterSkillEntity> skills = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "character", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(
+            mappedBy = "character",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
     private List<CharacterTalentEntity> talents = new ArrayList<>();
 
     @ManyToMany
