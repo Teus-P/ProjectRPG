@@ -27,6 +27,7 @@ public enum WeaponQualityType {
     RELOAD,
     SLOW,
     TIRING,
+    INCENDIARY,
     UNDAMAGING,
     DURABLE,
     FINE,

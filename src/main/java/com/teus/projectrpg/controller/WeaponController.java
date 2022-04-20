@@ -59,6 +59,7 @@ public class WeaponController {
         weaponEntity.setWeaponReach(weaponReachService.findByName(newWeapon.getWeaponReach().getName()));
         weaponEntity.setWeaponRange(newWeapon.getWeaponRange());
         weaponEntity.setIsUsingStrength(newWeapon.getIsUsingStrength());
+        weaponEntity.setIsUsingStrengthInRange(newWeapon.getIsUsingStrengthInRange());
         weaponEntity.setDamage(newWeapon.getDamage());
 
         if (newWeapon.getWeaponQualities() != null) {

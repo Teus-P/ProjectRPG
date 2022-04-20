@@ -46,6 +46,9 @@ public class WeaponEntity {
     @Column(name = "is_using_strength")
     private Boolean isUsingStrength;
 
+    @Column(name = "is_using_strength_in_range")
+    private Boolean isUsingStrengthInRange;
+
     @Column(name = "damage")
     private int damage;
 

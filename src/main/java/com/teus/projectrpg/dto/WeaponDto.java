@@ -21,6 +21,7 @@ public class WeaponDto implements Serializable {
     private BaseDto<WeaponReachType, WeaponReachEntity> weaponReach;
     private int weaponRange;
     private Boolean isUsingStrength;
+    private Boolean isUsingStrengthInRange;
     private int damage;
     private List<WeaponQualityValueDto> weaponQualities;
 
@@ -36,6 +37,7 @@ public class WeaponDto implements Serializable {
         this.weaponReach = new BaseDto<>(weaponEntity.getWeaponReach());
         this.weaponRange = weaponEntity.getWeaponRange();
         this.isUsingStrength = weaponEntity.getIsUsingStrength();
+        this.isUsingStrengthInRange = weaponEntity.getIsUsingStrengthInRange();
         this.damage = weaponEntity.getDamage();
 
         this.weaponQualities = new ArrayList<>();
