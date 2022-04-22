@@ -1,6 +1,6 @@
 package com.teus.projectrpg.entity.character;
 
-import com.teus.projectrpg.entity.talent.TalentEntity;
+import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "character_talent")
-public class CharacterTalentEntity {
+@Table(name = "character_weapon")
+public class CharacterWeaponEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -21,8 +21,8 @@ public class CharacterTalentEntity {
     private CharacterEntity character;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "talent_id", nullable = false)
-    private TalentEntity talent;
+    @JoinColumn(name = "weapon_id", nullable = false)
+    private WeaponEntity weapon;
 
     @Column(name = "value")
     private int value;

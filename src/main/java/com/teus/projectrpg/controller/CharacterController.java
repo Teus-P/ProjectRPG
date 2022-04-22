@@ -4,10 +4,7 @@ import com.teus.projectrpg.controller.exception.ElementNotFoundException;
 import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
-import com.teus.projectrpg.entity.character.CharacterCharacteristicEntity;
-import com.teus.projectrpg.entity.character.CharacterEntity;
-import com.teus.projectrpg.entity.character.CharacterSkillEntity;
-import com.teus.projectrpg.entity.character.CharacterTalentEntity;
+import com.teus.projectrpg.entity.character.*;
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import com.teus.projectrpg.services.armorservices.armor.ArmorService;
 import com.teus.projectrpg.services.character.CharacterService;
@@ -92,11 +89,15 @@ public class CharacterController {
         }
         characterEntity.setTalents(characterTalentEntities);
 
-        ArrayList<WeaponEntity> weaponEntities = new ArrayList<>();
-        for(WeaponDto weaponDto : newCharacter.getWeapons()) {
-            weaponEntities.add(weaponService.findByName(weaponDto.getName()));
+        ArrayList<CharacterWeaponEntity> characterWeaponEntities = new ArrayList<>();
+        for(CharacterWeaponDto characterWeaponDto : newCharacter.getWeapons()) {
+            CharacterWeaponEntity characterWeaponEntity = new CharacterWeaponEntity();
+            characterWeaponEntity.setCharacter(characterEntity);
+            characterWeaponEntity.setWeapon(weaponService.findByName(characterWeaponDto.getWeapon().getName()));
+            characterWeaponEntity.setValue(characterWeaponDto.getValue());
+            characterWeaponEntities.add(characterWeaponEntity);
         }
-        characterEntity.setWeapons(weaponEntities);
+        characterEntity.setWeapons(characterWeaponEntities);
 
         ArrayList<ArmorEntity> armorEntities = new ArrayList<>();
         for(ArmorDto armorDto : newCharacter.getArmors()) {

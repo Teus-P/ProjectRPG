@@ -1,10 +1,7 @@
 package com.teus.projectrpg.dto;
 
 import com.teus.projectrpg.entity.armor.ArmorEntity;
-import com.teus.projectrpg.entity.character.CharacterCharacteristicEntity;
-import com.teus.projectrpg.entity.character.CharacterEntity;
-import com.teus.projectrpg.entity.character.CharacterSkillEntity;
-import com.teus.projectrpg.entity.character.CharacterTalentEntity;
+import com.teus.projectrpg.entity.character.*;
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import lombok.Data;
 
@@ -21,7 +18,7 @@ public class CharacterDto implements Serializable {
     private List<CharacterCharacteristicDto> characteristics;
     private List<CharacterSkillDto> skills;
     private List<CharacterTalentDto> talents;
-    private List<WeaponDto> weapons;
+    private List<CharacterWeaponDto> weapons;
     private List<ArmorDto> armors;
 
     public CharacterDto() {}
@@ -48,8 +45,8 @@ public class CharacterDto implements Serializable {
         }
 
         this.weapons = new ArrayList<>();
-        for(WeaponEntity weaponEntity: characterEntity.getWeapons()) {
-            this.weapons.add(new WeaponDto(weaponEntity));
+        for(CharacterWeaponEntity characterWeaponEntity: characterEntity.getWeapons()) {
+            this.weapons.add(new CharacterWeaponDto(characterWeaponEntity));
         }
 
         this.armors = new ArrayList<>();

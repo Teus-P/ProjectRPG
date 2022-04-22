@@ -110,6 +110,10 @@ INSERT IGNORE INTO weapon_group(id, name) VALUES (13, 'ENTANGLING');
 INSERT IGNORE INTO weapon_group(id, name) VALUES (14, 'EXPLOSIVES');
 INSERT IGNORE INTO weapon_group(id, name) VALUES (15, 'SLING');
 INSERT IGNORE INTO weapon_group(id, name) VALUES (16, 'THROWING');
+INSERT IGNORE INTO weapon_group(id, name) VALUES (17, 'BLACKPOWDER_AMMUNITION');
+INSERT IGNORE INTO weapon_group(id, name) VALUES (18, 'BOW_AMMUNITION');
+INSERT IGNORE INTO weapon_group(id, name) VALUES (19, 'CROSSBOW_AMMUNITION');
+INSERT IGNORE INTO weapon_group(id, name) VALUES (20, 'SLING_AMMUNITION');
 
 INSERT IGNORE INTO weapon_quality(id, name) VALUES (1, 'ACCURATE');
 INSERT IGNORE INTO weapon_quality(id, name) VALUES (2, 'BLACKPOWDER');
@@ -213,6 +217,14 @@ INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation,
 INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (50, 0, true, 'ROCK', 'Kamień', 3, 16, 5, 2, true);
 INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (51, 3, true, 'THROWING_AXE', 'Topór do rzucania', 2, 16, 5, 2, true);
 INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (52, 2, true, 'THROWING_KNIFE', 'Nóż do rzucania', 2, 16, 5, 2, true);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (53, 1, false, 'BULLET_AND_POWDER', 'Pocisk i proch', 1, 17, 5, 2, false);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (54, 0, false, 'IMPROVISED_SHOT_AND_POWDER', 'Improwizowany śrut i proch', 0.5, 17, 5, 2, false);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (55, 0, false, 'SMALL_SHOT_AND_POWDER', 'Śrut i proch', 1, 17, 5, 2, false);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (56, 0, false, 'ARROW', 'Strzała', 1, 18, 5, 2, false);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (57, 1, false, 'ELF_ARROW', 'Strzała elfia', 50, 18, 5, 2, false);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (58, 0, false, 'BOLT', 'Bełt', 1, 19, 5, 2, false);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (59, 1, false, 'LEAD_BULLET', 'Pocisk ołowiany', -10, 20, 5, 2, false);
+INSERT IGNORE INTO weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (60, 1, false, 'STONE_BULLET', 'Pocisk kamienny', 1, 20, 5, 2, false);
 
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (1, 1, 2, 27);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (2, 1, 4, 27);
@@ -313,38 +325,36 @@ INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (97, 1, 39, 2);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (98, 1, 39, 4);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (99, 1, 39, 22);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (100, 5, 39, 24);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (101, 4, 39, 16);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (100, 5, 39, 24);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (101, 4, 39, 16);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (102, 1, 40, 2);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (103, 1, 40, 4);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (104, 1, 40, 22);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (105, 4, 40, 16);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (106, 4, 40, 24);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (104, 1, 40, 22);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (105, 4, 40, 16);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (106, 4, 40, 24);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (107, 1, 41, 7);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (108, 1, 42, 7);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (109, 5, 43, 3);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (110, 1, 43, 22);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (111, 1, 43, 10);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (112, 1, 44, 28);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (110, 1, 43, 22);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (111, 1, 43, 10);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (112, 1, 44, 28);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (113, 4, 44, 3);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (114, 1, 44, 22);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (115, 1, 46, 19);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (114, 1, 44, 22);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (115, 1, 46, 19);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (116, 1, 47, 7);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (117, 1, 48, 11);
-INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)
-VALUES (118, 1, 49, 11);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (117, 1, 48, 11);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (118, 1, 49, 11);
 INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (119, 1, 51, 9);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (120, 1, 53, 11);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (121, 1, 53, 12);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (122, 1, 55, 3);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (123, 1, 56, 11);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (124, 1, 57, 1);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (125, 1, 57, 11);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (126, 1, 57, 12);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (127, 1, 58, 11);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (128, 1, 59, 15);
+INSERT IGNORE INTO weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (129, 1, 60, 15);
 
 INSERT IGNORE INTO skill(id, name) VALUE (1, 'ART_CARTOGRAPHY');
 INSERT IGNORE INTO skill(id, name) VALUE (2, 'ART_ENGRAVING');

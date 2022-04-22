@@ -53,11 +53,13 @@ public class CharacterEntity {
     )
     private List<CharacterTalentEntity> talents = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "character_weapon",
-    joinColumns = @JoinColumn(name = "character_id"),
-            inverseJoinColumns = @JoinColumn(name = "weapon_id"))
-    private List<WeaponEntity> weapons = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "character",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<CharacterWeaponEntity> weapons = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "character_armor",
