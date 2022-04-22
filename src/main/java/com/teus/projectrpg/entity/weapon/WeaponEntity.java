@@ -41,7 +41,7 @@ public class WeaponEntity {
     private WeaponReachEntity weaponReach;
 
     @Column(name = "weapon_range")
-    private int weaponRange;
+    private float weaponRange;
 
     @Column(name = "is_using_strength")
     private Boolean isUsingStrength;
