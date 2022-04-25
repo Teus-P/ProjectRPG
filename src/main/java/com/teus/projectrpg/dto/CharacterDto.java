@@ -2,7 +2,6 @@ package com.teus.projectrpg.dto;
 
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.*;
-import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,8 +19,10 @@ public class CharacterDto implements Serializable {
     private List<CharacterTalentDto> talents;
     private List<CharacterWeaponDto> weapons;
     private List<ArmorDto> armors;
+    private List<CharacterBodyLocalizationDto> bodyLocalizations;
 
-    public CharacterDto() {}
+    public CharacterDto() {
+    }
 
     public CharacterDto(CharacterEntity characterEntity) {
         this.id = characterEntity.getId();
@@ -35,23 +36,28 @@ public class CharacterDto implements Serializable {
         }
 
         this.skills = new ArrayList<>();
-        for(CharacterSkillEntity characterSkillEntity: characterEntity.getSkills()) {
+        for (CharacterSkillEntity characterSkillEntity : characterEntity.getSkills()) {
             this.skills.add(new CharacterSkillDto(characterSkillEntity));
         }
 
         this.talents = new ArrayList<>();
-        for(CharacterTalentEntity characterTalentEntity: characterEntity.getTalents()) {
+        for (CharacterTalentEntity characterTalentEntity : characterEntity.getTalents()) {
             this.talents.add(new CharacterTalentDto(characterTalentEntity));
         }
 
         this.weapons = new ArrayList<>();
-        for(CharacterWeaponEntity characterWeaponEntity: characterEntity.getWeapons()) {
+        for (CharacterWeaponEntity characterWeaponEntity : characterEntity.getWeapons()) {
             this.weapons.add(new CharacterWeaponDto(characterWeaponEntity));
         }
 
         this.armors = new ArrayList<>();
-        for(ArmorEntity armorEntity: characterEntity.getArmors()) {
+        for (ArmorEntity armorEntity : characterEntity.getArmors()) {
             this.armors.add(new ArmorDto(armorEntity));
+        }
+
+        this.bodyLocalizations = new ArrayList<>();
+        for(CharacterBodyLocalizationEntity bodyLocalizationEntity : characterEntity.getBodyLocalizations()) {
+            this.bodyLocalizations.add(new CharacterBodyLocalizationDto(bodyLocalizationEntity));
         }
     }
 }

@@ -66,4 +66,12 @@ public class CharacterEntity {
             joinColumns = @JoinColumn(name = "character_id"),
             inverseJoinColumns = @JoinColumn(name = "armor_id"))
     private List<ArmorEntity> armors = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "character",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<CharacterBodyLocalizationEntity> bodyLocalizations = new ArrayList<>();
 }

@@ -5,8 +5,8 @@ import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.*;
-import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import com.teus.projectrpg.services.armorservices.armor.ArmorService;
+import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.services.character.CharacterService;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;
 import com.teus.projectrpg.services.skill.SkillService;
@@ -28,21 +28,23 @@ public class CharacterController {
     private final TalentService talentService;
     private final WeaponService weaponService;
     private final ArmorService armorService;
+    private final BodyLocalizationService bodyLocalizationService;
 
-    public CharacterController(CharacterService characterService, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, WeaponService weaponService, ArmorService armorService) {
+    public CharacterController(CharacterService characterService, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService) {
         this.characterService = characterService;
         this.characteristicService = characteristicService;
         this.skillService = skillService;
         this.talentService = talentService;
         this.weaponService = weaponService;
         this.armorService = armorService;
+        this.bodyLocalizationService = bodyLocalizationService;
     }
 
     @GetMapping("/character")
     List<CharacterDto> getAllCharacters() {
         List<CharacterDto> characterDtos = new ArrayList<>();
 
-        for(CharacterEntity characterEntity : characterService.findAll()) {
+        for (CharacterEntity characterEntity : characterService.findAll()) {
             characterDtos.add(new CharacterDto(characterEntity));
         }
 
@@ -52,7 +54,7 @@ public class CharacterController {
     @PutMapping("/character")
     CharacterEntity putCharacter(@RequestBody CharacterDto newCharacter) {
         CharacterEntity characterEntity = new CharacterEntity();
-        if(newCharacter.getId() != null) {
+        if (newCharacter.getId() != null) {
             characterEntity.setId(newCharacter.getId());
         }
         characterEntity.setName(newCharacter.getName());
@@ -60,7 +62,7 @@ public class CharacterController {
         characterEntity.setIsRightHanded(newCharacter.getIsRightHanded());
 
         ArrayList<CharacterCharacteristicEntity> characterCharacteristics = new ArrayList<>();
-        for(CharacterCharacteristicDto characterCharacteristicDto : newCharacter.getCharacteristics()) {
+        for (CharacterCharacteristicDto characterCharacteristicDto : newCharacter.getCharacteristics()) {
             CharacterCharacteristicEntity characterCharacteristicEntity = new CharacterCharacteristicEntity();
             characterCharacteristicEntity.setCharacter(characterEntity);
             characterCharacteristicEntity.setCharacteristic(characteristicService.findByName(characterCharacteristicDto.getCharacteristic().getName()));
@@ -70,7 +72,7 @@ public class CharacterController {
         characterEntity.setCharacteristics(characterCharacteristics);
 
         ArrayList<CharacterSkillEntity> characterSkillEntities = new ArrayList<>();
-        for(CharacterSkillDto characterSkillDto : newCharacter.getSkills()) {
+        for (CharacterSkillDto characterSkillDto : newCharacter.getSkills()) {
             CharacterSkillEntity characterSkillEntity = new CharacterSkillEntity();
             characterSkillEntity.setCharacter(characterEntity);
             characterSkillEntity.setSkill(skillService.findByName(characterSkillDto.getSkill().getName()));
@@ -80,7 +82,7 @@ public class CharacterController {
         characterEntity.setSkills(characterSkillEntities);
 
         ArrayList<CharacterTalentEntity> characterTalentEntities = new ArrayList<>();
-        for(CharacterTalentDto characterTalentDto : newCharacter.getTalents()) {
+        for (CharacterTalentDto characterTalentDto : newCharacter.getTalents()) {
             CharacterTalentEntity characterTalentEntity = new CharacterTalentEntity();
             characterTalentEntity.setCharacter(characterEntity);
             characterTalentEntity.setTalent(talentService.findByName(characterTalentDto.getTalent().getName()));
@@ -90,7 +92,7 @@ public class CharacterController {
         characterEntity.setTalents(characterTalentEntities);
 
         ArrayList<CharacterWeaponEntity> characterWeaponEntities = new ArrayList<>();
-        for(CharacterWeaponDto characterWeaponDto : newCharacter.getWeapons()) {
+        for (CharacterWeaponDto characterWeaponDto : newCharacter.getWeapons()) {
             CharacterWeaponEntity characterWeaponEntity = new CharacterWeaponEntity();
             characterWeaponEntity.setCharacter(characterEntity);
             characterWeaponEntity.setWeapon(weaponService.findByName(characterWeaponDto.getWeapon().getName()));
@@ -100,10 +102,20 @@ public class CharacterController {
         characterEntity.setWeapons(characterWeaponEntities);
 
         ArrayList<ArmorEntity> armorEntities = new ArrayList<>();
-        for(ArmorDto armorDto : newCharacter.getArmors()) {
+        for (ArmorDto armorDto : newCharacter.getArmors()) {
             armorEntities.add(armorService.findByName(armorDto.getName()));
         }
         characterEntity.setArmors(armorEntities);
+
+        ArrayList<CharacterBodyLocalizationEntity> characterBodyLocalizationEntities = new ArrayList<>();
+        for (CharacterBodyLocalizationDto characterBodyLocalizationDto : newCharacter.getBodyLocalizations()) {
+            CharacterBodyLocalizationEntity characterBodyLocalizationEntity = new CharacterBodyLocalizationEntity();
+            characterBodyLocalizationEntity.setCharacter(characterEntity);
+            characterBodyLocalizationEntity.setBodyLocalization(bodyLocalizationService.findByName(characterBodyLocalizationDto.getBodyLocalization().getName()));
+            characterBodyLocalizationEntity.setArmorPoints(characterBodyLocalizationDto.getArmorPoints());
+            characterBodyLocalizationEntity.setBrokenArmorPoints(characterBodyLocalizationDto.getBrokenArmorPoints());
+        }
+        characterEntity.setBodyLocalizations(characterBodyLocalizationEntities);
 
         try {
             return characterService.save(characterEntity);
