@@ -114,6 +114,7 @@ public class CharacterController {
             characterBodyLocalizationEntity.setBodyLocalization(bodyLocalizationService.findByName(characterBodyLocalizationDto.getBodyLocalization().getName()));
             characterBodyLocalizationEntity.setArmorPoints(characterBodyLocalizationDto.getArmorPoints());
             characterBodyLocalizationEntity.setBrokenArmorPoints(characterBodyLocalizationDto.getBrokenArmorPoints());
+            characterBodyLocalizationEntities.add(characterBodyLocalizationEntity);
         }
         characterEntity.setBodyLocalizations(characterBodyLocalizationEntities);
 
