@@ -20,14 +20,4 @@ public class ArmorCategoryEntity extends BaseEntity<ArmorCategoryType> {
     @Column
     @Enumerated(EnumType.STRING)
     private ArmorCategoryType name;
-
-//    @Override
-//    public ArmorCategoryType getName() {
-//        return name;
-//    }
-//
-//    @Override
-//    public void setName(ArmorCategoryType name) {
-//        this.name = name;
-//    }
 }
