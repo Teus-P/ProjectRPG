@@ -10,7 +10,8 @@ public class CharacterBodyLocalizationDto {
     private Long id;
     private BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalization;
     private int armorPoints;
-    private int brokenArmorPoints;
+
+    //must contain character's injuries for specific bodyLocalization
 
     public CharacterBodyLocalizationDto() {
     }
@@ -19,6 +20,5 @@ public class CharacterBodyLocalizationDto {
         this.id = characterBodyLocalization.getId();
         this.bodyLocalization = new BaseDto<>(characterBodyLocalization.getBodyLocalization());
         this.armorPoints = characterBodyLocalization.getArmorPoints();
-        this.brokenArmorPoints = characterBodyLocalization.getBrokenArmorPoints();
     }
 }

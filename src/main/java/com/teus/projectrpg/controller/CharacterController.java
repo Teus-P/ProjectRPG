@@ -101,6 +101,7 @@ public class CharacterController {
         }
         characterEntity.setWeapons(characterWeaponEntities);
 
+        //TODO Fix bodyLocalization for armorBodyLocalization
         ArrayList<ArmorEntity> armorEntities = new ArrayList<>();
         for (ArmorDto armorDto : newCharacter.getArmors()) {
             armorEntities.add(armorService.findByName(armorDto.getName()));
@@ -112,8 +113,9 @@ public class CharacterController {
             CharacterBodyLocalizationEntity characterBodyLocalizationEntity = new CharacterBodyLocalizationEntity();
             characterBodyLocalizationEntity.setCharacter(characterEntity);
             characterBodyLocalizationEntity.setBodyLocalization(bodyLocalizationService.findByName(characterBodyLocalizationDto.getBodyLocalization().getName()));
-            characterBodyLocalizationEntity.setArmorPoints(characterBodyLocalizationDto.getArmorPoints());
-            characterBodyLocalizationEntity.setBrokenArmorPoints(characterBodyLocalizationDto.getBrokenArmorPoints());
+            characterBodyLocalizationEntity.setArmorPoints(
+                    characterService.calculateArmorPointsForBodyLocalization(characterBodyLocalizationEntity, characterEntity.getArmors())
+            );
             characterBodyLocalizationEntities.add(characterBodyLocalizationEntity);
         }
         characterEntity.setBodyLocalizations(characterBodyLocalizationEntities);

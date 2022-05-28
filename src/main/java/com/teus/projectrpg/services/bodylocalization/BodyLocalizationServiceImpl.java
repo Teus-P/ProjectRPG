@@ -1,5 +1,6 @@
 package com.teus.projectrpg.services.bodylocalization;
 
+import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.repository.armor.BodyLocalizationRepository;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
@@ -31,5 +32,14 @@ public class BodyLocalizationServiceImpl implements BodyLocalizationService {
     @Override
     public BodyLocalizationEntity findByName(BodyLocalizationType bodyLocalizationType) {
         return bodyLocalizationRepository.findBodyLocalizationByName(bodyLocalizationType);
+    }
+
+    @Override
+    public BodyLocalizationEntity mapToEntity(BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto) {
+        BodyLocalizationEntity bodyLocalization = new BodyLocalizationEntity();
+        bodyLocalization.setId(bodyLocalizationDto.getId());
+        bodyLocalization.setName(bodyLocalizationDto.getName());
+        return bodyLocalization;
+
     }
 }

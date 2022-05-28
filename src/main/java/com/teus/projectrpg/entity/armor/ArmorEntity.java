@@ -1,5 +1,6 @@
 package com.teus.projectrpg.entity.armor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,14 +30,12 @@ public class ArmorEntity {
     @JoinColumn(name = "armor_category_id", nullable = false)
     private ArmorCategoryEntity armorCategory;
 
-    @ManyToMany
-    @JoinTable(name = "armor_body_localizations",
-            joinColumns = @JoinColumn(name = "armor_id"),
-            inverseJoinColumns = @JoinColumn(name = "body_localizations_id"))
-    private List<BodyLocalizationEntity> bodyLocalizations = new ArrayList<>();
-
-    @Column(name = "armor_points", nullable = false)
-    private Integer armorPoints;
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "armor",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
+    private List<ArmorBodyLocalizationEntity> armorBodyLocalizations = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "armor_armor_penalty",

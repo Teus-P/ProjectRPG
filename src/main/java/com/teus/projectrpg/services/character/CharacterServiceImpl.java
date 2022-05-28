@@ -1,5 +1,8 @@
 package com.teus.projectrpg.services.character;
 
+import com.teus.projectrpg.entity.armor.ArmorBodyLocalizationEntity;
+import com.teus.projectrpg.entity.armor.ArmorEntity;
+import com.teus.projectrpg.entity.character.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterEntity;
 import com.teus.projectrpg.repository.character.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +33,19 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public void deleteById(Long id) {
         characterRepository.deleteById(id);
+    }
+
+    @Override
+    public int calculateArmorPointsForBodyLocalization(CharacterBodyLocalizationEntity bodyLocalization,  List<ArmorEntity> armors) {
+        int armorPoints = 0;
+        for(ArmorEntity armor : armors) {
+            for(ArmorBodyLocalizationEntity armorBodyLocalization : armor.getArmorBodyLocalizations()) {
+                if(armorBodyLocalization.getBodyLocalization().equals(bodyLocalization.getBodyLocalization())) {
+                    armorPoints += armorBodyLocalization.getArmorPoints();
+                }
+            }
+        }
+
+        return armorPoints;
     }
 }
