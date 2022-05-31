@@ -20,7 +20,7 @@ public class ArmorBodyLocalizationEntity {
     @JoinColumn(name = "armor_id", nullable = false)
     private ArmorEntity armor;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "body_localization_id", nullable = false)
     private BodyLocalizationEntity bodyLocalization;
 
