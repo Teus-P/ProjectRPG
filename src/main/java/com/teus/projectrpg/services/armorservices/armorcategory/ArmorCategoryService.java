@@ -1,5 +1,6 @@
 package com.teus.projectrpg.services.armorservices.armorcategory;
 
+import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.armor.ArmorCategoryEntity;
 import com.teus.projectrpg.type.armor.ArmorCategoryType;
 import org.springframework.stereotype.Service;

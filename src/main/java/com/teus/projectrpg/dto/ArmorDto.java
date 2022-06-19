@@ -18,7 +18,6 @@ public class ArmorDto implements Serializable {
     private String nameTranslation;
     private BaseDto<ArmorCategoryType, ArmorCategoryEntity> armorCategory;
     private List<ArmorBodyLocalizationDto> armorBodyLocalizations;
-    private Integer armorPoints;
     private List<BaseDto<ArmorPenaltyType, ArmorPenaltyEntity>> armorPenalties;
     private List<BaseDto<ArmorQualityType, ArmorQualityEntity>> armorQualities;
 

@@ -101,7 +101,6 @@ public class CharacterController {
         }
         characterEntity.setWeapons(characterWeaponEntities);
 
-        //TODO Fix bodyLocalization for armorBodyLocalization
         ArrayList<ArmorEntity> armorEntities = new ArrayList<>();
         for (ArmorDto armorDto : newCharacter.getArmors()) {
             armorEntities.add(armorService.findByName(armorDto.getName()));
