@@ -75,34 +75,16 @@ public class ArmorController {
 
     @GetMapping("/armorCategory")
     List<BaseDto<ArmorCategoryType, ArmorCategoryEntity>> getAllArmorCategories() {
-        List<BaseDto<ArmorCategoryType, ArmorCategoryEntity>> armorCategoriesDtos = new ArrayList<>();
-
-        for(ArmorCategoryEntity armorCategory : armorCategoryService.findAll()) {
-            armorCategoriesDtos.add(baseService.mapToDto(armorCategory));
-        }
-
-        return armorCategoriesDtos;
+        return this.baseService.getBaseDtosList(armorCategoryService.findAll());
     }
 
     @GetMapping("/armorPenalty")
     List<BaseDto<ArmorPenaltyType, ArmorPenaltyEntity>> getAllArmorPenalties() {
-        List<BaseDto<ArmorPenaltyType, ArmorPenaltyEntity>> armorPenaltiesDtos = new ArrayList<>();
-
-        for(ArmorPenaltyEntity armorPenalty : armorPenaltyService.findAll()) {
-            armorPenaltiesDtos.add(baseService.mapToDto(armorPenalty));
-        }
-
-        return armorPenaltiesDtos;
+        return this.baseService.getBaseDtosList(armorPenaltyService.findAll());
     }
 
     @GetMapping("/armorQuality")
     List<BaseDto<ArmorQualityType, ArmorQualityEntity>> getAllArmorQualities() {
-        List<BaseDto<ArmorQualityType, ArmorQualityEntity>> armorQualitiesDtos = new ArrayList<>();
-
-        for(ArmorQualityEntity armorQuality : armorQualityService.findAll()) {
-            armorQualitiesDtos.add(baseService.mapToDto(armorQuality));
-        }
-
-        return armorQualitiesDtos;
+        return this.baseService.getBaseDtosList(armorQualityService.findAll());
     }
 }

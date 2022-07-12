@@ -4,6 +4,9 @@ import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.base.BaseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class BaseServiceImpl implements BaseService {
 
@@ -15,4 +18,17 @@ public class BaseServiceImpl implements BaseService {
 
         return baseDto;
     }
+
+    @Override
+    public <T, E extends BaseEntity> List<BaseDto<T, E>> getBaseDtosList(List<E> entitiesList) {
+        List<BaseDto<T, E>> dtosList = new ArrayList<>();
+
+        for (E entity : entitiesList) {
+            dtosList.add(mapToDto(entity));
+        }
+
+        return dtosList;
+    }
+
+
 }

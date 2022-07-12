@@ -1,21 +1,23 @@
 package com.teus.projectrpg.controller;
 
+import com.teus.projectrpg.controller.exception.ElementNotFoundException;
 import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
+import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.dto.WeaponDto;
-import com.teus.projectrpg.dto.WeaponQualityValueDto;
-import com.teus.projectrpg.entity.weapon.WeaponEntity;
-import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
+import com.teus.projectrpg.entity.weapon.*;
+import com.teus.projectrpg.services.base.BaseService;
 import com.teus.projectrpg.services.weaponservices.weapon.WeaponService;
 import com.teus.projectrpg.services.weaponservices.weapongroup.WeaponGroupService;
 import com.teus.projectrpg.services.weaponservices.weaponquality.WeaponQualityService;
 import com.teus.projectrpg.services.weaponservices.weaponreach.WeaponReachService;
 import com.teus.projectrpg.services.weaponservices.weapontype.WeaponTypeService;
+import com.teus.projectrpg.type.weapon.WeaponGroupType;
+import com.teus.projectrpg.type.weapon.WeaponQualityType;
+import com.teus.projectrpg.type.weapon.WeaponReachType;
+import com.teus.projectrpg.type.weapon.WeaponType;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +30,15 @@ public class WeaponController {
     private final WeaponGroupService weaponGroupService;
     private final WeaponReachService weaponReachService;
     private final WeaponQualityService weaponQualityService;
+    private final BaseService baseService;
 
-    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponGroupService weaponGroupService, WeaponReachService weaponReachService, WeaponQualityService weaponQualityService) {
+    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponGroupService weaponGroupService, WeaponReachService weaponReachService, WeaponQualityService weaponQualityService, BaseService baseService) {
         this.weaponService = weaponService;
         this.weaponTypeService = weaponTypeService;
         this.weaponGroupService = weaponGroupService;
         this.weaponReachService = weaponReachService;
         this.weaponQualityService = weaponQualityService;
+        this.baseService = baseService;
     }
 
     @GetMapping("/weapon")
@@ -42,37 +46,15 @@ public class WeaponController {
         List<WeaponDto> weaponDtos = new ArrayList<>();
 
         for (WeaponEntity weaponEntity : weaponService.findAll()) {
-            weaponDtos.add(new WeaponDto(weaponEntity));
+            weaponDtos.add(weaponService.mapToDto(weaponEntity));
         }
 
         return weaponDtos;
     }
 
-    @PostMapping("/weapon")
-    WeaponEntity createNewWeapon(@RequestBody WeaponDto newWeapon) {
-        WeaponEntity weaponEntity = new WeaponEntity();
-        weaponEntity.setId(0L);
-        weaponEntity.setName(newWeapon.getName());
-        weaponEntity.setNameTranslation(newWeapon.getNameTranslation());
-        weaponEntity.setWeaponType(weaponTypeService.findByName(newWeapon.getWeaponType().getName()));
-        weaponEntity.setWeaponGroup(weaponGroupService.findByName(newWeapon.getWeaponGroupType().getName()));
-        weaponEntity.setWeaponReach(weaponReachService.findByName(newWeapon.getWeaponReach().getName()));
-        weaponEntity.setWeaponRange(newWeapon.getWeaponRange());
-        weaponEntity.setIsUsingStrength(newWeapon.getIsUsingStrength());
-        weaponEntity.setIsUsingStrengthInRange(newWeapon.getIsUsingStrengthInRange());
-        weaponEntity.setDamage(newWeapon.getDamage());
-
-        if (newWeapon.getWeaponQualities() != null) {
-            ArrayList<WeaponQualityValueEntity> weaponQualityValueEntities = new ArrayList<>();
-            for (WeaponQualityValueDto weaponQuality : newWeapon.getWeaponQualities()) {
-                WeaponQualityValueEntity newWeaponQualityValue = new WeaponQualityValueEntity();
-                newWeaponQualityValue.setWeapon(weaponEntity);
-                newWeaponQualityValue.setWeaponQuality(weaponQualityService.findByType(weaponQuality.getName()));
-                newWeaponQualityValue.setValue(weaponQuality.getValue());
-                weaponQualityValueEntities.add(newWeaponQualityValue);
-            }
-            weaponEntity.setWeaponQualities(weaponQualityValueEntities);
-        }
+    @PutMapping("/weapon")
+    WeaponEntity putWeapon(@RequestBody WeaponDto newWeapon) {
+        WeaponEntity weaponEntity = weaponService.mapToEntity(newWeapon);
 
         try {
             return weaponService.save(weaponEntity);
@@ -81,4 +63,32 @@ public class WeaponController {
         }
     }
 
+    @DeleteMapping("/weapon/{id}")
+    void deleteWeapon(@PathVariable Long id) {
+        try {
+            weaponService.deleteById(id);
+        } catch (Exception ex) {
+            throw new ElementNotFoundException(id);
+        }
+    }
+
+    @GetMapping("/weaponType")
+    List<BaseDto<WeaponType, WeaponTypeEntity>> getAllWeaponTypes() {
+        return this.baseService.getBaseDtosList(weaponTypeService.findAll());
+    }
+
+    @GetMapping("/weaponGroup")
+    List<BaseDto<WeaponGroupType, WeaponGroupEntity>> getAllWeaponGroups() {
+        return this.baseService.getBaseDtosList(weaponGroupService.findAll());
+    }
+
+    @GetMapping("/weaponReach")
+    List<BaseDto<WeaponReachType, WeaponReachEntity>> getAllWeaponReaches() {
+        return this.baseService.getBaseDtosList(weaponReachService.findAll());
+    }
+
+    @GetMapping("/weaponQuality")
+    List<BaseDto<WeaponQualityType, WeaponQualityEntity>> getAllWeaponQualities() {
+        return this.baseService.getBaseDtosList(weaponQualityService.findAll());
+    }
 }
