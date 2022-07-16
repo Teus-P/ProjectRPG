@@ -43,6 +43,19 @@ INSERT IGNORE INTO injury(id, name) VALUES (13, 'AMPUTATED_TEETH');
 INSERT IGNORE INTO injury(id, name) VALUES (14, 'AMPUTATED_TOES');
 INSERT IGNORE INTO injury(id, name) VALUES (15, 'AMPUTATED_TONGUE');
 
+INSERT IGNORE INTO condition_entity(id, name) VALUES (1, 'ABLAZE');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (2, 'BLEEDING');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (3, 'BLINDED');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (4, 'BROKEN');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (5, 'DEAFENED');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (6, 'ENTANGLED');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (7, 'FATIGUED');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (8, 'POISON');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (9, 'PRONE');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (10, 'STUNNED');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (11, 'SURPRISED');
+INSERT IGNORE INTO condition_entity(id, name) VALUES (12, 'UNCONSCIOUS');
+
 INSERT IGNORE INTO armor (id, name, name_translation, armor_category_id) VALUES (1, 'LEATHER_JACK', 'Skórzana kurta', 1);
 INSERT IGNORE INTO armor (id, name, name_translation, armor_category_id) VALUES (2, 'LEATHER_JERKIN', 'Skórzany kaftan', 1);
 INSERT IGNORE INTO armor (id, name, name_translation, armor_category_id) VALUES (3, 'LEATHER_LEGGINGS', 'Skórzane nogawice', 1);

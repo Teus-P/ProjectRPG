@@ -5,12 +5,14 @@ import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.*;
+import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.injury.CharacterBodyLocalizationInjuryEntity;
 import com.teus.projectrpg.services.armorservices.armor.ArmorService;
 import com.teus.projectrpg.services.base.BaseService;
 import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.services.character.CharacterService;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;
+import com.teus.projectrpg.services.condition.ConditionService;
 import com.teus.projectrpg.services.injury.InjuryService;
 import com.teus.projectrpg.services.skill.SkillService;
 import com.teus.projectrpg.services.talent.TalentService;
@@ -34,9 +36,10 @@ public class CharacterController {
     private final ArmorService armorService;
     private final BodyLocalizationService bodyLocalizationService;
     private final InjuryService injuryService;
+    private final ConditionService conditionService;
 
     @Autowired
-    public CharacterController(CharacterService characterService, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService, InjuryService injuryService) {
+    public CharacterController(CharacterService characterService, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService, InjuryService injuryService, ConditionService conditionService) {
         this.characterService = characterService;
         this.characteristicService = characteristicService;
         this.skillService = skillService;
@@ -45,6 +48,7 @@ public class CharacterController {
         this.armorService = armorService;
         this.bodyLocalizationService = bodyLocalizationService;
         this.injuryService = injuryService;
+        this.conditionService = conditionService;
     }
 
     @GetMapping("/character")
@@ -137,6 +141,17 @@ public class CharacterController {
             characterBodyLocalizationEntities.add(characterBodyLocalizationEntity);
         }
         characterEntity.setBodyLocalizations(characterBodyLocalizationEntities);
+
+        ArrayList<CharacterConditionEntity> conditions = new ArrayList<>();
+        for (CharacterConditionDto conditionDto : newCharacter.getConditions()) {
+            CharacterConditionEntity conditionEntity = new CharacterConditionEntity();
+            conditionEntity.setCondition(conditionService.findByName(conditionDto.getCondition().getName()));
+            conditionEntity.setCharacter(characterEntity);
+            conditionEntity.setValue(conditionDto.getValue());
+
+            conditions.add(conditionEntity);
+        }
+        characterEntity.setConditions(conditions);
 
         try {
             return characterService.save(characterEntity);

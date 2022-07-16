@@ -13,11 +13,6 @@ import javax.persistence.*;
 @Table(name = "injury")
 public class InjuryEntity extends BaseEntity<InjuryType> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
     @Column
     @Enumerated(EnumType.STRING)
     private InjuryType name;

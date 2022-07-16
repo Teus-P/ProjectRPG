@@ -2,6 +2,7 @@ package com.teus.projectrpg.dto;
 
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.*;
+import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public class CharacterDto implements Serializable {
     private List<CharacterWeaponDto> weapons;
     private List<ArmorDto> armors;
     private List<CharacterBodyLocalizationDto> bodyLocalizations;
+    private List<CharacterConditionDto> conditions;
 
     public CharacterDto() {
     }
@@ -59,5 +61,11 @@ public class CharacterDto implements Serializable {
         for(CharacterBodyLocalizationEntity bodyLocalizationEntity : characterEntity.getBodyLocalizations()) {
             this.bodyLocalizations.add(new CharacterBodyLocalizationDto(bodyLocalizationEntity));
         }
+
+        this.conditions = new ArrayList<>();
+        for (CharacterConditionEntity conditionEntity : characterEntity.getConditions()) {
+            this.conditions.add(new CharacterConditionDto(conditionEntity));
+        }
+
     }
 }
