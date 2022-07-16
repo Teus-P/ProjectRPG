@@ -5,14 +5,18 @@ import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.*;
+import com.teus.projectrpg.entity.injury.CharacterBodyLocalizationInjuryEntity;
 import com.teus.projectrpg.services.armorservices.armor.ArmorService;
+import com.teus.projectrpg.services.base.BaseService;
 import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.services.character.CharacterService;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;
+import com.teus.projectrpg.services.injury.InjuryService;
 import com.teus.projectrpg.services.skill.SkillService;
 import com.teus.projectrpg.services.talent.TalentService;
 import com.teus.projectrpg.services.weaponservices.weapon.WeaponService;
 import org.hibernate.PropertyValueException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +33,10 @@ public class CharacterController {
     private final WeaponService weaponService;
     private final ArmorService armorService;
     private final BodyLocalizationService bodyLocalizationService;
+    private final InjuryService injuryService;
 
-    public CharacterController(CharacterService characterService, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService) {
+    @Autowired
+    public CharacterController(CharacterService characterService, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService, InjuryService injuryService) {
         this.characterService = characterService;
         this.characteristicService = characteristicService;
         this.skillService = skillService;
@@ -38,6 +44,7 @@ public class CharacterController {
         this.weaponService = weaponService;
         this.armorService = armorService;
         this.bodyLocalizationService = bodyLocalizationService;
+        this.injuryService = injuryService;
     }
 
     @GetMapping("/character")
@@ -115,6 +122,18 @@ public class CharacterController {
             characterBodyLocalizationEntity.setArmorPoints(
                     characterService.calculateArmorPointsForBodyLocalization(characterBodyLocalizationEntity, characterEntity.getArmors())
             );
+
+            List<CharacterBodyLocalizationInjuryEntity> injuries = new ArrayList<>();
+            for (CharacterBodyLocalizationInjuryDto injuryDto : characterBodyLocalizationDto.getInjuries()) {
+                CharacterBodyLocalizationInjuryEntity injury = new CharacterBodyLocalizationInjuryEntity();
+                injury.setId(injuryDto.getId());
+                injury.setCharacterBodyLocalization(characterBodyLocalizationEntity);
+                injury.setValue(injuryDto.getValue());
+                injury.setInjury(injuryService.findByName(injuryDto.getInjury().getName()));
+                injuries.add(injury);
+            }
+            characterBodyLocalizationEntity.setInjuries(injuries);
+
             characterBodyLocalizationEntities.add(characterBodyLocalizationEntity);
         }
         characterEntity.setBodyLocalizations(characterBodyLocalizationEntities);

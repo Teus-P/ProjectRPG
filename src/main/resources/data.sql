@@ -27,6 +27,22 @@ INSERT IGNORE INTO body_localization(id, name) VALUES (4, 'BODY');
 INSERT IGNORE INTO body_localization(id, name) VALUES (5, 'RIGHT_LEG');
 INSERT IGNORE INTO body_localization(id, name) VALUES (6, 'LEFT_LEG');
 
+INSERT IGNORE INTO injury(id, name) VALUES (1, 'MINOR_TORN_MUSCLE');
+INSERT IGNORE INTO injury(id, name) VALUES (2, 'MAJOR_TORN_MUSCLE');
+INSERT IGNORE INTO injury(id, name) VALUES (3, 'MINOR_BROKEN_BONE');
+INSERT IGNORE INTO injury(id, name) VALUES (4, 'MAJOR_BROKEN_BONE');
+INSERT IGNORE INTO injury(id, name) VALUES (5, 'AMPUTATED_ARM');
+INSERT IGNORE INTO injury(id, name) VALUES (6, 'AMPUTATED_EAR');
+INSERT IGNORE INTO injury(id, name) VALUES (7, 'AMPUTATED_EYE');
+INSERT IGNORE INTO injury(id, name) VALUES (8, 'AMPUTATED_FINGERS');
+INSERT IGNORE INTO injury(id, name) VALUES (9, 'AMPUTATED_FOOT');
+INSERT IGNORE INTO injury(id, name) VALUES (10, 'AMPUTATED_HAND');
+INSERT IGNORE INTO injury(id, name) VALUES (11, 'AMPUTATED_LEG');
+INSERT IGNORE INTO injury(id, name) VALUES (12, 'AMPUTATED_NOSE');
+INSERT IGNORE INTO injury(id, name) VALUES (13, 'AMPUTATED_TEETH');
+INSERT IGNORE INTO injury(id, name) VALUES (14, 'AMPUTATED_TOES');
+INSERT IGNORE INTO injury(id, name) VALUES (15, 'AMPUTATED_TONGUE');
+
 INSERT IGNORE INTO armor (id, name, name_translation, armor_category_id) VALUES (1, 'LEATHER_JACK', 'Skórzana kurta', 1);
 INSERT IGNORE INTO armor (id, name, name_translation, armor_category_id) VALUES (2, 'LEATHER_JERKIN', 'Skórzany kaftan', 1);
 INSERT IGNORE INTO armor (id, name, name_translation, armor_category_id) VALUES (3, 'LEATHER_LEGGINGS', 'Skórzane nogawice', 1);

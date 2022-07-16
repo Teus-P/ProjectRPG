@@ -1,16 +1,21 @@
 package com.teus.projectrpg.entity.character;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
+import com.teus.projectrpg.entity.injury.CharacterBodyLocalizationInjuryEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "character_body_localization")
 public class CharacterBodyLocalizationEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -26,4 +31,12 @@ public class CharacterBodyLocalizationEntity {
 
     @Column(name = "armor_points")
     private int armorPoints;
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "characterBodyLocalization",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<CharacterBodyLocalizationInjuryEntity> injuries = new ArrayList<>();
 }
