@@ -107,6 +107,7 @@ INSERT IGNORE INTO armor_armor_penalty (armor_id, penalty_id) VALUES (13, 2);
 INSERT IGNORE INTO armor_armor_penalty (armor_id, penalty_id) VALUES (14, 2);
 INSERT IGNORE INTO armor_armor_penalty (armor_id, penalty_id) VALUES (14, 3);
 
+INSERT IGNORE INTO armor_armor_quality (armor_id, quality_id) VALUES (4, 3);
 INSERT IGNORE INTO armor_armor_quality (armor_id, quality_id) VALUES (5, 4);
 INSERT IGNORE INTO armor_armor_quality (armor_id, quality_id) VALUES (6, 1);
 INSERT IGNORE INTO armor_armor_quality (armor_id, quality_id) VALUES (7, 1);

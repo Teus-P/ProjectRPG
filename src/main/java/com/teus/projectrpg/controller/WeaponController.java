@@ -55,6 +55,10 @@ public class WeaponController {
     @PutMapping("/weapon")
     WeaponEntity putWeapon(@RequestBody WeaponDto newWeapon) {
         WeaponEntity weaponEntity = weaponService.mapToEntity(newWeapon);
+        WeaponEntity result = weaponService.findByName(weaponEntity.getName());
+        if(result != null) {
+            weaponEntity.setId(result.getId());
+        }
 
         try {
             return weaponService.save(weaponEntity);

@@ -56,6 +56,10 @@ public class ArmorController {
     @PutMapping("/armor")
     ArmorEntity putArmor(@RequestBody ArmorDto newArmor) {
         ArmorEntity armorEntity = armorService.mapToEntity(newArmor);
+        ArmorEntity result = armorService.findByName(armorEntity.getName());
+        if(result != null) {
+            armorEntity.setId(result.getId());
+        }
 
         try {
             return armorService.save(armorEntity);
