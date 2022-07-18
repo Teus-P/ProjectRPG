@@ -7,6 +7,7 @@ import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.*;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.injury.CharacterBodyLocalizationInjuryEntity;
+import com.teus.projectrpg.entity.note.NoteEntity;
 import com.teus.projectrpg.services.armorservices.armor.ArmorService;
 import com.teus.projectrpg.services.base.BaseService;
 import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
@@ -152,6 +153,15 @@ public class CharacterController {
             conditions.add(conditionEntity);
         }
         characterEntity.setConditions(conditions);
+
+        ArrayList<NoteEntity> noteEntities = new ArrayList<>();
+        for (String note : newCharacter.getNotes()) {
+            NoteEntity noteEntity = new NoteEntity();
+            noteEntity.setNote(note);
+            noteEntity.setCharacter(characterEntity);
+            noteEntities.add(noteEntity);
+        }
+        characterEntity.setNotes(noteEntities);
 
         try {
             return characterService.save(characterEntity);

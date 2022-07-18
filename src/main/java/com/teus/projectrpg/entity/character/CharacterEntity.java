@@ -3,6 +3,7 @@ package com.teus.projectrpg.entity.character;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
+import com.teus.projectrpg.entity.note.NoteEntity;
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,4 +84,12 @@ public class CharacterEntity {
             orphanRemoval = true
     )
     private List<CharacterConditionEntity> conditions = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "character",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<NoteEntity> notes = new ArrayList<>();
 }
