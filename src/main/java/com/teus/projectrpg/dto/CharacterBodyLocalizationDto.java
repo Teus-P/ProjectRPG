@@ -3,9 +3,7 @@ package com.teus.projectrpg.dto;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.entity.injury.CharacterBodyLocalizationInjuryEntity;
-import com.teus.projectrpg.entity.injury.InjuryEntity;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
-import com.teus.projectrpg.type.injury.InjuryType;
 import lombok.Data;
 
 import java.util.ArrayList;
