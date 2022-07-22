@@ -9,7 +9,6 @@ import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.injury.CharacterBodyLocalizationInjuryEntity;
 import com.teus.projectrpg.entity.note.NoteEntity;
 import com.teus.projectrpg.services.armorservices.armor.ArmorService;
-import com.teus.projectrpg.services.base.BaseService;
 import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.services.character.CharacterService;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;

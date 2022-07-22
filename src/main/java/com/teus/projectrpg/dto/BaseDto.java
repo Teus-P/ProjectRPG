@@ -9,6 +9,7 @@ import lombok.Setter;
 public class BaseDto <T, E extends BaseEntity>{
     protected Long id;
     protected T name;
+    protected String nameTranslation;
 
     public BaseDto(){}
 

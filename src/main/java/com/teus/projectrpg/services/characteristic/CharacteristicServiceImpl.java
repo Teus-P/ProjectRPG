@@ -1,10 +1,13 @@
 package com.teus.projectrpg.services.characteristic;
 
+import com.teus.projectrpg.dto.CharacterCharacteristicDto;
 import com.teus.projectrpg.entity.characteristic.CharacteristicEntity;
 import com.teus.projectrpg.repository.characteristic.CharacteristicRepository;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CharacteristicServiceImpl implements CharacteristicService{
@@ -19,5 +22,13 @@ public class CharacteristicServiceImpl implements CharacteristicService{
     @Override
     public CharacteristicEntity findByName(CharacteristicType characteristic) {
         return characteristicRepository.findCharacteristicEntityByName(characteristic);
+    }
+
+    @Override
+    public int getCharacteristicDtoByType(List<CharacterCharacteristicDto> characteristics, CharacteristicType characteristicType) {
+        return characteristics.stream()
+                .filter(c -> c.getCharacteristic().getName().equals(characteristicType))
+                .findFirst()
+                .get().getValue();
     }
 }
