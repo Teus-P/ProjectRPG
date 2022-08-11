@@ -7,5 +7,5 @@ public class SkirmishCharacterDto extends CharacterDto{
     private int currentWounds;
     private int skirmishInitiative;
     private int advantage;
-    private boolean isDead;
+    private Boolean isDead;
 }

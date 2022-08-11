@@ -21,11 +21,16 @@ public class SkirmishController {
     @PostMapping("/initiativeSort")
     List<SkirmishCharacterDto> sortByInitiative(@RequestBody List<SkirmishCharacterDto> skirmishCharacterDtos) {
         skirmishCharacterDtos.sort((s1, s2) -> {
-            if (s2.isDead() || s1.getSkirmishInitiative() > s2.getSkirmishInitiative()) {
+            if (s2.getIsDead() || s1.getIsDead()) {
+                return 0;
+            }
+            if (s1.getSkirmishInitiative() > s2.getSkirmishInitiative()) {
                 return -1;
-            } else if (s1.isDead() || s1.getSkirmishInitiative() < s2.getSkirmishInitiative()) {
+            }
+            if (s1.getSkirmishInitiative() < s2.getSkirmishInitiative()) {
                 return 1;
-            } else if (s1.getSkirmishInitiative() == s2.getSkirmishInitiative()) {
+            }
+            if (s1.getSkirmishInitiative() == s2.getSkirmishInitiative()) {
                 int s1Initiative = characteristicService.getCharacteristicDtoByType(s1.getCharacteristics(), CharacteristicType.INITIATIVE);
                 int s2Initiative = characteristicService.getCharacteristicDtoByType(s2.getCharacteristics(), CharacteristicType.INITIATIVE);
                 if (s1Initiative > s2Initiative) {
