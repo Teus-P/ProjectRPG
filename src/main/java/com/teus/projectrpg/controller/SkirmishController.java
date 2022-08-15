@@ -1,12 +1,15 @@
 package com.teus.projectrpg.controller;
 
+import com.teus.projectrpg.dto.CharacterConditionDto;
 import com.teus.projectrpg.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
+import com.teus.projectrpg.type.condition.ConditionType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,5 +47,35 @@ public class SkirmishController {
         });
 
         return skirmishCharacterDtos;
+    }
+
+    //TODO SkirmischCharacter storage in the database must be implemented, for now endTurnCheck return only characters ID
+    @PostMapping("/endTurnCheck")
+    List<Long> endTurnCheck(@RequestBody List<SkirmishCharacterDto> skirmishCharacterDtos) {
+
+        List<Long> charactersIds = new ArrayList<>();
+        skirmishCharacterDtos.forEach(character -> {
+            this.checkConditions(character.getConditions());
+            if(character.getConditions().size() > 0) {
+                charactersIds.add(character.getId());
+            }
+        });
+
+        return charactersIds;
+    }
+
+    private void checkConditions(List<CharacterConditionDto> conditions) {
+        conditions.forEach(condition -> {
+            if(condition.getCondition().getName().equals(ConditionType.DEAFENED)) {
+                this.checkDeafened(condition, conditions);
+            }
+        });
+    }
+
+    private void checkDeafened(CharacterConditionDto condition, List<CharacterConditionDto> conditions) {
+        condition.setValue(condition.getValue() - 1);
+        if(condition.getValue() <= 0) {
+            conditions.remove(condition);
+        }
     }
 }
