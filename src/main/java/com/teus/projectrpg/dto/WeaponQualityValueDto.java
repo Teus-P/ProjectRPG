@@ -9,6 +9,7 @@ public class WeaponQualityValueDto {
 
     private Long id;
     private WeaponQualityType name;
+    private String nameTranslation;
     private int value;
 
     public WeaponQualityValueDto() {
