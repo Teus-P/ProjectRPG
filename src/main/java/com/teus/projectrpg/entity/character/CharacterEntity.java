@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.note.NoteEntity;
-import com.teus.projectrpg.entity.weapon.WeaponEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +15,10 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "character_entity")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class CharacterEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "id", nullable = false)
     private Long id;
 

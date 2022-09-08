@@ -1,5 +1,6 @@
 package com.teus.projectrpg.services.character;
 
+import com.teus.projectrpg.dto.CharacterDto;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterEntity;
@@ -14,4 +15,6 @@ public interface CharacterService {
     void deleteById(Long id);
 
     int calculateArmorPointsForBodyLocalization(CharacterBodyLocalizationEntity bodyLocalization, List<ArmorEntity> armors);
+
+    void createCharacterFromDto(CharacterDto newCharacter, CharacterEntity characterEntity);
 }
