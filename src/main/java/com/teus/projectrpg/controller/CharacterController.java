@@ -4,6 +4,7 @@ import com.teus.projectrpg.controller.exception.ElementNotFoundException;
 import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.CharacterDto;
 import com.teus.projectrpg.entity.character.CharacterEntity;
+import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 import com.teus.projectrpg.services.character.CharacterService;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,12 @@ public class CharacterController {
 
     @GetMapping("/character")
     List<CharacterDto> getAllCharacters() {
-        //TODO it returns records from Character and SkirmishCharacter entities
         List<CharacterDto> characterDtos = new ArrayList<>();
-
         for (CharacterEntity characterEntity : characterService.findAll()) {
-            characterDtos.add(new CharacterDto(characterEntity));
+            //not the best solution...
+            if (!(characterEntity instanceof SkirmishCharacterEntity)) {
+                characterDtos.add(new CharacterDto(characterEntity));
+            }
         }
 
         return characterDtos;
