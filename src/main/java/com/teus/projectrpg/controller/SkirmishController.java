@@ -2,9 +2,12 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.CharacterConditionDto;
 import com.teus.projectrpg.dto.SkirmishCharacterDto;
+import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;
+import com.teus.projectrpg.services.skirmishcharacter.SkirmishCharacterService;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
 import com.teus.projectrpg.type.condition.ConditionType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,16 +19,19 @@ import java.util.List;
 public class SkirmishController {
 
     private final CharacteristicService characteristicService;
+    private final SkirmishCharacterService skirmishCharacterService;
 
-    public SkirmishController(CharacteristicService characteristicService) {
+    public SkirmishController(CharacteristicService characteristicService, SkirmishCharacterService skirmishCharacterService) {
         this.characteristicService = characteristicService;
+        this.skirmishCharacterService = skirmishCharacterService;
     }
 
-    @PostMapping("/initiativeSort")
-    List<SkirmishCharacterDto> sortByInitiative(@RequestBody List<SkirmishCharacterDto> skirmishCharacterDtos) {
-        skirmishCharacterDtos.sort((s1, s2) -> {
+    @GetMapping("/initiativeSort")
+    List<SkirmishCharacterDto> sortByInitiative() {
+        List<SkirmishCharacterEntity> skirmishCharacters = skirmishCharacterService.findAll();
+        skirmishCharacters.sort((s1, s2) -> {
             if (s2.getIsDead() || s1.getIsDead()) {
-                return 0;
+                return -1;
             }
             if (s1.getSkirmishInitiative() > s2.getSkirmishInitiative()) {
                 return -1;
@@ -45,6 +51,12 @@ public class SkirmishController {
             }
             return 0;
         });
+
+        List<SkirmishCharacterDto> skirmishCharacterDtos = new ArrayList<>();
+
+        for (SkirmishCharacterEntity skirmishCharacterEntity : skirmishCharacters) {
+            skirmishCharacterDtos.add(new SkirmishCharacterDto(skirmishCharacterEntity));
+        }
 
         return skirmishCharacterDtos;
     }
