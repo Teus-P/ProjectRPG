@@ -67,13 +67,15 @@ public class SkirmishController {
             character.setCurrentWounds(character.getCurrentWounds() - condition.getValue());
             if (character.getCurrentWounds() <= 0) {
                 character.setCurrentWounds(0);
-                CharacterConditionEntity newCondition = new CharacterConditionEntity();
-                newCondition.setCharacter(character);
-                newCondition.setValue(1);
-                int toughness = this.characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.TOUGHNESS);
-                newCondition.setCounter((toughness % 100) / 10);
-                newCondition.setCondition(conditionService.findByName(ConditionType.UNCONSCIOUS));
-                iterator.add(newCondition);
+                if(character.getConditionByType(ConditionType.UNCONSCIOUS).isEmpty()) {
+                    CharacterConditionEntity newCondition = new CharacterConditionEntity();
+                    newCondition.setCharacter(character);
+                    newCondition.setValue(1);
+                    int toughness = this.characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.TOUGHNESS);
+                    newCondition.setCounter((toughness % 100) / 10);
+                    newCondition.setCondition(conditionService.findByName(ConditionType.UNCONSCIOUS));
+                    iterator.add(newCondition);
+                }
             }
         }
     }
