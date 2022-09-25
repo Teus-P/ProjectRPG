@@ -92,7 +92,7 @@ public class SkirmishController {
     }
 
     private void checkBleeding(EndTurnCheckDto endTurnCheck, CharacterConditionEntity condition, SkirmishCharacterEntity character, ListIterator<CharacterConditionEntity> iterator) {
-        if (character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent()) {
+        if (character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent() && character.getCurrentWounds() <= 0) {
             TestDto test = new TestDto();
             test.setSkirmishCharacter(new SkirmishCharacterDto(character));
             test.setModifier(0);
