@@ -1,7 +1,7 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.controller.exception.ElementNotFoundException;
-import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
+import com.teus.projectrpg.exception.ElementNotFoundException;
+import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 import com.teus.projectrpg.services.character.CharacterService;

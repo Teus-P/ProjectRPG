@@ -27,4 +27,7 @@ public class CharacterConditionEntity {
 
     @Column(name = "value")
     private int value;
+
+    @Column(name = "counter")
+    private int counter;
 }

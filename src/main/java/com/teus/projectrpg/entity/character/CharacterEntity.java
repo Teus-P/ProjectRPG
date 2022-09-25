@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.note.NoteEntity;
+import com.teus.projectrpg.type.condition.ConditionType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -92,4 +94,10 @@ public class CharacterEntity {
             orphanRemoval = true
     )
     private List<NoteEntity> notes = new ArrayList<>();
+
+    public Optional<CharacterConditionEntity> getConditionByType(ConditionType conditionType) {
+        return this.conditions.stream()
+                .filter(c -> c.getCondition().getName().equals(conditionType))
+                .findFirst();
+    }
 }

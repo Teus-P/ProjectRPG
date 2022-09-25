@@ -1,4 +1,4 @@
-package com.teus.projectrpg.controller.exception;
+package com.teus.projectrpg.exception;
 
 import org.hibernate.PropertyValueException;
 

@@ -11,6 +11,7 @@ public class CharacterConditionDto {
     private Long id;
     private BaseDto<ConditionType, ConditionEntity> condition;
     private int value;
+    private int counter;
 
     public CharacterConditionDto() {
     }
@@ -19,5 +20,6 @@ public class CharacterConditionDto {
         this.id = characterConditionEntity.getId();
         this.condition = new BaseDto<>(characterConditionEntity.getCondition());
         this.value = characterConditionEntity.getValue();
+        this.counter = characterConditionEntity.getCounter();
     }
 }

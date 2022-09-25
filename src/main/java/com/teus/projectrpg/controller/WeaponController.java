@@ -1,7 +1,7 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.controller.exception.ElementNotFoundException;
-import com.teus.projectrpg.controller.exception.FieldCannotBeNullException;
+import com.teus.projectrpg.exception.ElementNotFoundException;
+import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.dto.WeaponDto;
 import com.teus.projectrpg.entity.weapon.*;
