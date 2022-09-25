@@ -39,7 +39,7 @@ public class SkirmishCharacterController {
     List<SkirmishCharacterDto> sortByInitiative(List<SkirmishCharacterEntity> skirmishCharacters) {
         skirmishCharacters.sort((s1, s2) -> {
             if (s2.getIsDead() || s1.getIsDead()) {
-                return -1;
+                return 1;
             }
             if (s1.getSkirmishInitiative() > s2.getSkirmishInitiative()) {
                 return -1;
