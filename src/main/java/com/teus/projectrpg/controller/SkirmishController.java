@@ -32,41 +32,6 @@ public class SkirmishController {
         this.conditionService = conditionService;
     }
 
-    @GetMapping("/initiativeSort")
-    List<SkirmishCharacterDto> sortByInitiative() {
-        List<SkirmishCharacterEntity> skirmishCharacters = skirmishCharacterService.findAll();
-        skirmishCharacters.sort((s1, s2) -> {
-            if (s2.getIsDead() || s1.getIsDead()) {
-                return -1;
-            }
-            if (s1.getSkirmishInitiative() > s2.getSkirmishInitiative()) {
-                return -1;
-            }
-            if (s1.getSkirmishInitiative() < s2.getSkirmishInitiative()) {
-                return 1;
-            }
-            if (s1.getSkirmishInitiative() == s2.getSkirmishInitiative()) {
-                int s1Initiative = characteristicService.getCharacteristicValueByType(s1.getCharacteristics(), CharacteristicType.INITIATIVE);
-                int s2Initiative = characteristicService.getCharacteristicValueByType(s2.getCharacteristics(), CharacteristicType.INITIATIVE);
-                if (s1Initiative > s2Initiative) {
-                    return -1;
-                } else if (s1Initiative < s2Initiative) {
-                    return 1;
-                }
-                return 0;
-            }
-            return 0;
-        });
-
-        List<SkirmishCharacterDto> skirmishCharacterDtos = new ArrayList<>();
-
-        for (SkirmishCharacterEntity skirmishCharacterEntity : skirmishCharacters) {
-            skirmishCharacterDtos.add(new SkirmishCharacterDto(skirmishCharacterEntity));
-        }
-
-        return skirmishCharacterDtos;
-    }
-
     @PostMapping("/endTurnCheck")
     EndTurnCheckDto endTurnCheck(@RequestBody EndTurnCheckDto endTurnCheck) {
         List<SkirmishCharacterEntity> skirmishCharacters = this.skirmishCharacterService.findAll();
