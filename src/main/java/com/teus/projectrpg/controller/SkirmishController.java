@@ -3,14 +3,17 @@ package com.teus.projectrpg.controller;
 import com.teus.projectrpg.dto.EndTurnCheckDto;
 import com.teus.projectrpg.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.dto.TestDto;
+import com.teus.projectrpg.entity.character.CharacterSkillEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
+import com.teus.projectrpg.entity.skill.SkillEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;
 import com.teus.projectrpg.services.condition.ConditionService;
+import com.teus.projectrpg.services.skill.SkillService;
 import com.teus.projectrpg.services.skirmishcharacter.SkirmishCharacterService;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
 import com.teus.projectrpg.type.condition.ConditionType;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.teus.projectrpg.type.skill.SkillType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,45 +21,53 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
+import java.util.concurrent.locks.Condition;
 
 @RestController
 public class SkirmishController {
 
-    private final CharacteristicService characteristicService;
     private final SkirmishCharacterService skirmishCharacterService;
+    private final CharacteristicService characteristicService;
+    private final SkillService skillService;
     private final ConditionService conditionService;
 
-    public SkirmishController(CharacteristicService characteristicService, SkirmishCharacterService skirmishCharacterService, ConditionService conditionService) {
-        this.characteristicService = characteristicService;
+    private EndTurnCheckDto endTurnCheck = new EndTurnCheckDto();
+
+    public SkirmishController(SkirmishCharacterService skirmishCharacterService, CharacteristicService characteristicService, SkillService skillService, ConditionService conditionService) {
         this.skirmishCharacterService = skirmishCharacterService;
+        this.characteristicService = characteristicService;
+        this.skillService = skillService;
         this.conditionService = conditionService;
     }
 
     @PostMapping("/endTurnCheck")
     EndTurnCheckDto endTurnCheck(@RequestBody EndTurnCheckDto endTurnCheck) {
+        this.endTurnCheck = endTurnCheck;
         List<SkirmishCharacterEntity> skirmishCharacters = this.skirmishCharacterService.findAll();
         skirmishCharacters.forEach(skirmishCharacterEntity -> {
             if (!skirmishCharacterEntity.getConditions().isEmpty()) {
-                checkConditions(endTurnCheck, skirmishCharacterEntity);
+                checkConditions(skirmishCharacterEntity);
             }
         });
 
         this.skirmishCharacterService.saveAll(skirmishCharacters);
-        return endTurnCheck;
+        return this.endTurnCheck;
     }
 
-    private void checkConditions(EndTurnCheckDto endTurnCheck, SkirmishCharacterEntity character) {
+    private void checkConditions(SkirmishCharacterEntity character) {
         ListIterator<CharacterConditionEntity> iterator = character.getConditions().listIterator();
         while (iterator.hasNext()) {
             CharacterConditionEntity condition = iterator.next();
             switch (condition.getCondition().getName()) {
-                case BLEEDING -> this.checkBleeding(endTurnCheck, condition, character, iterator);
+                case BLEEDING -> this.checkBleeding(condition, character, iterator);
                 case DEAFENED -> this.checkDeafened(condition, iterator);
+                case STUNNED -> this.checkStunned(character, iterator);
             }
         }
     }
 
-    private void checkBleeding(EndTurnCheckDto endTurnCheck, CharacterConditionEntity condition, SkirmishCharacterEntity character, ListIterator<CharacterConditionEntity> iterator) {
+    private void checkBleeding(CharacterConditionEntity condition, SkirmishCharacterEntity character, ListIterator<CharacterConditionEntity> iterator) {
         if (character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent() && character.getCurrentWounds() <= 0) {
             TestDto test = new TestDto();
             test.setSkirmishCharacter(new SkirmishCharacterDto(character));
@@ -67,7 +78,7 @@ public class SkirmishController {
             character.setCurrentWounds(character.getCurrentWounds() - condition.getValue());
             if (character.getCurrentWounds() <= 0) {
                 character.setCurrentWounds(0);
-                if(character.getConditionByType(ConditionType.UNCONSCIOUS).isEmpty()) {
+                if (character.getConditionByType(ConditionType.UNCONSCIOUS).isEmpty()) {
                     CharacterConditionEntity newCondition = new CharacterConditionEntity();
                     newCondition.setCharacter(character);
                     newCondition.setValue(1);
@@ -80,10 +91,26 @@ public class SkirmishController {
         }
     }
 
+    private void checkDeafened(CharacterConditionEntity condition, ListIterator<CharacterConditionEntity> iterator) {
+        condition.setValue(condition.getValue() - 1);
+        if (condition.getValue() <= 0) {
+            iterator.remove();
+        }
+    }
+
+    private void checkStunned(SkirmishCharacterEntity character, ListIterator<CharacterConditionEntity> iterator) {
+        TestDto test = new TestDto();
+        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
+        test.setModifier(0);
+        test.setConditionType(ConditionType.STUNNED);
+        endTurnCheck.getTests().add(test);
+    }
+
     @PostMapping("/endTurnTestsCheck")
     EndTurnCheckDto endTurnTestsCheck(@RequestBody EndTurnCheckDto endTurnCheck) {
+        this.endTurnCheck = endTurnCheck;
         List<SkirmishCharacterEntity> skirmishCharacters = new ArrayList<>();
-        for (TestDto test : endTurnCheck.getTests()) {
+        for (TestDto test : this.endTurnCheck.getTests()) {
             SkirmishCharacterEntity character = skirmishCharacterService.findById(test.getSkirmishCharacter().getId());
             this.checkConditionTests(test, character);
             skirmishCharacters.add(character);
@@ -91,7 +118,7 @@ public class SkirmishController {
 
 
         this.skirmishCharacterService.saveAll(skirmishCharacters);
-        return endTurnCheck;
+        return this.endTurnCheck;
     }
 
     private void checkConditionTests(TestDto test, SkirmishCharacterEntity character) {
@@ -100,6 +127,7 @@ public class SkirmishController {
             CharacterConditionEntity condition = iterator.next();
             switch (condition.getCondition().getName()) {
                 case BLEEDING -> this.checkBleedingTest(test, condition, character, iterator);
+                case STUNNED -> this.checkStunnedTest(test, condition, character, iterator);
             }
         }
     }
@@ -115,10 +143,23 @@ public class SkirmishController {
         }
     }
 
-    private void checkDeafened(CharacterConditionEntity condition, ListIterator<CharacterConditionEntity> iterator) {
-        condition.setValue(condition.getValue() - 1);
-        if (condition.getValue() <= 0) {
-            iterator.remove();
+    private void checkStunnedTest(TestDto test, CharacterConditionEntity condition, SkirmishCharacterEntity character, ListIterator<CharacterConditionEntity> iterator) {
+        Optional<CharacterSkillEntity> skill = skillService.getSkillByType(character.getSkills(), SkillType.ENDURANCE);
+        int skillValue = skill.map(CharacterSkillEntity::getValue).orElseGet(() -> characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.TOUGHNESS));
+        //TODO prepare endurance test
+        int testResult = test.getResult() + test.getModifier();
+        if (testResult <= skillValue) {
+            condition.setValue(condition.getValue() - (((skillValue/10) % 100) - ((testResult/10) % 100)));
+            if (condition.getValue() <= 0) {
+                iterator.remove();
+                if(character.getConditionByType(ConditionType.FATIGUED).isEmpty()) {
+                    CharacterConditionEntity newCondition = new CharacterConditionEntity();
+                    newCondition.setCondition(conditionService.findByName(ConditionType.FATIGUED));
+                    newCondition.setValue(1);
+                    newCondition.setCharacter(character);
+                    iterator.add(newCondition);
+                }
+            }
         }
     }
 }
