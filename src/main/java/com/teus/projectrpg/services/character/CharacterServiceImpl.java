@@ -162,6 +162,7 @@ public class CharacterServiceImpl implements CharacterService {
             conditionEntity.setCondition(conditionService.findByName(conditionDto.getCondition().getName()));
             conditionEntity.setCharacter(characterEntity);
             conditionEntity.setValue(conditionDto.getValue());
+            conditionEntity.setCounter(conditionDto.getCounter());
 
             conditions.add(conditionEntity);
         }

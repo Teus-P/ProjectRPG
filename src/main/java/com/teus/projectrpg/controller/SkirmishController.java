@@ -63,6 +63,7 @@ public class SkirmishController {
                 case BLEEDING -> this.checkBleeding(condition, character, iterator);
                 case DEAFENED -> this.checkDeafened(condition, iterator);
                 case STUNNED -> this.checkStunned(character, iterator);
+                case BLINDED -> this.checkBlinded(condition, iterator);
             }
         }
     }
@@ -104,6 +105,16 @@ public class SkirmishController {
         test.setModifier(0);
         test.setConditionType(ConditionType.STUNNED);
         endTurnCheck.getTests().add(test);
+    }
+
+    private void checkBlinded(CharacterConditionEntity condition, ListIterator<CharacterConditionEntity> iterator) {
+        condition.setCounter(condition.getCounter() - 1);
+        if(condition.getCounter() == 0 || condition.getCounter() % 2 == 0) {
+            condition.setValue(condition.getValue() - 1);
+            if(condition.getValue() <= 0) {
+                iterator.remove();
+            }
+        }
     }
 
     @PostMapping("/endTurnTestsCheck")
