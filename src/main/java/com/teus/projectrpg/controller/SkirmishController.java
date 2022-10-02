@@ -135,7 +135,7 @@ public class SkirmishController {
     private void checkBleedingTest(TestDto test, CharacterConditionEntity condition, SkirmishCharacterEntity character, ListIterator<CharacterConditionEntity> iterator) {
         if (test.getResult() <= (condition.getValue() * 10)) {
             character.setIsDead(true);
-        } else if (test.getResult() % 100 == test.getResult() % 10) {
+        } else if ((test.getResult()/10) % 100 == test.getResult() % 10) {
             condition.setValue(condition.getValue() - 1);
             if (condition.getValue() <= 0) {
                 iterator.remove();
