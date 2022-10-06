@@ -156,7 +156,6 @@ public class CharacterServiceImpl implements CharacterService {
         }
         characterEntity.setBodyLocalizations(characterBodyLocalizationEntities);
 
-        ArrayList<CharacterConditionEntity> conditions = new ArrayList<>();
         for (CharacterConditionDto conditionDto : newCharacter.getConditions()) {
             CharacterConditionEntity conditionEntity = new CharacterConditionEntity();
             conditionEntity.setCondition(conditionService.findByName(conditionDto.getCondition().getName()));
@@ -164,9 +163,8 @@ public class CharacterServiceImpl implements CharacterService {
             conditionEntity.setValue(conditionDto.getValue());
             conditionEntity.setCounter(conditionDto.getCounter());
 
-            conditions.add(conditionEntity);
+            characterEntity.addCondition(conditionEntity);
         }
-        characterEntity.setConditions(conditions);
 
         ArrayList<NoteEntity> noteEntities = new ArrayList<>();
         for (String note : newCharacter.getNotes()) {

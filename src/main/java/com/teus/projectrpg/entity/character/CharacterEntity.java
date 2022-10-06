@@ -100,4 +100,8 @@ public class CharacterEntity {
                 .filter(c -> c.getCondition().getName().equals(conditionType))
                 .findFirst();
     }
+
+    public void addCondition(CharacterConditionEntity condition) {
+        this.conditions.add(condition);
+    }
 }
