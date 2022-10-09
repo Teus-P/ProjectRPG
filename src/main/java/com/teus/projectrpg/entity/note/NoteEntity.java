@@ -20,6 +20,6 @@ public class NoteEntity {
     @JoinColumn(name = "character_id")
     private CharacterEntity character;
 
-    @Column
+    @Column(length = 2000)
     private String note;
 }
