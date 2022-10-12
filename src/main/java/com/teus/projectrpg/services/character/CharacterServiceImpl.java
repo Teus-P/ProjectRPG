@@ -84,6 +84,7 @@ public class CharacterServiceImpl implements CharacterService {
         }
         characterEntity.setName(newCharacter.getName());
         characterEntity.setDescription(newCharacter.getDescription());
+        characterEntity.setGroupColumn(newCharacter.getGroup());
         characterEntity.setIsRightHanded(newCharacter.getIsRightHanded());
 
         ArrayList<CharacterCharacteristicEntity> characterCharacteristics = new ArrayList<>();

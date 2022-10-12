@@ -15,6 +15,7 @@ public class CharacterDto implements Serializable {
     private Long id;
     private String name;
     private String description;
+    private String group;
     private Boolean isRightHanded;
     private List<CharacterCharacteristicDto> characteristics;
     private List<CharacterSkillDto> skills;
@@ -32,6 +33,7 @@ public class CharacterDto implements Serializable {
         this.id = characterEntity.getId();
         this.name = characterEntity.getName();
         this.description = characterEntity.getDescription();
+        this.group = characterEntity.getGroupColumn();
         this.isRightHanded = characterEntity.getIsRightHanded();
 
         this.characteristics = new ArrayList<>();
