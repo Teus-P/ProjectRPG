@@ -203,6 +203,11 @@ public class SkirmishService {
             character.setAdvantage(0);
         }
 
+        if(character.getCurrentWounds() <= 0) {
+            character.setIsDead(true);
+            character.setCurrentWounds(0);
+        }
+
         skirmishCharacterService.save(character);
     }
 }
