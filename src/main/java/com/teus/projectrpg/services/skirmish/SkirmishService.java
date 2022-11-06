@@ -1,6 +1,7 @@
 package com.teus.projectrpg.services.skirmish;
 
 import com.teus.projectrpg.dto.EndTurnCheckDto;
+import com.teus.projectrpg.dto.ReceivedDamageDto;
 import com.teus.projectrpg.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.dto.TestDto;
 import com.teus.projectrpg.entity.character.CharacterSkillEntity;
@@ -45,6 +46,7 @@ public class SkirmishService {
         return this.endTurnCheck;
     }
 
+    //TODO move getCharacteristicValueByType() method from service to CharacterEntity
     public void checkConditions(List<SkirmishCharacterEntity> skirmishCharacters) {
         skirmishCharacters.forEach(character -> {
             if (!character.getConditions().isEmpty()) {
@@ -166,5 +168,41 @@ public class SkirmishService {
                 }
             }
         }
+    }
+
+    public void receiveDamage(ReceivedDamageDto receivedDamage) {
+        int finalDamage;
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(receivedDamage.getCharacterId());
+        int toughnessBonus = ((character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS) / 10) % 100);
+        int armorForLocalization = character.getArmorForLocalization(receivedDamage.getBodyLocalization());
+
+        if(receivedDamage.getIsWeaponUndamaging()) {
+            armorForLocalization*=2;
+            finalDamage = receivedDamage.getDamage() - toughnessBonus - armorForLocalization;
+            if(finalDamage > 0) {
+                character.setCurrentWounds(
+                        character.getCurrentWounds() - finalDamage
+                );
+                character.setAdvantage(0);
+            } else {
+                if(receivedDamage.getIsLosingTest()) {
+                    character.setAdvantage(0);
+                }
+            }
+        } else {
+            finalDamage = receivedDamage.getDamage() - toughnessBonus - armorForLocalization;
+            if(finalDamage >= 1) {
+                character.setCurrentWounds(
+                        character.getCurrentWounds() - finalDamage
+                );
+            } else {
+                character.setCurrentWounds(
+                        character.getCurrentWounds() - 1
+                );
+            }
+            character.setAdvantage(0);
+        }
+
+        skirmishCharacterService.save(character);
     }
 }

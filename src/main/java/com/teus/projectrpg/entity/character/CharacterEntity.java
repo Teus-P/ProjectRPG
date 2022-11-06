@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.note.NoteEntity;
+import com.teus.projectrpg.type.armor.BodyLocalizationType;
+import com.teus.projectrpg.type.characteristic.CharacteristicType;
 import com.teus.projectrpg.type.condition.ConditionType;
 import lombok.Getter;
 import lombok.Setter;
@@ -106,5 +108,19 @@ public class CharacterEntity {
 
     public void addCondition(CharacterConditionEntity condition) {
         this.conditions.add(condition);
+    }
+
+    public int getCharacteristicValueByType(CharacteristicType characteristicType) {
+        return this.characteristics.stream()
+                .filter(c -> c.getCharacteristic().getName().equals(characteristicType))
+                .findFirst()
+                .get().getValue();
+    }
+
+    public int getArmorForLocalization(BodyLocalizationType localization) {
+        return this.bodyLocalizations.stream()
+                .filter(c -> c.getBodyLocalization().getName().equals(localization))
+                .findFirst()
+                .get().getArmorPoints();
     }
 }
