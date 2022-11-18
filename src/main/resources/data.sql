@@ -2,6 +2,7 @@ INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (1, 'SOFT_LEATHER
 INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (2, 'BOILED_LEATHER');
 INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (3, 'MAIL');
 INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (4, 'PLATE');
+INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (5, 'OTHER');
 
 INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (1, 'MINUS_TEN_PERCEPTION');
 INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (2, 'MINUS_TEN_STEALTH');

@@ -4,5 +4,6 @@ public enum ArmorCategoryType {
     SOFT_LEATHER,
     BOILED_LEATHER,
     MAIL,
-    PLATE
+    PLATE,
+    OTHER
 }
