@@ -36,5 +36,8 @@ public enum WeaponQualityType {
     UGLY,
     SHODDY,
     UNRELIABLE,
-    BULKY
+    BULKY,
+    //Up in Arms
+    UNBALANCED,
+    SLASH
 }

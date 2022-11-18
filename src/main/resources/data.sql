@@ -182,6 +182,8 @@ INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (33, 'UGLY');
 INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (34, 'SHODDY');
 INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (35, 'UNRELIABLE');
 INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (36, 'BULKY');
+INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (37, 'UNBALANCED');
+INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (38, 'SLASH');
 
 INSERT IGNORE INTO projectrpg.weapon_reach(id, name) VALUES (1, 'AVERAGE');
 INSERT IGNORE INTO projectrpg.weapon_reach(id, name) VALUES (2, 'LONG');
@@ -256,6 +258,14 @@ INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_t
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (58, 0, false, 'BOLT', 'Bełt', 1, 19, 5, 2, false);
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (59, 1, false, 'LEAD_BULLET', 'Pocisk ołowiany', -10, 20, 5, 2, false);
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (60, 1, false, 'STONE_BULLET', 'Pocisk kamienny', 1, 20, 5, 2, false);
+
+INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (61, 4, true, 'AXE', 'Topór', 0, 1, 1, 1, false);
+INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (62, 1, true, 'BALLOCK KNIFE', 'Puginał', 0, 1, 9, 1, false);
+INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (63, 4, true, 'CLUB', 'Maczuga', 0, 1, 1, 1, false);
+INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (64, 4, true, 'MACE', 'Buzdygan', 0, 1, 1, 1, false);
+INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (65, 4, true, 'MILITARY_PICK', 'Czekan', 0, 1, 1, 1, false);
+INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (66, 4, true, 'SCIMITAR', 'Sejmitar', 0, 1, 6, 1, false);
+INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (67, 4, true, 'SWORD', 'Miecz', 0, 1, 1, 1, false);
 
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (1, 1, 2, 27);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id)VALUES (2, 1, 4, 27);
@@ -386,6 +396,19 @@ INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (127, 1, 58, 11);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (128, 1, 59, 15);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (129, 1, 60, 15);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (130, 1, 61, 9);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (131, 1, 61, 37);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (132, 1, 62, 11);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (133, 1, 62, 12);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (134, 1, 62, 14);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (135, 1, 2, 37);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (136, 1, 63, 27);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (137, 1, 63, 37);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (138, 1, 64, 15);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (139, 1, 64, 37);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (140, 1, 65, 12);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (141, 1, 65, 37);
+INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (142, 1, 66, 38);
 
 INSERT IGNORE INTO projectrpg.skill(id, name) VALUE (1, 'ART_CARTOGRAPHY');
 INSERT IGNORE INTO projectrpg.skill(id, name) VALUE (2, 'ART_ENGRAVING');
