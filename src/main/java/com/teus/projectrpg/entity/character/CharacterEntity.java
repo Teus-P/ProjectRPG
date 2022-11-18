@@ -68,6 +68,14 @@ public class CharacterEntity {
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true
     )
+    private List<CharacterCreatureTraitEntity> traits = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "character",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
     private List<CharacterWeaponEntity> weapons = new ArrayList<>();
 
     @ManyToMany

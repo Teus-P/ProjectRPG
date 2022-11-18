@@ -1,7 +1,6 @@
 package com.teus.projectrpg.dto;
 
 import com.teus.projectrpg.entity.character.CharacterTalentEntity;
-import com.teus.projectrpg.type.talent.TalentType;
 import lombok.Data;
 
 @Data
@@ -10,7 +9,8 @@ public class CharacterTalentDto {
     private TalentDto talent;
     private int value;
 
-    public CharacterTalentDto() {}
+    public CharacterTalentDto() {
+    }
 
     public CharacterTalentDto(CharacterTalentEntity characterTalentEntity) {
         this.id = characterTalentEntity.getId();

@@ -20,6 +20,7 @@ public class CharacterDto implements Serializable {
     private List<CharacterCharacteristicDto> characteristics;
     private List<CharacterSkillDto> skills;
     private List<CharacterTalentDto> talents;
+    private List<CharacterCreatureTraitDto> traits;
     private List<CharacterWeaponDto> weapons;
     private List<ArmorDto> armors;
     private List<CharacterBodyLocalizationDto> bodyLocalizations;
@@ -51,6 +52,11 @@ public class CharacterDto implements Serializable {
             this.talents.add(new CharacterTalentDto(characterTalentEntity));
         }
 
+        this.traits = new ArrayList<>();
+        for (CharacterCreatureTraitEntity traitEntity : characterEntity.getTraits()) {
+            this.traits.add(new CharacterCreatureTraitDto(traitEntity));
+        }
+
         this.weapons = new ArrayList<>();
         for (CharacterWeaponEntity characterWeaponEntity : characterEntity.getWeapons()) {
             this.weapons.add(new CharacterWeaponDto(characterWeaponEntity));
@@ -62,7 +68,7 @@ public class CharacterDto implements Serializable {
         }
 
         this.bodyLocalizations = new ArrayList<>();
-        for(CharacterBodyLocalizationEntity bodyLocalizationEntity : characterEntity.getBodyLocalizations()) {
+        for (CharacterBodyLocalizationEntity bodyLocalizationEntity : characterEntity.getBodyLocalizations()) {
             this.bodyLocalizations.add(new CharacterBodyLocalizationDto(bodyLocalizationEntity));
         }
 

@@ -12,6 +12,7 @@ import com.teus.projectrpg.services.armorservices.armor.ArmorService;
 import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.services.characteristic.CharacteristicService;
 import com.teus.projectrpg.services.condition.ConditionService;
+import com.teus.projectrpg.services.creaturetrait.CreatureTraitService;
 import com.teus.projectrpg.services.injury.InjuryService;
 import com.teus.projectrpg.services.skill.SkillService;
 import com.teus.projectrpg.services.talent.TalentService;
@@ -29,24 +30,28 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacteristicService characteristicService;
     private final SkillService skillService;
     private final TalentService talentService;
+    private final CreatureTraitService creatureTraitService;
     private final WeaponService weaponService;
     private final ArmorService armorService;
     private final BodyLocalizationService bodyLocalizationService;
     private final InjuryService injuryService;
     private final ConditionService conditionService;
 
-    @Autowired
-    public CharacterServiceImpl(CharacterRepository characterRepository, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService, InjuryService injuryService, ConditionService conditionService) {
+    public CharacterServiceImpl(CharacterRepository characterRepository, CharacteristicService characteristicService, SkillService skillService, TalentService talentService, CreatureTraitService creatureTraitService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService, InjuryService injuryService, ConditionService conditionService) {
         this.characterRepository = characterRepository;
         this.characteristicService = characteristicService;
         this.skillService = skillService;
         this.talentService = talentService;
+        this.creatureTraitService = creatureTraitService;
         this.weaponService = weaponService;
         this.armorService = armorService;
         this.bodyLocalizationService = bodyLocalizationService;
         this.injuryService = injuryService;
         this.conditionService = conditionService;
     }
+
+    @Autowired
+
 
     @Override
     public List<CharacterEntity> findAll() {
@@ -116,6 +121,16 @@ public class CharacterServiceImpl implements CharacterService {
             characterTalentEntities.add(characterTalentEntity);
         }
         characterEntity.setTalents(characterTalentEntities);
+
+        ArrayList<CharacterCreatureTraitEntity> characterTraitEntities = new ArrayList<>();
+        for (CharacterCreatureTraitDto traitDto : newCharacter.getTraits()) {
+            CharacterCreatureTraitEntity traitEntity = new CharacterCreatureTraitEntity();
+            traitEntity.setCharacter(characterEntity);
+            traitEntity.setCreatureTrait(creatureTraitService.findByName(traitDto.getTrait().getName()));
+            traitEntity.setValue(traitDto.getTrait().getHasValue() ? traitDto.getValue() : null);
+            characterTraitEntities.add(traitEntity);
+        }
+        characterEntity.setTraits(characterTraitEntities);
 
         ArrayList<CharacterWeaponEntity> characterWeaponEntities = new ArrayList<>();
         for (CharacterWeaponDto characterWeaponDto : newCharacter.getWeapons()) {
