@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.note.NoteEntity;
+import com.teus.projectrpg.entity.spell.SpellEntity;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
 import com.teus.projectrpg.type.condition.ConditionType;
@@ -69,6 +70,12 @@ public class CharacterEntity {
             orphanRemoval = true
     )
     private List<CharacterCreatureTraitEntity> traits = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "character_spell",
+            joinColumns = @JoinColumn(name = "character_id"),
+            inverseJoinColumns = @JoinColumn(name = "spell_id"))
+    private List<SpellEntity> spells = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(

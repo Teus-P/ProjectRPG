@@ -35,7 +35,7 @@ class ArmorServiceImplTest {
     void whenConvertArmorEntityToArmorDto_thenCorrect() {
         ArmorEntity armorEntity = prepareArmorEntity();
 
-        ArmorDto armorDto = armorService.mapToDto(armorEntity);
+        ArmorDto armorDto = new ArmorDto(armorEntity);
 
         compareDtoAndEntity(armorEntity, armorDto);
     }

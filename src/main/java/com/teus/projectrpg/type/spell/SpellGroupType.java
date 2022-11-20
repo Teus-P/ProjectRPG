@@ -1,0 +1,22 @@
+package com.teus.projectrpg.type.spell;
+
+public enum SpellGroupType {
+
+    PETTY_SPELLS,
+    ARCANE_SPELLS,
+    LORE_OF_BEASTS,
+    LORE_OF_DEATH,
+    LORE_OF_FIRE,
+    LORE_OF_HEAVENS,
+    LORE_OF_METAL,
+    LORE_OF_LIFE,
+    LORE_OF_LIGHT,
+    LORE_OF_SHADOWS,
+    LORE_OF_HEDGECRAFT,
+    LORE_OF_WITCHCRAFT,
+    LORE_OF_DAEMONOLOGY,
+    LORE_OF_NECROMANCY,
+    LORE_OF_NURGLE,
+    LORE_OF_SLAANESH,
+    LORE_OF_TZEENTCH,
+}

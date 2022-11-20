@@ -258,7 +258,6 @@ INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_t
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (58, 0, false, 'BOLT', 'Bełt', 1, 19, 5, 2, false);
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (59, 1, false, 'LEAD_BULLET', 'Pocisk ołowiany', -10, 20, 5, 2, false);
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (60, 1, false, 'STONE_BULLET', 'Pocisk kamienny', 1, 20, 5, 2, false);
-
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (61, 4, true, 'AXE', 'Topór', 0, 1, 1, 1, false);
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (62, 1, true, 'BALLOCK KNIFE', 'Puginał', 0, 1, 9, 1, false);
 INSERT IGNORE INTO projectrpg.weapon(id, damage, is_using_strength, name, name_translation, weapon_range, weapon_group_id, weapon_reach_id, weapon_type_id, is_using_strength_in_range) VALUES (63, 4, true, 'CLUB', 'Maczuga', 0, 1, 1, 1, false);
@@ -757,6 +756,7 @@ INSERT IGNORE INTO projectrpg.talent(id, name, max_level) VALUE (216, 'WATERMAN'
 INSERT IGNORE INTO projectrpg.talent(id, name, max_level) VALUE (217, 'WEALTHY', 'NONE');
 INSERT IGNORE INTO projectrpg.talent(id, name, max_level) VALUE (218, 'WELL_PREPARED', 'IB');
 INSERT IGNORE INTO projectrpg.talent(id, name, max_level) VALUE (219, 'WITCH', 'WPB');
+INSERT IGNORE INTO projectrpg.talent(id, name, max_level) VALUE (220, 'ARCANE_MAGIC_DEMONOLOGY', '1');
 
 INSERT IGNORE INTO projectrpg.creature_trait(id, name, has_value) VALUE (1, 'AFRAID', true);
 INSERT IGNORE INTO projectrpg.creature_trait(id, name, has_value) VALUE (2, 'AMPHIBIOUS', false);
@@ -858,3 +858,26 @@ INSERT IGNORE INTO projectrpg.characteristic(id, name) VALUE (9, 'WILLPOWER');
 INSERT IGNORE INTO projectrpg.characteristic(id, name) VALUE (10, 'FELLOWSHIP');
 INSERT IGNORE INTO projectrpg.characteristic(id, name) VALUE (11, 'WOUNDS');
 INSERT IGNORE INTO projectrpg.characteristic(id, name) VALUE (12, 'MOVEMENT');
+
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (1, 'PETTY_SPELLS');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (2, 'ARCANE_SPELLS');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (3, 'LORE_OF_BEASTS');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (4, 'LORE_OF_DEATH');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (5, 'LORE_OF_FIRE');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (6, 'LORE_OF_HEAVENS');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (7, 'LORE_OF_METAL');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (8, 'LORE_OF_LIFE');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (9, 'LORE_OF_LIGHT');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (10, 'LORE_OF_SHADOWS');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (11, 'LORE_OF_HEDGECRAFT');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (12, 'LORE_OF_WITCHCRAFT');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (13, 'LORE_OF_DAEMONOLOGY');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (14, 'LORE_OF_NECROMANCY');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (15, 'LORE_OF_NURGLE');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (16, 'LORE_OF_SLAANESH');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (17, 'LORE_OF_TZEENTCH');
+
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (1, 'BOLT', 2);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (2, 'CORROSIVE_BLOOD', 2);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (3, 'DOME', 2);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (4, 'ENTANGLE', 2);

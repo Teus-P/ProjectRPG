@@ -4,6 +4,7 @@ import com.teus.projectrpg.entity.armor.ArmorEntity;
 import com.teus.projectrpg.entity.character.*;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.note.NoteEntity;
+import com.teus.projectrpg.entity.spell.SpellEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class CharacterDto implements Serializable {
     private List<CharacterSkillDto> skills;
     private List<CharacterTalentDto> talents;
     private List<CharacterCreatureTraitDto> traits;
+    private List<SpellDto> spells;
     private List<CharacterWeaponDto> weapons;
     private List<ArmorDto> armors;
     private List<CharacterBodyLocalizationDto> bodyLocalizations;
@@ -55,6 +57,11 @@ public class CharacterDto implements Serializable {
         this.traits = new ArrayList<>();
         for (CharacterCreatureTraitEntity traitEntity : characterEntity.getTraits()) {
             this.traits.add(new CharacterCreatureTraitDto(traitEntity));
+        }
+
+        this.spells = new ArrayList<>();
+        for (SpellEntity spellEntity : characterEntity.getSpells()) {
+            this.spells.add(new SpellDto(spellEntity));
         }
 
         this.weapons = new ArrayList<>();

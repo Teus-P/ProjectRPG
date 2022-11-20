@@ -47,7 +47,8 @@ public class ArmorController {
         List<ArmorDto> armorDtos = new ArrayList<>();
 
         for (ArmorEntity armorEntity : armorService.findAll()) {
-            armorDtos.add(armorService.mapToDto(armorEntity));
+//            armorDtos.add(armorService.mapToDto(armorEntity));
+            armorDtos.add(new ArmorDto(armorEntity));
         }
 
         return armorDtos;

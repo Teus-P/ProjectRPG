@@ -219,5 +219,7 @@ public enum TalentType {
     WATERMAN,
     WEALTHY,
     WELL_PREPARED,
-    WITCH
+    WITCH,
+
+    ARCANE_MAGIC_DEMONOLOGY,
 }
