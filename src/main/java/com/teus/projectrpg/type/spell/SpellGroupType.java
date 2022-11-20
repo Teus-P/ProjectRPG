@@ -19,4 +19,5 @@ public enum SpellGroupType {
     LORE_OF_NURGLE,
     LORE_OF_SLAANESH,
     LORE_OF_TZEENTCH,
+    CHAOS_SPELLS,
 }

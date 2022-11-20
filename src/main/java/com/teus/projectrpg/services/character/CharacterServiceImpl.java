@@ -98,106 +98,125 @@ public class CharacterServiceImpl implements CharacterService {
 
         ArrayList<CharacterCharacteristicEntity> characterCharacteristics = new ArrayList<>();
         for (CharacterCharacteristicDto characterCharacteristicDto : newCharacter.getCharacteristics()) {
-            CharacterCharacteristicEntity characterCharacteristicEntity = new CharacterCharacteristicEntity();
-            characterCharacteristicEntity.setCharacter(characterEntity);
-            characterCharacteristicEntity.setCharacteristic(characteristicService.findByName(characterCharacteristicDto.getCharacteristic().getName()));
-            characterCharacteristicEntity.setValue(characterCharacteristicDto.getValue());
-            characterCharacteristics.add(characterCharacteristicEntity);
+            if (characterCharacteristicDto.getCharacteristic() != null) {
+                CharacterCharacteristicEntity characterCharacteristicEntity = new CharacterCharacteristicEntity();
+                characterCharacteristicEntity.setCharacter(characterEntity);
+                characterCharacteristicEntity.setCharacteristic(characteristicService.findByName(characterCharacteristicDto.getCharacteristic().getName()));
+                characterCharacteristicEntity.setValue(characterCharacteristicDto.getValue());
+                characterCharacteristics.add(characterCharacteristicEntity);
+            }
         }
         characterEntity.setCharacteristics(characterCharacteristics);
 
         ArrayList<CharacterSkillEntity> characterSkillEntities = new ArrayList<>();
         for (CharacterSkillDto characterSkillDto : newCharacter.getSkills()) {
-            CharacterSkillEntity characterSkillEntity = new CharacterSkillEntity();
-            characterSkillEntity.setCharacter(characterEntity);
-            characterSkillEntity.setSkill(skillService.findByName(characterSkillDto.getSkill().getName()));
-            characterSkillEntity.setValue(characterSkillDto.getValue());
-            characterSkillEntities.add(characterSkillEntity);
+            if (characterSkillDto.getSkill() != null) {
+                CharacterSkillEntity characterSkillEntity = new CharacterSkillEntity();
+                characterSkillEntity.setCharacter(characterEntity);
+                characterSkillEntity.setSkill(skillService.findByName(characterSkillDto.getSkill().getName()));
+                characterSkillEntity.setValue(characterSkillDto.getValue());
+                characterSkillEntities.add(characterSkillEntity);
+            }
         }
         characterEntity.setSkills(characterSkillEntities);
 
         ArrayList<CharacterTalentEntity> characterTalentEntities = new ArrayList<>();
         for (CharacterTalentDto characterTalentDto : newCharacter.getTalents()) {
-            CharacterTalentEntity characterTalentEntity = new CharacterTalentEntity();
-            characterTalentEntity.setCharacter(characterEntity);
-            characterTalentEntity.setTalent(talentService.findByName(characterTalentDto.getTalent().getName()));
-            characterTalentEntity.setValue(characterTalentDto.getValue());
-            characterTalentEntities.add(characterTalentEntity);
+            if (characterTalentDto.getTalent() != null) {
+                CharacterTalentEntity characterTalentEntity = new CharacterTalentEntity();
+                characterTalentEntity.setCharacter(characterEntity);
+                characterTalentEntity.setTalent(talentService.findByName(characterTalentDto.getTalent().getName()));
+                characterTalentEntity.setValue(characterTalentDto.getValue());
+                characterTalentEntities.add(characterTalentEntity);
+            }
         }
         characterEntity.setTalents(characterTalentEntities);
 
         ArrayList<CharacterCreatureTraitEntity> characterTraitEntities = new ArrayList<>();
         for (CharacterCreatureTraitDto traitDto : newCharacter.getTraits()) {
-            CharacterCreatureTraitEntity traitEntity = new CharacterCreatureTraitEntity();
-            traitEntity.setCharacter(characterEntity);
-            traitEntity.setCreatureTrait(creatureTraitService.findByName(traitDto.getTrait().getName()));
-            traitEntity.setValue(traitDto.getTrait().getHasValue() ? traitDto.getValue() : null);
-            characterTraitEntities.add(traitEntity);
+            if (traitDto.getTrait() != null) {
+                CharacterCreatureTraitEntity traitEntity = new CharacterCreatureTraitEntity();
+                traitEntity.setCharacter(characterEntity);
+                traitEntity.setCreatureTrait(creatureTraitService.findByName(traitDto.getTrait().getName()));
+                traitEntity.setValue(traitDto.getTrait().getHasValue() ? traitDto.getValue() : null);
+                characterTraitEntities.add(traitEntity);
+            }
         }
         characterEntity.setTraits(characterTraitEntities);
 
         ArrayList<SpellEntity> spellEntities = new ArrayList<>();
         for (SpellDto spellDto : newCharacter.getSpells()) {
-            spellEntities.add(spellService.findByName(spellDto.getName()));
+            if (spellDto != null) {
+                spellEntities.add(spellService.findByName(spellDto.getName()));
+            }
         }
         characterEntity.setSpells(spellEntities);
 
         ArrayList<CharacterWeaponEntity> characterWeaponEntities = new ArrayList<>();
         for (CharacterWeaponDto characterWeaponDto : newCharacter.getWeapons()) {
-            CharacterWeaponEntity characterWeaponEntity = new CharacterWeaponEntity();
-            characterWeaponEntity.setCharacter(characterEntity);
-            characterWeaponEntity.setWeapon(weaponService.findByName(characterWeaponDto.getWeapon().getName()));
-            characterWeaponEntity.setValue(characterWeaponDto.getValue());
-            characterWeaponEntities.add(characterWeaponEntity);
+            if (characterWeaponDto.getWeapon() != null) {
+                CharacterWeaponEntity characterWeaponEntity = new CharacterWeaponEntity();
+                characterWeaponEntity.setCharacter(characterEntity);
+                characterWeaponEntity.setWeapon(weaponService.findByName(characterWeaponDto.getWeapon().getName()));
+                characterWeaponEntity.setValue(characterWeaponDto.getValue());
+                characterWeaponEntities.add(characterWeaponEntity);
+            }
         }
         characterEntity.setWeapons(characterWeaponEntities);
 
         ArrayList<ArmorEntity> armorEntities = new ArrayList<>();
         for (ArmorDto armorDto : newCharacter.getArmors()) {
-            armorEntities.add(armorService.findByName(armorDto.getName()));
+            if (armorDto.getName() != null) {
+                armorEntities.add(armorService.findByName(armorDto.getName()));
+            }
         }
         characterEntity.setArmors(armorEntities);
 
         ArrayList<CharacterBodyLocalizationEntity> characterBodyLocalizationEntities = new ArrayList<>();
         for (CharacterBodyLocalizationDto characterBodyLocalizationDto : newCharacter.getBodyLocalizations()) {
-            CharacterBodyLocalizationEntity characterBodyLocalizationEntity = new CharacterBodyLocalizationEntity();
-            characterBodyLocalizationEntity.setCharacter(characterEntity);
-            characterBodyLocalizationEntity.setBodyLocalization(bodyLocalizationService.findByName(characterBodyLocalizationDto.getBodyLocalization().getName()));
-            characterBodyLocalizationEntity.setArmorPoints(
-                    this.calculateArmorPointsForBodyLocalization(characterBodyLocalizationEntity, characterEntity.getArmors())
-            );
+            if (characterBodyLocalizationDto.getBodyLocalization() != null) {
+                CharacterBodyLocalizationEntity characterBodyLocalizationEntity = new CharacterBodyLocalizationEntity();
+                characterBodyLocalizationEntity.setCharacter(characterEntity);
+                characterBodyLocalizationEntity.setBodyLocalization(bodyLocalizationService.findByName(characterBodyLocalizationDto.getBodyLocalization().getName()));
+                characterBodyLocalizationEntity.setArmorPoints(
+                        this.calculateArmorPointsForBodyLocalization(characterBodyLocalizationEntity, characterEntity.getArmors())
+                );
 
-            List<CharacterBodyLocalizationInjuryEntity> injuries = new ArrayList<>();
-            for (CharacterBodyLocalizationInjuryDto injuryDto : characterBodyLocalizationDto.getInjuries()) {
-                CharacterBodyLocalizationInjuryEntity injury = new CharacterBodyLocalizationInjuryEntity();
-                injury.setId(injuryDto.getId());
-                injury.setCharacterBodyLocalization(characterBodyLocalizationEntity);
-                injury.setValue(injuryDto.getValue());
-                injury.setInjury(injuryService.findByName(injuryDto.getInjury().getName()));
-                injuries.add(injury);
+                List<CharacterBodyLocalizationInjuryEntity> injuries = new ArrayList<>();
+                for (CharacterBodyLocalizationInjuryDto injuryDto : characterBodyLocalizationDto.getInjuries()) {
+                    CharacterBodyLocalizationInjuryEntity injury = new CharacterBodyLocalizationInjuryEntity();
+                    injury.setId(injuryDto.getId());
+                    injury.setCharacterBodyLocalization(characterBodyLocalizationEntity);
+                    injury.setValue(injuryDto.getValue());
+                    injury.setInjury(injuryService.findByName(injuryDto.getInjury().getName()));
+                    injuries.add(injury);
+                }
+                characterBodyLocalizationEntity.setInjuries(injuries);
+
+                characterBodyLocalizationEntities.add(characterBodyLocalizationEntity);
             }
-            characterBodyLocalizationEntity.setInjuries(injuries);
-
-            characterBodyLocalizationEntities.add(characterBodyLocalizationEntity);
         }
         characterEntity.setBodyLocalizations(characterBodyLocalizationEntities);
 
         for (CharacterConditionDto conditionDto : newCharacter.getConditions()) {
-            CharacterConditionEntity conditionEntity = new CharacterConditionEntity();
-            conditionEntity.setCondition(conditionService.findByName(conditionDto.getCondition().getName()));
-            conditionEntity.setCharacter(characterEntity);
-            conditionEntity.setValue(conditionDto.getValue());
-            conditionEntity.setCounter(conditionDto.getCounter());
-
-            characterEntity.addCondition(conditionEntity);
+            if (conditionDto.getCondition() != null) {
+                CharacterConditionEntity conditionEntity = new CharacterConditionEntity();
+                conditionEntity.setCondition(conditionService.findByName(conditionDto.getCondition().getName()));
+                conditionEntity.setCharacter(characterEntity);
+                conditionEntity.setValue(conditionDto.getValue());
+                conditionEntity.setCounter(conditionDto.getCounter());
+                characterEntity.addCondition(conditionEntity);
+            }
         }
 
         ArrayList<NoteEntity> noteEntities = new ArrayList<>();
         for (String note : newCharacter.getNotes()) {
-            NoteEntity noteEntity = new NoteEntity();
-            noteEntity.setNote(note);
-            noteEntity.setCharacter(characterEntity);
-            noteEntities.add(noteEntity);
+            if (!note.isEmpty()) {
+                NoteEntity noteEntity = new NoteEntity();
+                noteEntity.setNote(note);
+                noteEntity.setCharacter(characterEntity);
+                noteEntities.add(noteEntity);
+            }
         }
         characterEntity.setNotes(noteEntities);
     }

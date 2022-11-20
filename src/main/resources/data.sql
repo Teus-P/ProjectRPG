@@ -876,8 +876,14 @@ INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (14, 'LORE_OF_NECROMAN
 INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (15, 'LORE_OF_NURGLE');
 INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (16, 'LORE_OF_SLAANESH');
 INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (17, 'LORE_OF_TZEENTCH');
+INSERT IGNORE INTO projectrpg.spell_group(id, name) VALUE (18, 'CHAOS_SPELLS');
 
 INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (1, 'BOLT', 2);
 INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (2, 'CORROSIVE_BLOOD', 2);
 INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (3, 'DOME', 2);
 INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (4, 'ENTANGLE', 2);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (5, 'BOLT_OF_CORRUPTION', 18);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (6, 'BLUE_FIRE_OF_TZEENTCH', 17);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (7, 'PINK_FIRE_OF_TZEENTCH', 17);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (8, 'POWER_OF_CHAOS', 18);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (9, 'MINDFIRE', 17);
