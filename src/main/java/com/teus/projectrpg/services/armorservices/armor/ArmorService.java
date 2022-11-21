@@ -16,6 +16,4 @@ public interface ArmorService {
     ArmorEntity findByName(String name);
 
     ArmorEntity mapToEntity(ArmorDto armorDto);
-
-    ArmorDto mapToDto(ArmorEntity armorEntity);
 }

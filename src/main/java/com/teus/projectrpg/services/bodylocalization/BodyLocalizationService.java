@@ -15,6 +15,4 @@ public interface BodyLocalizationService {
     BodyLocalizationEntity findByName(BodyLocalizationType bodyLocalizationType);
 
     BodyLocalizationEntity mapToEntity(BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto);
-
-    BaseDto<BodyLocalizationType, BodyLocalizationEntity> maptoDto(BodyLocalizationEntity bodyLocalization);
 }

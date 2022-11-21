@@ -58,4 +58,8 @@ public class WeaponEntity {
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true)
     private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();
+
+    public void addWeaponQuality(WeaponQualityValueEntity weaponQuality) {
+        this.weaponQualities.add(weaponQuality);
+    }
 }

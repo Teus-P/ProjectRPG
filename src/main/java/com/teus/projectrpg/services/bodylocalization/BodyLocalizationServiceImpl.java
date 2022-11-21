@@ -42,13 +42,4 @@ public class BodyLocalizationServiceImpl implements BodyLocalizationService {
         return bodyLocalization;
 
     }
-
-    @Override
-    public BaseDto<BodyLocalizationType, BodyLocalizationEntity> maptoDto(BodyLocalizationEntity bodyLocalization) {
-        BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto = new BaseDto<>();
-        bodyLocalizationDto.setId(bodyLocalization.getId());
-        bodyLocalizationDto.setName(bodyLocalization.getName());
-
-        return bodyLocalizationDto;
-    }
 }

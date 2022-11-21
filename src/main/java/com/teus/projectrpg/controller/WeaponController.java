@@ -46,7 +46,7 @@ public class WeaponController {
         List<WeaponDto> weaponDtos = new ArrayList<>();
 
         for (WeaponEntity weaponEntity : weaponService.findAll()) {
-            weaponDtos.add(weaponService.mapToDto(weaponEntity));
+            weaponDtos.add(new WeaponDto(weaponEntity));
         }
 
         return weaponDtos;

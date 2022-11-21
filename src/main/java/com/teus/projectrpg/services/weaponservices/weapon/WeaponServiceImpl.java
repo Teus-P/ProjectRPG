@@ -74,41 +74,20 @@ public class WeaponServiceImpl implements WeaponService {
         weaponEntity.setIsUsingStrengthInRange(weaponDto.getIsUsingStrengthInRange());
         weaponEntity.setDamage(weaponDto.getDamage());
 
+        setWeaponQualities(weaponDto, weaponEntity);
+
+        return weaponEntity;
+    }
+
+    private void setWeaponQualities(WeaponDto weaponDto, WeaponEntity weaponEntity) {
         if (weaponDto.getWeaponQualities() != null) {
-            ArrayList<WeaponQualityValueEntity> weaponQualityValueEntities = new ArrayList<>();
             for (WeaponQualityValueDto weaponQuality : weaponDto.getWeaponQualities()) {
                 WeaponQualityValueEntity newWeaponQualityValue = new WeaponQualityValueEntity();
                 newWeaponQualityValue.setWeapon(weaponEntity);
                 newWeaponQualityValue.setWeaponQuality(weaponQualityService.findByType(weaponQuality.getName()));
                 newWeaponQualityValue.setValue(weaponQuality.getValue());
-                weaponQualityValueEntities.add(newWeaponQualityValue);
+                weaponEntity.addWeaponQuality(newWeaponQualityValue);
             }
-            weaponEntity.setWeaponQualities(weaponQualityValueEntities);
         }
-
-        return weaponEntity;
-    }
-
-    @Override
-    public WeaponDto mapToDto(WeaponEntity weaponEntity) {
-        WeaponDto weaponDto = new WeaponDto();
-        weaponDto.setId(weaponEntity.getId());
-        weaponDto.setName(weaponEntity.getName());
-        weaponDto.setNameTranslation(weaponEntity.getNameTranslation());
-        weaponDto.setWeaponType(new BaseDto<>(weaponEntity.getWeaponType()));
-        weaponDto.setWeaponGroupType(new BaseDto<>(weaponEntity.getWeaponGroup()));
-        weaponDto.setWeaponReach(new BaseDto<>(weaponEntity.getWeaponReach()));
-        weaponDto.setWeaponRange(weaponEntity.getWeaponRange());
-        weaponDto.setIsUsingStrength(weaponEntity.getIsUsingStrength());
-        weaponDto.setIsUsingStrengthInRange(weaponEntity.getIsUsingStrengthInRange());
-        weaponDto.setDamage(weaponEntity.getDamage());
-
-        ArrayList<WeaponQualityValueDto> weaponQualities = new ArrayList<>();
-        for (WeaponQualityValueEntity weaponQualityValueEntity : weaponEntity.getWeaponQualities()) {
-            weaponQualities.add(new WeaponQualityValueDto(weaponQualityValueEntity));
-        }
-        weaponDto.setWeaponQualities(weaponQualities);
-
-        return weaponDto;
     }
 }

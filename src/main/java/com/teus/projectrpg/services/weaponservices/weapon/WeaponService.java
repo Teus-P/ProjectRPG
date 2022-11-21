@@ -16,6 +16,4 @@ public interface WeaponService {
     void deleteById(Long id);
 
     WeaponEntity mapToEntity(WeaponDto weaponDto);
-
-    WeaponDto mapToDto(WeaponEntity weaponEntity);
 }

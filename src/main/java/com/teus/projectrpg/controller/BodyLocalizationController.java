@@ -26,7 +26,7 @@ public class BodyLocalizationController {
         List<BaseDto<BodyLocalizationType, BodyLocalizationEntity>> bodyLocalizationsDtos = new ArrayList<>();
 
         for(BodyLocalizationEntity bodyLocalization : bodyLocalizationService.findAll()) {
-            bodyLocalizationsDtos.add(bodyLocalizationService.maptoDto(bodyLocalization));
+            bodyLocalizationsDtos.add(new BaseDto<>(bodyLocalization));
         }
 
         return bodyLocalizationsDtos;

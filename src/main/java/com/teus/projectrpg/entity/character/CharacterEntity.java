@@ -121,10 +121,6 @@ public class CharacterEntity {
                 .findFirst();
     }
 
-    public void addCondition(CharacterConditionEntity condition) {
-        this.conditions.add(condition);
-    }
-
     public int getCharacteristicValueByType(CharacteristicType characteristicType) {
         return this.characteristics.stream()
                 .filter(c -> c.getCharacteristic().getName().equals(characteristicType))
@@ -137,5 +133,45 @@ public class CharacterEntity {
                 .filter(c -> c.getBodyLocalization().getName().equals(localization))
                 .findFirst()
                 .get().getArmorPoints();
+    }
+
+    public void addCharacteristic(CharacterCharacteristicEntity characteristic) {
+        this.characteristics.add(characteristic);
+    }
+
+    public void addSkill(CharacterSkillEntity skill) {
+        this.skills.add(skill);
+    }
+
+    public void addTalent(CharacterTalentEntity talent) {
+        this.talents.add(talent);
+    }
+
+    public void addTrait(CharacterCreatureTraitEntity trait) {
+        this.traits.add(trait);
+    }
+
+    public void addSpell(SpellEntity spell) {
+        this.spells.add(spell);
+    }
+
+    public void addWeapon(CharacterWeaponEntity weapon) {
+        this.weapons.add(weapon);
+    }
+
+    public void addArmor(ArmorEntity armor) {
+        this.armors.add(armor);
+    }
+
+    public void addBodyLocalization(CharacterBodyLocalizationEntity bodyLocalization) {
+        this.bodyLocalizations.add(bodyLocalization);
+    }
+
+    public void addCondition(CharacterConditionEntity condition) {
+        this.conditions.add(condition);
+    }
+
+    public void addNote(NoteEntity note) {
+        this.notes.add(note);
     }
 }

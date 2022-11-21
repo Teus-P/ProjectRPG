@@ -75,59 +75,34 @@ public class ArmorServiceImpl implements ArmorService {
         armorEntity.setNameTranslation(armorDto.getNameTranslation());
         armorEntity.setArmorCategory(armorCategoryService.findByName(armorDto.getArmorCategory().getName()));
 
-        ArrayList<ArmorBodyLocalizationEntity> armorBodyLocalizationEntities = new ArrayList<>();
-        for (ArmorBodyLocalizationDto armorBodyLocalizationDto : armorDto.getArmorBodyLocalizations()) {
-            ArmorBodyLocalizationEntity armorBodyLocalizationEntity = armorBodyLocalizationService.mapToEntity(armorBodyLocalizationDto);
-            armorBodyLocalizationEntity.setArmor(armorEntity);
-            armorBodyLocalizationEntities.add(armorBodyLocalizationEntity);
-        }
-        armorEntity.setArmorBodyLocalizations(armorBodyLocalizationEntities);
-
-        if (armorDto.getArmorPenalties() != null) {
-            ArrayList<ArmorPenaltyEntity> armorPenaltyEntities = new ArrayList<>();
-            for (BaseDto<ArmorPenaltyType, ArmorPenaltyEntity> armorPenalty : armorDto.getArmorPenalties()) {
-                armorPenaltyEntities.add(armorPenaltyService.findByType(armorPenalty.getName()));
-            }
-            armorEntity.setArmorPenalties(armorPenaltyEntities);
-        }
-
-        if (armorDto.getArmorQualities() != null) {
-            ArrayList<ArmorQualityEntity> armorQualityEntities = new ArrayList<>();
-            for (BaseDto<ArmorQualityType, ArmorQualityEntity> armorQuality : armorDto.getArmorQualities()) {
-                armorQualityEntities.add(armorQualityService.findByType(armorQuality.getName()));
-            }
-            armorEntity.setArmorQualities(armorQualityEntities);
-        }
+        setArmorBodyLocalizations(armorDto, armorEntity);
+        setArmorPenalties(armorDto, armorEntity);
+        setArmorQualities(armorDto, armorEntity);
 
         return armorEntity;
     }
 
-    @Override
-    public ArmorDto mapToDto(ArmorEntity armorEntity) {
-        ArmorDto armorDto = new ArmorDto();
-        armorDto.setId(armorEntity.getId());
-        armorDto.setName(armorEntity.getName());
-        armorDto.setNameTranslation(armorEntity.getNameTranslation());
-        armorDto.setArmorCategory(new BaseDto<>(armorEntity.getArmorCategory()));
-
-        List<ArmorBodyLocalizationDto> armorBodyLocalizations = new ArrayList<>();
-        for (ArmorBodyLocalizationEntity armorBodyLocalization : armorEntity.getArmorBodyLocalizations()) {
-            armorBodyLocalizations.add(new ArmorBodyLocalizationDto(armorBodyLocalization));
+    private void setArmorBodyLocalizations(ArmorDto armorDto, ArmorEntity armorEntity) {
+        for (ArmorBodyLocalizationDto armorBodyLocalizationDto : armorDto.getArmorBodyLocalizations()) {
+            ArmorBodyLocalizationEntity armorBodyLocalizationEntity = armorBodyLocalizationService.mapToEntity(armorBodyLocalizationDto);
+            armorBodyLocalizationEntity.setArmor(armorEntity);
+            armorEntity.addBodyLocalization(armorBodyLocalizationEntity);
         }
-        armorDto.setArmorBodyLocalizations(armorBodyLocalizations);
+    }
 
-        List<BaseDto<ArmorPenaltyType, ArmorPenaltyEntity>> armorPenalties = new ArrayList<>();
-        for (ArmorPenaltyEntity armorPenalty : armorEntity.getArmorPenalties()) {
-            armorPenalties.add(new BaseDto<>(armorPenalty));
+    private void setArmorPenalties(ArmorDto armorDto, ArmorEntity armorEntity) {
+        if (armorDto.getArmorPenalties() != null) {
+            for (BaseDto<ArmorPenaltyType, ArmorPenaltyEntity> armorPenalty : armorDto.getArmorPenalties()) {
+                armorEntity.addArmorPenalty(armorPenaltyService.findByType(armorPenalty.getName()));
+            }
         }
-        armorDto.setArmorPenalties(armorPenalties);
+    }
 
-        List<BaseDto<ArmorQualityType, ArmorQualityEntity>> armorQualities = new ArrayList<>();
-        for (ArmorQualityEntity armorQuality : armorEntity.getArmorQualities()) {
-            armorQualities.add(new BaseDto<>(armorQuality));
+    private void setArmorQualities(ArmorDto armorDto, ArmorEntity armorEntity) {
+        if (armorDto.getArmorQualities() != null) {
+            for (BaseDto<ArmorQualityType, ArmorQualityEntity> armorQuality : armorDto.getArmorQualities()) {
+                armorEntity.addArmorQuality(armorQualityService.findByType(armorQuality.getName()));
+            }
         }
-        armorDto.setArmorQualities(armorQualities);
-
-        return armorDto;
     }
 }
