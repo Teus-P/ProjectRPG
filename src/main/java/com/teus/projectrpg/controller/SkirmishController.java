@@ -30,4 +30,14 @@ public class SkirmishController {
     public void receiveDamage(@RequestBody ReceivedDamageDto receivedDamage) {
         this.skirmishService.receiveDamage(receivedDamage);
     }
+
+    @PostMapping("addAdvantagePoint")
+    public void addAdvantagePoint(@RequestBody Long skirmishCharacterId) {
+        this.skirmishService.addAdvantagePoint(skirmishCharacterId);
+    }
+
+    @PostMapping("removeAdvantagePoint")
+    public void removeAdvantagePoint(@RequestBody Long skirmishCharacterId) {
+        this.skirmishService.removeAdvantagePoint(skirmishCharacterId);
+    }
 }

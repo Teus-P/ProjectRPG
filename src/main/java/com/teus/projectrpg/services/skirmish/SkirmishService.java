@@ -176,22 +176,22 @@ public class SkirmishService {
         int toughnessBonus = ((character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS) / 10) % 100);
         int armorForLocalization = character.getArmorForLocalization(receivedDamage.getBodyLocalization());
 
-        if(receivedDamage.getIsWeaponUndamaging()) {
-            armorForLocalization*=2;
+        if (receivedDamage.getIsWeaponUndamaging()) {
+            armorForLocalization *= 2;
             finalDamage = receivedDamage.getDamage() - toughnessBonus - armorForLocalization;
-            if(finalDamage > 0) {
+            if (finalDamage > 0) {
                 character.setCurrentWounds(
                         character.getCurrentWounds() - finalDamage
                 );
                 character.setAdvantage(0);
             } else {
-                if(receivedDamage.getIsLosingTest()) {
+                if (receivedDamage.getIsLosingTest()) {
                     character.setAdvantage(0);
                 }
             }
         } else {
             finalDamage = receivedDamage.getDamage() - toughnessBonus - armorForLocalization;
-            if(finalDamage >= 1) {
+            if (finalDamage >= 1) {
                 character.setCurrentWounds(
                         character.getCurrentWounds() - finalDamage
                 );
@@ -203,9 +203,30 @@ public class SkirmishService {
             character.setAdvantage(0);
         }
 
-        if(character.getCurrentWounds() <= 0) {
+        if (character.getCurrentWounds() <= 0) {
             character.setIsDead(true);
             character.setCurrentWounds(0);
+        }
+
+        skirmishCharacterService.save(character);
+    }
+
+    public void addAdvantagePoint(Long skirmishCharacterId) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
+        int initiativeBonus = ((character.getCharacteristicValueByType(CharacteristicType.INITIATIVE) / 10) % 100);
+        int newAdvantage = character.getAdvantage() + 1;
+        if (newAdvantage <= initiativeBonus) {
+            character.setAdvantage(newAdvantage);
+        }
+
+        skirmishCharacterService.save(character);
+    }
+
+    public void removeAdvantagePoint(Long skirmishCharacterId) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
+        int newAdvantage = character.getAdvantage() - 1;
+        if (newAdvantage >= 0) {
+            character.setAdvantage(newAdvantage);
         }
 
         skirmishCharacterService.save(character);
