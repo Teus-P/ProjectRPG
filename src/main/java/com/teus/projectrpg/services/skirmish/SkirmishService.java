@@ -148,7 +148,7 @@ public class SkirmishService {
             if (condition.getValue() <= 0) {
                 iterator.remove();
             }
-        }  else if (test.getResult() <= (condition.getValue() * 10)) {
+        } else if (test.getResult() <= (condition.getValue() * 10)) {
             character.setIsDead(true);
         }
     }
@@ -217,11 +217,8 @@ public class SkirmishService {
 
     public void addAdvantagePoint(Long skirmishCharacterId) {
         SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
-        int initiativeBonus = ((character.getCharacteristicValueByType(CharacteristicType.INITIATIVE) / 10) % 100);
         int newAdvantage = character.getAdvantage() + 1;
-        if (newAdvantage <= initiativeBonus) {
-            character.setAdvantage(newAdvantage);
-        }
+        character.setAdvantage(newAdvantage);
 
         skirmishCharacterService.save(character);
     }

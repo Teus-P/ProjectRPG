@@ -1,6 +1,7 @@
 package com.teus.projectrpg.services.skirmish;
 
 import com.teus.projectrpg.dto.EndTurnCheckDto;
+import com.teus.projectrpg.dto.ReceivedDamageDto;
 import com.teus.projectrpg.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.dto.TestDto;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
@@ -316,6 +317,143 @@ class SkirmishServiceTest {
         assertEquals(1, character.getConditionByType(ConditionType.FATIGUED).get().getValue());
     }
 
+    @Test
+    void receiveDamage_removeFourWounds_ifWeaponIsDamaging() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(10);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(false);
+        receivedDamageDto.setIsLosingTest(true);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(6, character.getCurrentWounds());
+        assertEquals(0, character.getAdvantage());
+    }
+
+    @Test
+    void receiveDamage_removeAtLeastOneWound_ifWeaponIsDamaging() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(1);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(false);
+        receivedDamageDto.setIsLosingTest(true);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(9, character.getCurrentWounds());
+        assertEquals(0, character.getAdvantage());
+    }
+
+    @Test
+    void receiveDamage_removeFourWounds_ifWeaponIsUndamaging() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(10);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(true);
+        receivedDamageDto.setIsLosingTest(true);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(8, character.getCurrentWounds());
+        assertEquals(0, character.getAdvantage());
+    }
+
+    @Test
+    void receiveDamage_removeAdvantages_ifWeaponIsUndamagingAndLosingTest() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(4);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(true);
+        receivedDamageDto.setIsLosingTest(true);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(10, character.getCurrentWounds());
+        assertEquals(0, character.getAdvantage());
+    }
+
+    @Test
+    void receiveDamage_dontRemoveAdvantages_ifWeaponIsUndamagingAndNotLosingTest() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(4);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(true);
+        receivedDamageDto.setIsLosingTest(false);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(10, character.getCurrentWounds());
+        assertEquals(2, character.getAdvantage());
+    }
+
+    @Test
+    void receiveDamage_killCharacter_ifWoundsAreEqualToZero() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(20);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(true);
+        receivedDamageDto.setIsLosingTest(true);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(0, character.getCurrentWounds());
+        assertEquals(0, character.getAdvantage());
+        assertTrue(character.getIsDead());
+    }
+
+    @Test
+    void addAdvantagePoint_addOnePoint() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(0);
+
+        mockFindById(character);
+        skirmishService.addAdvantagePoint(0L);
+
+        assertEquals(1, character.getAdvantage());
+    }
+
+    @Test
+    void removeAdvantagePoint_removeOnePoint() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(1);
+
+        mockFindById(character);
+        skirmishService.removeAdvantagePoint(0L);
+
+        assertEquals(0, character.getAdvantage());
+    }
+
     private void mockFindAllCharacters(List<SkirmishCharacterEntity> characters) {
         Mockito.when(skirmishCharacterService.findAll()).thenReturn(characters);
     }
@@ -351,12 +489,12 @@ class SkirmishServiceTest {
         );
         skirmishCharacter1.setBodyLocalizations(
                 Arrays.asList(
-                        createTestCharacterBodyLocalization(skirmishCharacter1, 0, BodyLocalizationType.HEAD),
-                        createTestCharacterBodyLocalization(skirmishCharacter1, 0, BodyLocalizationType.LEFT_ARM),
-                        createTestCharacterBodyLocalization(skirmishCharacter1, 0, BodyLocalizationType.RIGHT_ARM),
-                        createTestCharacterBodyLocalization(skirmishCharacter1, 0, BodyLocalizationType.BODY),
-                        createTestCharacterBodyLocalization(skirmishCharacter1, 0, BodyLocalizationType.LEFT_LEG),
-                        createTestCharacterBodyLocalization(skirmishCharacter1, 0, BodyLocalizationType.RIGHT_LEG)
+                        createTestCharacterBodyLocalization(skirmishCharacter1, 2, BodyLocalizationType.HEAD),
+                        createTestCharacterBodyLocalization(skirmishCharacter1, 2, BodyLocalizationType.LEFT_ARM),
+                        createTestCharacterBodyLocalization(skirmishCharacter1, 2, BodyLocalizationType.RIGHT_ARM),
+                        createTestCharacterBodyLocalization(skirmishCharacter1, 2, BodyLocalizationType.BODY),
+                        createTestCharacterBodyLocalization(skirmishCharacter1, 2, BodyLocalizationType.LEFT_LEG),
+                        createTestCharacterBodyLocalization(skirmishCharacter1, 2, BodyLocalizationType.RIGHT_LEG)
                 )
         );
 
@@ -383,6 +521,7 @@ class SkirmishServiceTest {
     private CharacterBodyLocalizationEntity createTestCharacterBodyLocalization(SkirmishCharacterEntity character, int armorPoints, BodyLocalizationType bodyLocalizationType) {
         CharacterBodyLocalizationEntity bodyLocalization = new CharacterBodyLocalizationEntity();
         bodyLocalization.setCharacter(character);
+        bodyLocalization.setArmorPoints(armorPoints);
         bodyLocalization.setBodyLocalization(this.createTestBodyLocalization(bodyLocalizationType));
         return bodyLocalization;
     }
