@@ -2,10 +2,14 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.EndTurnCheckDto;
 import com.teus.projectrpg.dto.ReceivedDamageDto;
+import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 import com.teus.projectrpg.services.skirmish.SkirmishService;
+import com.teus.projectrpg.services.skirmishcharacter.SkirmishCharacterService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class SkirmishController {
@@ -18,12 +22,13 @@ public class SkirmishController {
 
     @PostMapping("/endTurnCheck")
     public EndTurnCheckDto endTurnCheck(@RequestBody EndTurnCheckDto endTurnCheck) {
-        return this.skirmishService.endTurnCheck(endTurnCheck);
+        this.skirmishService.endTurnCheck(endTurnCheck);
+        return endTurnCheck;
     }
 
     @PostMapping("/endTurnTestsCheck")
     public EndTurnCheckDto endTurnTestsCheck(@RequestBody EndTurnCheckDto endTurnCheck) {
-        return this.skirmishService.endTurnTestsCheck(endTurnCheck);
+        return this.skirmishService.endTurnCheckAfterTests(endTurnCheck);
     }
 
     @PostMapping("receiveDamage")

@@ -1,5 +1,8 @@
 package com.teus.projectrpg.services.skirmish;
 
+import com.teus.projectrpg.dto.EndTurnCheckDto;
+import com.teus.projectrpg.dto.SkirmishCharacterDto;
+import com.teus.projectrpg.dto.TestDto;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterCharacteristicEntity;
@@ -11,15 +14,15 @@ import com.teus.projectrpg.services.skirmishcharacter.SkirmishCharacterService;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
 import com.teus.projectrpg.type.condition.ConditionType;
+import com.teus.projectrpg.type.skill.SkillType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,27 +35,304 @@ class SkirmishServiceTest {
     @MockBean
     private SkirmishCharacterService skirmishCharacterService;
 
+    private EndTurnCheckDto endTurnCheck;
+
+    @BeforeEach
+    public void setUp() {
+        endTurnCheck = new EndTurnCheckDto();
+        endTurnCheck.setTests(new ArrayList<>());
+    }
+
+
     @Test
-    void endTurnCheck_whenDeafened() {
+    void endTurnCheck_whenBleeding_receiveThreeDamage() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
-        addCondition(ConditionType.DEAFENED, 1, 0, character);
+        addCondition(ConditionType.BLEEDING, 3, 0, character);
+        int woundsBefore = character.getCurrentWounds();
 
-        this.skirmishService.checkConditions(Collections.singletonList(character));
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
 
-        assertEquals(character.getConditions().size(), 0);
+        assertEquals(woundsBefore - 3, character.getCurrentWounds());
     }
 
     @Test
-    void endTurnTestsCheck() {
+    void endTurnCheck_whenBleeding_receiveUnconscious() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.BLEEDING, 4, 0, character);
+        character.setCurrentWounds(3);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+        Optional<CharacterConditionEntity> unconsciousCondition = character.getConditionByType(ConditionType.UNCONSCIOUS);
+
+        assertEquals(0, character.getCurrentWounds());
+        assertTrue(unconsciousCondition.isPresent());
+        assertEquals(4, unconsciousCondition.get().getCounter());
+    }
+
+    @Test
+    void endTurnCheck_whenBleedingAndUnconscious_createTest() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.BLEEDING, 4, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
+        character.setCurrentWounds(0);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        assertEquals(ConditionType.BLEEDING, endTurnCheck.getTests().get(0).getConditionType());
+    }
+
+    @Test
+    void endTurnCheck_whenDeafened_removeOneStatus() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.DEAFENED, 2, 0, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        Optional<CharacterConditionEntity> deafenedCondition = character.getConditionByType(ConditionType.DEAFENED);
+        assertTrue(deafenedCondition.isPresent());
+        assertEquals(1, deafenedCondition.get().getValue());
+    }
+
+    @Test
+    void endTurnCheck_whenDeafened_removeWholeCondition() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.DEAFENED, 1, 0, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        assertEquals(0, character.getConditions().size());
+    }
+
+    @Test
+    void endTurnCheck_whenStunned_createTest() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.STUNNED, 1, 0, character);
+        TestDto test = new TestDto();
+        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
+        test.setConditionType(ConditionType.STUNNED);
+        test.setModifier(0);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        assertTrue(endTurnCheck.getTests().contains(test));
+    }
+
+    @Test
+    void endTurnCheck_whenBlinded_removeOneCounter() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.BLINDED, 1, 2, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        Optional<CharacterConditionEntity> blindedCondition = character.getConditionByType(ConditionType.BLINDED);
+        assertTrue(blindedCondition.isPresent());
+        assertEquals(1, blindedCondition.get().getCounter());
+    }
+
+    @Test
+    void endTurnCheck_whenBlinded_removeWholeCondition() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.BLINDED, 1, 1, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        Optional<CharacterConditionEntity> blindedCondition = character.getConditionByType(ConditionType.BLINDED);
+        assertTrue(blindedCondition.isEmpty());
+    }
+
+    @Test
+    void endTurnCheck_whenBlinded_removeOneCondition() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.BLINDED, 2, 1, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        Optional<CharacterConditionEntity> blindedCondition = character.getConditionByType(ConditionType.BLINDED);
+        assertTrue(blindedCondition.isPresent());
+        assertEquals(1, blindedCondition.get().getValue());
+    }
+
+
+
+    @Test
+    void endTurnCheckAfterTests_whenBleeding_remainAlive_ifResultHigherThanStatusLevel() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setCurrentWounds(0);
+        addCondition(ConditionType.BLEEDING, 2, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                null,
+                ConditionType.BLEEDING,
+                0,
+                30
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertFalse(character.getIsDead());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenBleeding_becomeDead_ifResultLowerThanStatusLevel() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setCurrentWounds(0);
+        addCondition(ConditionType.BLEEDING, 2, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                null,
+                ConditionType.BLEEDING,
+                0,
+                20
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getIsDead());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenBleeding_removeOneCondition_IfDouble() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setCurrentWounds(0);
+        addCondition(ConditionType.BLEEDING, 2, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                null,
+                ConditionType.BLEEDING,
+                0,
+                11
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.BLEEDING).isPresent());
+        assertEquals(1, character.getConditionByType(ConditionType.BLEEDING).get().getValue());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenBleeding_removeWholeCondition_IfDouble() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setCurrentWounds(0);
+        addCondition(ConditionType.BLEEDING, 1, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                null,
+                ConditionType.BLEEDING,
+                0,
+                11
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.BLEEDING).isEmpty());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenStunned_removeOneCondition_ifZeroSuccessPoints() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.STUNNED, 4, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.STUNNED,
+                0,
+                40
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.STUNNED).isPresent());
+        assertEquals(3, character.getConditionByType(ConditionType.STUNNED).get().getValue());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenStunned_removeTwoConditions_ifOneSuccessPoint() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.STUNNED, 4, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.STUNNED,
+                0,
+                39
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.STUNNED).isPresent());
+        assertEquals(2, character.getConditionByType(ConditionType.STUNNED).get().getValue());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenStunned_removeWholeCondition() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.STUNNED, 3, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.STUNNED,
+                0,
+                29
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.STUNNED).isEmpty());
+        assertTrue(character.getConditionByType(ConditionType.FATIGUED).isPresent());
+        assertEquals(1, character.getConditionByType(ConditionType.FATIGUED).get().getValue());
+    }
+
+    private void mockFindAllCharacters(List<SkirmishCharacterEntity> characters) {
+        Mockito.when(skirmishCharacterService.findAll()).thenReturn(characters);
+    }
+
+    private void mockFindById(SkirmishCharacterEntity character) {
+        Mockito.when(skirmishCharacterService.findById(character.getId())).thenReturn(character);
     }
 
     private List<SkirmishCharacterEntity> createSkirmishCharacterTestList() {
         List<SkirmishCharacterEntity> testList = new ArrayList<>();
 
         SkirmishCharacterEntity skirmishCharacter1 = new SkirmishCharacterEntity();
+        skirmishCharacter1.setId(0L);
         skirmishCharacter1.setName("Test");
         skirmishCharacter1.setDescription("Test");
         skirmishCharacter1.setIsRightHanded(true);
+        skirmishCharacter1.setIsDead(false);
         skirmishCharacter1.setCharacteristics(
                 Arrays.asList(
                         createTestCharacterCharacteristic(skirmishCharacter1, 4, CharacteristicType.MOVEMENT),
