@@ -16,4 +16,7 @@ public class ConditionEntity extends BaseEntity<ConditionType> {
     @Column
     @Enumerated(EnumType.STRING)
     private ConditionType name;
+
+    @Column(name = "has_counter")
+    private Boolean hasCounter;
 }

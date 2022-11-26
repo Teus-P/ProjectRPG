@@ -1,6 +1,7 @@
 package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.BaseDto;
+import com.teus.projectrpg.dto.ConditionDto;
 import com.teus.projectrpg.entity.condition.ConditionEntity;
 import com.teus.projectrpg.services.base.BaseService;
 import com.teus.projectrpg.services.condition.ConditionService;
@@ -16,20 +17,18 @@ import java.util.List;
 public class ConditionController {
 
     private final ConditionService conditionService;
-    private final BaseService baseService;
 
     @Autowired
-    public ConditionController(ConditionService conditionService, BaseService baseService) {
+    public ConditionController(ConditionService conditionService) {
         this.conditionService = conditionService;
-        this.baseService = baseService;
     }
 
     @GetMapping("/condition")
-    List<BaseDto<ConditionType, ConditionEntity>> getAllConditions() {
-        List<BaseDto<ConditionType, ConditionEntity>> conditionsDtos = new ArrayList<>();
+    List<ConditionDto> getAllConditions() {
+        List<ConditionDto> conditionsDtos = new ArrayList<>();
 
         for (ConditionEntity conditionEntity : conditionService.findAll()) {
-            conditionsDtos.add(baseService.mapToDto(conditionEntity));
+            conditionsDtos.add(new ConditionDto(conditionEntity));
         }
 
         return conditionsDtos;
