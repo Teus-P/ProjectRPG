@@ -121,6 +121,10 @@ public class CharacterEntity {
                 .findFirst();
     }
 
+    public void removeConditionByType(ConditionType conditionType) {
+        conditions.removeIf(condition -> condition.getCondition().getName().equals(conditionType));
+    }
+
     public int getCharacteristicValueByType(CharacteristicType characteristicType) {
         return this.characteristics.stream()
                 .filter(c -> c.getCharacteristic().getName().equals(characteristicType))

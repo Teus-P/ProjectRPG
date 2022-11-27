@@ -1,9 +1,6 @@
 package com.teus.projectrpg.services.skirmish;
 
-import com.teus.projectrpg.dto.EndTurnCheckDto;
-import com.teus.projectrpg.dto.ReceivedDamageDto;
-import com.teus.projectrpg.dto.SkirmishCharacterDto;
-import com.teus.projectrpg.dto.TestDto;
+import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.character.CharacterSkillEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
@@ -116,7 +113,8 @@ public class SkirmishService {
         TestDto test = new TestDto();
         test.setSkirmishCharacter(new SkirmishCharacterDto(character));
         test.setModifier(modifier);
-        test.setConditionType(conditionType);
+        test.setConditionType(new ConditionDto(conditionType));
+        test.setFeasible(true);
         endTurnCheck.getTests().add(test);
     }
 
@@ -134,25 +132,24 @@ public class SkirmishService {
     }
 
     private void checkConditionAfterTests(TestDto test, SkirmishCharacterEntity character) {
-        ListIterator<CharacterConditionEntity> iterator = character.getConditions().listIterator();
-        while (iterator.hasNext()) {
-            CharacterConditionEntity condition = iterator.next();
-            switch (condition.getCondition().getName()) {
-                case BLEEDING -> this.checkBleedingTest(test, condition, character, iterator);
-                case STUNNED -> this.checkStunnedTest(test, condition, character, iterator);
-                case BROKEN -> this.checkBrokenTest(test, condition, character, iterator);
+        Optional<CharacterConditionEntity> condition = character.getConditionByType(test.getConditionType().getName());
+        if (condition.isPresent()) {
+            switch (condition.get().getCondition().getName()) {
+                case BLEEDING -> this.checkBleedingTest(test, condition.get(), character);
+                case STUNNED -> this.checkStunnedTest(test, condition.get(), character);
+                case BROKEN -> this.checkBrokenTest(test, condition.get(), character);
             }
         }
+
     }
 
     private void checkBleedingTest(TestDto test,
                                    CharacterConditionEntity condition,
-                                   SkirmishCharacterEntity character,
-                                   ListIterator<CharacterConditionEntity> iterator) {
+                                   SkirmishCharacterEntity character) {
         if ((test.getResult() / 10) % 100 == test.getResult() % 10) {
             condition.setValue(condition.getValue() - 1);
             if (condition.getValue() <= 0) {
-                iterator.remove();
+                character.removeConditionByType(condition.getCondition().getName());
             }
         } else if (test.getResult() <= (condition.getValue() * 10)) {
             character.setIsDead(true);
@@ -161,41 +158,44 @@ public class SkirmishService {
 
     private void checkStunnedTest(TestDto test,
                                   CharacterConditionEntity condition,
-                                  SkirmishCharacterEntity character,
-                                  ListIterator<CharacterConditionEntity> iterator) {
+                                  SkirmishCharacterEntity character) {
         Optional<CharacterSkillEntity> skill = skillService.getSkillByType(character.getSkills(), SkillType.ENDURANCE);
         int skillValue = skill.map(CharacterSkillEntity::getValue).orElseGet(() -> characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.TOUGHNESS));
         if (test.getResult() <= (skillValue + test.getModifier())) {
             condition.setValue(condition.getValue() - (((skillValue / 10) % 100) - ((test.getResult() / 10) % 100)) - 1);
             if (condition.getValue() <= 0) {
-                iterator.remove();
+                character.removeConditionByType(condition.getCondition().getName());
                 if (character.getConditionByType(ConditionType.FATIGUED).isEmpty()) {
                     CharacterConditionEntity newCondition = new CharacterConditionEntity();
                     newCondition.setCondition(conditionService.findByName(ConditionType.FATIGUED));
                     newCondition.setValue(1);
                     newCondition.setCharacter(character);
-                    iterator.add(newCondition);
+                    character.addCondition(newCondition);
                 }
             }
         }
     }
 
     private void checkBrokenTest(TestDto test,
-                                   CharacterConditionEntity condition,
-                                   SkirmishCharacterEntity character,
-                                   ListIterator<CharacterConditionEntity> iterator) {
-        Optional<CharacterSkillEntity> skill = skillService.getSkillByType(character.getSkills(), SkillType.COOL);
-        int skillValue = skill.map(CharacterSkillEntity::getValue).orElseGet(() -> characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.WILLPOWER));
-        if (test.getResult() <= (skillValue + test.getModifier())) {
-            condition.setValue(condition.getValue() - (((skillValue / 10) % 100) - ((test.getResult() / 10) % 100)) - 1);
-            if (condition.getValue() <= 0) {
-                iterator.remove();
-                if (character.getConditionByType(ConditionType.FATIGUED).isEmpty()) {
-                    CharacterConditionEntity newCondition = new CharacterConditionEntity();
-                    newCondition.setCondition(conditionService.findByName(ConditionType.FATIGUED));
-                    newCondition.setValue(1);
-                    newCondition.setCharacter(character);
-                    iterator.add(newCondition);
+                                 CharacterConditionEntity condition,
+                                 SkirmishCharacterEntity character) {
+        if (test.isFeasible()) {
+            Optional<CharacterSkillEntity> skill = skillService.getSkillByType(character.getSkills(), SkillType.COOL);
+            int skillValue = skill.map(CharacterSkillEntity::getValue).orElseGet(() -> characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.WILLPOWER));
+            if (test.getResult() > 0 && test.getResult() < 100 && test.getResult() <= (skillValue + test.getModifier())) {
+                condition.setValue(condition.getValue() - (((skillValue / 10) % 100) - ((test.getResult() / 10) % 100)) - 1);
+                if (condition.getValue() <= 0) {
+                    character.removeConditionByType(condition.getCondition().getName());
+                    if (character.getConditionByType(ConditionType.FATIGUED).isEmpty()) {
+                        CharacterConditionEntity fatigued = new CharacterConditionEntity();
+                        fatigued.setCondition(conditionService.findByName(ConditionType.FATIGUED));
+                        fatigued.setValue(1);
+                        fatigued.setCharacter(character);
+                        character.addCondition(fatigued);
+                    } else {
+                        CharacterConditionEntity fatigued = character.getConditionByType(ConditionType.FATIGUED).get();
+                        fatigued.setValue(fatigued.getValue() + 1);
+                    }
                 }
             }
         }
@@ -236,6 +236,8 @@ public class SkirmishService {
 
         if (character.getCurrentWounds() <= 0) {
             character.setIsDead(true);
+            //TODO and possibility to choose between death and unconsciousness
+//            character.addCondition(new CharacterConditionEntity());
             character.setCurrentWounds(0);
         }
 

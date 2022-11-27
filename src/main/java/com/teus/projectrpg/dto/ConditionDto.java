@@ -16,4 +16,8 @@ public class ConditionDto extends BaseDto<ConditionType, ConditionEntity>{
         super(condition);
         this.hasCounter = condition.getHasCounter();
     }
+
+    public ConditionDto(ConditionType conditionType) {
+        this.name = conditionType;
+    }
 }

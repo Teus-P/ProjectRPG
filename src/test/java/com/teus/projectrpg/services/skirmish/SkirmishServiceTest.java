@@ -1,9 +1,6 @@
 package com.teus.projectrpg.services.skirmish;
 
-import com.teus.projectrpg.dto.EndTurnCheckDto;
-import com.teus.projectrpg.dto.ReceivedDamageDto;
-import com.teus.projectrpg.dto.SkirmishCharacterDto;
-import com.teus.projectrpg.dto.TestDto;
+import com.teus.projectrpg.dto.*;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterCharacteristicEntity;
@@ -78,11 +75,12 @@ class SkirmishServiceTest {
         addCondition(ConditionType.BLEEDING, 4, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
         character.setCurrentWounds(0);
+        TestDto test = createTestDto(character, ConditionType.BLEEDING);
 
         mockFindAllCharacters(Collections.singletonList(character));
         skirmishService.endTurnCheck(endTurnCheck);
 
-        assertEquals(ConditionType.BLEEDING, endTurnCheck.getTests().get(0).getConditionType());
+        assertTrue(endTurnCheck.getTests().contains(test));
     }
 
     @Test
@@ -113,10 +111,7 @@ class SkirmishServiceTest {
     void endTurnCheck_whenStunned_createTest() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         addCondition(ConditionType.STUNNED, 1, 0, character);
-        TestDto test = new TestDto();
-        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
-        test.setConditionType(ConditionType.STUNNED);
-        test.setModifier(0);
+        TestDto test = createTestDto(character, ConditionType.STUNNED);
 
         mockFindAllCharacters(Collections.singletonList(character));
         skirmishService.endTurnCheck(endTurnCheck);
@@ -166,10 +161,7 @@ class SkirmishServiceTest {
     void endTurnCheck_whenBroken_createTest() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         addCondition(ConditionType.BROKEN, 1, 0, character);
-        TestDto test = new TestDto();
-        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
-        test.setConditionType(ConditionType.BROKEN);
-        test.setModifier(0);
+        TestDto test = createTestDto(character, ConditionType.BROKEN);
 
         mockFindAllCharacters(Collections.singletonList(character));
         skirmishService.endTurnCheck(endTurnCheck);
@@ -189,7 +181,8 @@ class SkirmishServiceTest {
                 null,
                 ConditionType.BLEEDING,
                 0,
-                30
+                30,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -211,7 +204,8 @@ class SkirmishServiceTest {
                 null,
                 ConditionType.BLEEDING,
                 0,
-                20
+                20,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -233,7 +227,8 @@ class SkirmishServiceTest {
                 null,
                 ConditionType.BLEEDING,
                 0,
-                11
+                11,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -256,7 +251,8 @@ class SkirmishServiceTest {
                 null,
                 ConditionType.BLEEDING,
                 0,
-                11
+                11,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -276,7 +272,8 @@ class SkirmishServiceTest {
                 SkillType.ENDURANCE,
                 ConditionType.STUNNED,
                 0,
-                40
+                40,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -297,7 +294,8 @@ class SkirmishServiceTest {
                 SkillType.ENDURANCE,
                 ConditionType.STUNNED,
                 0,
-                39
+                39,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -318,7 +316,8 @@ class SkirmishServiceTest {
                 SkillType.ENDURANCE,
                 ConditionType.STUNNED,
                 0,
-                29
+                29,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -340,7 +339,8 @@ class SkirmishServiceTest {
                 SkillType.COOL,
                 ConditionType.BROKEN,
                 0,
-                40
+                40,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -361,7 +361,8 @@ class SkirmishServiceTest {
                 SkillType.COOL,
                 ConditionType.BROKEN,
                 0,
-                39
+                39,
+                true
         );
         endTurnCheck.setTests(Collections.singletonList(testDto));
 
@@ -372,7 +373,67 @@ class SkirmishServiceTest {
         assertTrue(character.getConditionByType(ConditionType.FATIGUED).isPresent());
         assertEquals(1, character.getConditionByType(ConditionType.FATIGUED).get().getValue());
     }
-    
+
+    @Test
+    void endTurnCheckAfterTests_whenBrokenAndFatigued_addOneLevelToFatiguedAfterRemovingBroken() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.BROKEN, 1, 0, character);
+        addCondition(ConditionType.FATIGUED, 1, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.COOL,
+                ConditionType.BROKEN,
+                0,
+                39,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.BROKEN).isEmpty());
+        assertTrue(character.getConditionByType(ConditionType.FATIGUED).isPresent());
+        assertEquals(2, character.getConditionByType(ConditionType.FATIGUED).get().getValue());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenStunnedAndBrokenWithTestWhichIsNotFeasible_removeStunnedLeaveBroken() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.BROKEN, 2, 0, character);
+        addCondition(ConditionType.STUNNED, 1, 0, character);
+
+        TestDto brokenTestDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.COOL,
+                ConditionType.BROKEN,
+                0,
+                0,
+                false
+        );
+
+        TestDto stunnedTestDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.STUNNED,
+                1,
+                0,
+                true
+        );
+
+        endTurnCheck.setTests(Arrays.asList(brokenTestDto, stunnedTestDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.BROKEN).isPresent());
+        assertEquals(2, character.getConditionByType(ConditionType.BROKEN).get().getValue());
+        assertTrue(character.getConditionByType(ConditionType.STUNNED).isEmpty());
+        assertTrue(character.getConditionByType(ConditionType.FATIGUED).isPresent());
+        assertEquals(1, character.getConditionByType(ConditionType.FATIGUED).get().getValue());
+    }
+
     @Test
     void receiveDamage_removeFourWounds_ifWeaponIsDamaging() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
@@ -597,5 +658,14 @@ class SkirmishServiceTest {
         characterCondition.setCounter(counter);
         characterCondition.setCharacter(character);
         character.addCondition(characterCondition);
+    }
+
+    private static TestDto createTestDto(SkirmishCharacterEntity character, ConditionType bleeding) {
+        TestDto test = new TestDto();
+        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
+        test.setConditionType(new ConditionDto(bleeding));
+        test.setModifier(0);
+        test.setFeasible(true);
+        return test;
     }
 }
