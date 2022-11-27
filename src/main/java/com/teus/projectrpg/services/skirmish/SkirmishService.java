@@ -1,6 +1,7 @@
 package com.teus.projectrpg.services.skirmish;
 
 import com.teus.projectrpg.dto.*;
+import com.teus.projectrpg.entity.character.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterSkillEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
@@ -13,10 +14,7 @@ import com.teus.projectrpg.type.condition.ConditionType;
 import com.teus.projectrpg.type.skill.SkillType;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SkirmishService {
@@ -54,6 +52,7 @@ public class SkirmishService {
                         case STUNNED -> this.checkStunned(character);
                         case BLINDED -> this.checkBlinded(condition, iterator);
                         case BROKEN -> this.checkBroken(character);
+                        case ABLAZE -> this.checkAblaze(character);
                     }
                 }
             }
@@ -109,6 +108,10 @@ public class SkirmishService {
         createTestForCondition(character, ConditionType.BROKEN, 0);
     }
 
+    private void checkAblaze(SkirmishCharacterEntity character) {
+        createTestForCondition(character, ConditionType.ABLAZE, 0);
+    }
+
     private void createTestForCondition(SkirmishCharacterEntity character, ConditionType conditionType, int modifier) {
         TestDto test = new TestDto();
         test.setSkirmishCharacter(new SkirmishCharacterDto(character));
@@ -138,6 +141,7 @@ public class SkirmishService {
                 case BLEEDING -> this.checkBleedingTest(test, condition.get(), character);
                 case STUNNED -> this.checkStunnedTest(test, condition.get(), character);
                 case BROKEN -> this.checkBrokenTest(test, condition.get(), character);
+                case ABLAZE -> this.checkAblazeTest(test, condition.get(), character);
             }
         }
 
@@ -162,7 +166,7 @@ public class SkirmishService {
         Optional<CharacterSkillEntity> skill = skillService.getSkillByType(character.getSkills(), SkillType.ENDURANCE);
         int skillValue = skill.map(CharacterSkillEntity::getValue).orElseGet(() -> characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.TOUGHNESS));
         if (test.getResult() <= (skillValue + test.getModifier())) {
-            condition.setValue(condition.getValue() - (((skillValue / 10) % 100) - ((test.getResult() / 10) % 100)) - 1);
+            condition.setValue(condition.getValue() - (getBonusPoints(skillValue) - getBonusPoints(test.getResult())) - 1);
             if (condition.getValue() <= 0) {
                 character.removeConditionByType(condition.getCondition().getName());
                 if (character.getConditionByType(ConditionType.FATIGUED).isEmpty()) {
@@ -198,6 +202,29 @@ public class SkirmishService {
                     }
                 }
             }
+        }
+    }
+
+    private void checkAblazeTest(TestDto test,
+                                 CharacterConditionEntity condition,
+                                 SkirmishCharacterEntity character) {
+        int damage = test.getResult() + condition.getValue();
+        int toughnessBonus = getBonusPoints(character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS));
+        int lowestArmor = character.getBodyLocalizations().stream()
+                .min(Comparator.comparing(CharacterBodyLocalizationEntity::getArmorPoints))
+                .orElseThrow(NoSuchElementException::new)
+                .getArmorPoints();
+
+        int finalDamage = damage - toughnessBonus - lowestArmor;
+        finalDamage = Math.max(finalDamage, 1);
+
+        character.setCurrentWounds(character.getCurrentWounds() - finalDamage);
+        character.setAdvantage(0);
+
+        if (character.getCurrentWounds() <= 0) {
+            character.setIsDead(true);
+            character.setCurrentWounds(0);
+            character.removeConditionByType(ConditionType.ABLAZE);
         }
     }
 
@@ -260,5 +287,9 @@ public class SkirmishService {
         }
 
         skirmishCharacterService.save(character);
+    }
+
+    private int getBonusPoints(int value) {
+        return (value / 10) % 100;
     }
 }

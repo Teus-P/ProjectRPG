@@ -435,6 +435,52 @@ class SkirmishServiceTest {
     }
 
     @Test
+    void endTurnCheckAfterTests_whenAblaze_receiveFourDamage() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.ABLAZE, 2, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                null,
+                ConditionType.ABLAZE,
+                0,
+                8,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.ABLAZE).isPresent());
+        assertEquals(2, character.getConditionByType(ConditionType.ABLAZE).get().getValue());
+        assertEquals(6, character.getCurrentWounds());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenAblaze_setDead() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.ABLAZE, 6, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                null,
+                ConditionType.ABLAZE,
+                0,
+                10,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.ABLAZE).isEmpty());
+        assertEquals(0, character.getCurrentWounds());
+        assertTrue(character.getIsDead());
+    }
+
+    @Test
     void receiveDamage_removeFourWounds_ifWeaponIsDamaging() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         character.setAdvantage(2);
