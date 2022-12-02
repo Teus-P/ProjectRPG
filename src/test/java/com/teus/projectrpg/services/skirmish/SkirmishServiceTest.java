@@ -170,6 +170,17 @@ class SkirmishServiceTest {
     }
 
     @Test
+    void endTurnCheck_whenSurprised_removeCondition() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.SURPRISED, 1, 0, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        assertTrue(character.getConditions().isEmpty());
+    }
+
+    @Test
     void endTurnCheckAfterTests_whenBleeding_remainAlive_ifResultHigherThanStatusLevel() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         character.setCurrentWounds(0);
@@ -497,6 +508,27 @@ class SkirmishServiceTest {
 
         assertEquals(6, character.getCurrentWounds());
         assertEquals(0, character.getAdvantage());
+    }
+
+    @Test
+    void receiveDamage_removeSurprised() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.SURPRISED, 1, 0, character);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(9);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(false);
+        receivedDamageDto.setIsLosingTest(true);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(7, character.getCurrentWounds());
+        assertEquals(0, character.getAdvantage());
+        assertTrue(character.getConditionByType(ConditionType.SURPRISED).isEmpty());
     }
 
     @Test

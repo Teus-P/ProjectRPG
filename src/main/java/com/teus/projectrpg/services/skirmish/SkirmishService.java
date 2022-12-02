@@ -53,6 +53,7 @@ public class SkirmishService {
                         case BLINDED -> this.checkBlinded(condition, iterator);
                         case BROKEN -> this.checkBroken(character);
                         case ABLAZE -> this.checkAblaze(character);
+                        case SURPRISED -> this.checkSurprised(iterator);
                     }
                 }
             }
@@ -110,6 +111,10 @@ public class SkirmishService {
 
     private void checkAblaze(SkirmishCharacterEntity character) {
         createTestForCondition(character, ConditionType.ABLAZE, 0);
+    }
+
+    private void checkSurprised(ListIterator<CharacterConditionEntity> iterator) {
+        iterator.remove();
     }
 
     private void createTestForCondition(SkirmishCharacterEntity character, ConditionType conditionType, int modifier) {
@@ -266,6 +271,10 @@ public class SkirmishService {
             //TODO and possibility to choose between death and unconsciousness
 //            character.addCondition(new CharacterConditionEntity());
             character.setCurrentWounds(0);
+        }
+
+        if(character.getConditionByType(ConditionType.SURPRISED).isPresent()) {
+            character.removeConditionByType(ConditionType.SURPRISED);
         }
 
         skirmishCharacterService.save(character);
