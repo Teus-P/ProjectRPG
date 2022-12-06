@@ -132,11 +132,19 @@ public class CharacterEntity {
                 .get().getValue();
     }
 
-    public int getArmorForLocalization(BodyLocalizationType localization) {
+    public CharacterBodyLocalizationEntity getCharacterBodyLocalisationByType(BodyLocalizationType bodyLocalizationType) {
         return this.bodyLocalizations.stream()
+                .filter(c -> c.getBodyLocalization().getName().equals(bodyLocalizationType))
+                .findFirst()
+                .get();
+    }
+
+    public int getArmorForLocalization(BodyLocalizationType localization) {
+        CharacterBodyLocalizationEntity bodyLocalization = this.bodyLocalizations.stream()
                 .filter(c -> c.getBodyLocalization().getName().equals(localization))
                 .findFirst()
-                .get().getArmorPoints();
+                .get();
+        return bodyLocalization.getArmorPoints() + bodyLocalization.getAdditionalArmorPoints();
     }
 
     public void addCharacteristic(CharacterCharacteristicEntity characteristic) {

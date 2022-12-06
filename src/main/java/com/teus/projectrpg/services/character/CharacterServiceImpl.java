@@ -190,7 +190,7 @@ public class CharacterServiceImpl implements CharacterService {
                 characterBodyLocalizationEntity.setArmorPoints(
                         this.calculateArmorPointsForBodyLocalization(characterBodyLocalizationEntity, characterEntity.getArmors())
                 );
-
+                characterBodyLocalizationEntity.setAdditionalArmorPoints(0);
                 setInjuries(characterBodyLocalizationDto, characterBodyLocalizationEntity);
                 characterEntity.addBodyLocalization(characterBodyLocalizationEntity);
             }

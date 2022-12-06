@@ -273,7 +273,7 @@ public class SkirmishService {
             character.setCurrentWounds(0);
         }
 
-        if(character.getConditionByType(ConditionType.SURPRISED).isPresent()) {
+        if (character.getConditionByType(ConditionType.SURPRISED).isPresent()) {
             character.removeConditionByType(ConditionType.SURPRISED);
         }
 
@@ -300,5 +300,29 @@ public class SkirmishService {
 
     private int getBonusPoints(int value) {
         return (value / 10) % 100;
+    }
+
+    public void addAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(bodyLocalization.getCharacterId());
+        List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations();
+        bodyLocalizations.stream()
+                .filter(o -> o.getBodyLocalization().getName().equals(bodyLocalization.getBodyLocalization().getName()))
+                .findFirst()
+                .ifPresent(o -> o.setAdditionalArmorPoints(o.getAdditionalArmorPoints() + 1));
+
+        character.setBodyLocalizations(bodyLocalizations);
+        skirmishCharacterService.save(character);
+    }
+
+    public void removeAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(bodyLocalization.getCharacterId());
+        List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations();
+        bodyLocalizations.stream()
+                .filter(o -> o.getBodyLocalization().getName().equals(bodyLocalization.getBodyLocalization().getName()))
+                .findFirst()
+                .ifPresent(o -> o.setAdditionalArmorPoints(o.getAdditionalArmorPoints() - 1));
+
+        character.setBodyLocalizations(bodyLocalizations);
+        skirmishCharacterService.save(character);
     }
 }

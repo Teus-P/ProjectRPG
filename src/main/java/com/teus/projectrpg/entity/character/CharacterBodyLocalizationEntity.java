@@ -32,6 +32,9 @@ public class CharacterBodyLocalizationEntity {
     @Column(name = "armor_points")
     private int armorPoints;
 
+    @Column(name = "additional_armor_points")
+    private int additionalArmorPoints;
+
     @JsonIgnore
     @OneToMany(
             mappedBy = "characterBodyLocalization",

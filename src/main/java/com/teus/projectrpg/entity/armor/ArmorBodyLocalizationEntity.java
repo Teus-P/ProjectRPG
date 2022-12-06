@@ -26,7 +26,4 @@ public class ArmorBodyLocalizationEntity {
 
     @Column(name = "armor_points")
     private int armorPoints;
-
-    @Column(name = "broken_armor_points")
-    private int brokenArmorPoints;
 }

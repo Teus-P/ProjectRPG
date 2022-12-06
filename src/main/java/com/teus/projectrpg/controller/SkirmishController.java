@@ -1,5 +1,6 @@
 package com.teus.projectrpg.controller;
 
+import com.teus.projectrpg.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.dto.EndTurnCheckDto;
 import com.teus.projectrpg.dto.ReceivedDamageDto;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
@@ -44,5 +45,15 @@ public class SkirmishController {
     @PostMapping("removeAdvantagePoint")
     public void removeAdvantagePoint(@RequestBody Long skirmishCharacterId) {
         this.skirmishService.removeAdvantagePoint(skirmishCharacterId);
+    }
+
+    @PostMapping("addAdditionalArmorPoint")
+    public void addAdditionalArmorPoint(@RequestBody CharacterBodyLocalizationDto bodyLocalization) {
+        this.skirmishService.addAdditionalArmorPoint(bodyLocalization);
+    }
+
+    @PostMapping("removeAdditionalArmorPoin")
+    public void removeAdditionalArmorPoint(@RequestBody CharacterBodyLocalizationDto bodyLocalization) {
+        this.skirmishService.removeAdditionalArmorPoint(bodyLocalization);
     }
 }

@@ -37,7 +37,6 @@ public class ArmorBodyLocalizationServiceImpl implements ArmorBodyLocalizationSe
         ArmorBodyLocalizationEntity armorBodyLocalizationEntity = new ArmorBodyLocalizationEntity();
         armorBodyLocalizationEntity.setId(armorBodyLocalizationDto.getId());
         armorBodyLocalizationEntity.setArmorPoints(armorBodyLocalizationDto.getArmorPoints());
-        armorBodyLocalizationEntity.setBrokenArmorPoints(armorBodyLocalizationEntity.getBrokenArmorPoints());
         armorBodyLocalizationEntity.setBodyLocalization(
                 bodyLocalizationService.mapToEntity(armorBodyLocalizationDto.getBodyLocalization())
         );

@@ -35,12 +35,20 @@ class SkirmishServiceTest {
 
     private EndTurnCheckDto endTurnCheck;
 
+    private static TestDto createTestDto(SkirmishCharacterEntity character, ConditionType bleeding) {
+        TestDto test = new TestDto();
+        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
+        test.setConditionType(new ConditionDto(bleeding));
+        test.setModifier(0);
+        test.setFeasible(true);
+        return test;
+    }
+
     @BeforeEach
     public void setUp() {
         endTurnCheck = new EndTurnCheckDto();
         endTurnCheck.setTests(new ArrayList<>());
     }
-
 
     @Test
     void endTurnCheck_whenBleeding_receiveThreeDamage() {
@@ -649,6 +657,54 @@ class SkirmishServiceTest {
         assertEquals(0, character.getAdvantage());
     }
 
+    @Test
+    void addAdditionalArmorPoint_addOnePoint() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto = new BaseDto<>();
+        bodyLocalizationDto.setName(BodyLocalizationType.BODY);
+
+        CharacterBodyLocalizationDto characterBodyLocalizationDto = new CharacterBodyLocalizationDto();
+        characterBodyLocalizationDto.setAdditionalArmorPoints(0);
+        characterBodyLocalizationDto.setArmorPoints(0);
+        characterBodyLocalizationDto.setInjuries(new ArrayList<>());
+        characterBodyLocalizationDto.setCharacterId(character.getId());
+        characterBodyLocalizationDto.setBodyLocalization(bodyLocalizationDto);
+
+        mockFindById(character);
+        skirmishService.addAdditionalArmorPoint(characterBodyLocalizationDto);
+
+        Optional<CharacterBodyLocalizationEntity> bodyLocalization = character.getBodyLocalizations().stream()
+                .filter(o -> o.getBodyLocalization().getName().equals(characterBodyLocalizationDto.getBodyLocalization().getName()))
+                .findFirst();
+
+        assertTrue(bodyLocalization.isPresent());
+        assertEquals(1, bodyLocalization.get().getAdditionalArmorPoints());
+    }
+
+    @Test
+    void addAdditionalArmorPoint_removeOnePoint() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto = new BaseDto<>();
+        bodyLocalizationDto.setName(BodyLocalizationType.BODY);
+
+        CharacterBodyLocalizationDto characterBodyLocalizationDto = new CharacterBodyLocalizationDto();
+        characterBodyLocalizationDto.setAdditionalArmorPoints(0);
+        characterBodyLocalizationDto.setArmorPoints(0);
+        characterBodyLocalizationDto.setInjuries(new ArrayList<>());
+        characterBodyLocalizationDto.setCharacterId(character.getId());
+        characterBodyLocalizationDto.setBodyLocalization(bodyLocalizationDto);
+
+        mockFindById(character);
+        skirmishService.removeAdditionalArmorPoint(characterBodyLocalizationDto);
+
+        Optional<CharacterBodyLocalizationEntity> bodyLocalization = character.getBodyLocalizations().stream()
+                .filter(o -> o.getBodyLocalization().getName().equals(characterBodyLocalizationDto.getBodyLocalization().getName()))
+                .findFirst();
+
+        assertTrue(bodyLocalization.isPresent());
+        assertEquals(-1, bodyLocalization.get().getAdditionalArmorPoints());
+    }
+
     private void mockFindAllCharacters(List<SkirmishCharacterEntity> characters) {
         Mockito.when(skirmishCharacterService.findAll()).thenReturn(characters);
     }
@@ -718,6 +774,7 @@ class SkirmishServiceTest {
         bodyLocalization.setCharacter(character);
         bodyLocalization.setArmorPoints(armorPoints);
         bodyLocalization.setBodyLocalization(this.createTestBodyLocalization(bodyLocalizationType));
+        bodyLocalization.setAdditionalArmorPoints(0);
         return bodyLocalization;
     }
 
@@ -736,14 +793,5 @@ class SkirmishServiceTest {
         characterCondition.setCounter(counter);
         characterCondition.setCharacter(character);
         character.addCondition(characterCondition);
-    }
-
-    private static TestDto createTestDto(SkirmishCharacterEntity character, ConditionType bleeding) {
-        TestDto test = new TestDto();
-        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
-        test.setConditionType(new ConditionDto(bleeding));
-        test.setModifier(0);
-        test.setFeasible(true);
-        return test;
     }
 }

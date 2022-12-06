@@ -52,7 +52,6 @@ class ArmorServiceImplTest {
             assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getBodyLocalization().getId(), armorDto.getArmorBodyLocalizations().get(i).getBodyLocalization().getId());
             assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getBodyLocalization().getName(), armorDto.getArmorBodyLocalizations().get(i).getBodyLocalization().getName());
             assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getArmorPoints(), armorDto.getArmorBodyLocalizations().get(i).getArmorPoints());
-            assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getBrokenArmorPoints(), armorDto.getArmorBodyLocalizations().get(i).getBrokenArmorPoints());
         }
 
         for (int i = 0; i < armorEntity.getArmorQualities().size(); i++) {
@@ -83,7 +82,6 @@ class ArmorServiceImplTest {
         ArmorBodyLocalizationEntity armorLeftArm = new ArmorBodyLocalizationEntity();
         armorLeftArm.setArmor(armorEntity);
         armorLeftArm.setArmorPoints(1);
-        armorLeftArm.setBrokenArmorPoints(0);
         armorLeftArm.setBodyLocalization(bodyLocalizationEntityLeftArm);
         BodyLocalizationEntity bodyLocalizationEntityRightArm = new BodyLocalizationEntity();
         bodyLocalizationEntityRightArm.setId(2L);
@@ -91,7 +89,6 @@ class ArmorServiceImplTest {
         ArmorBodyLocalizationEntity armorRightArm = new ArmorBodyLocalizationEntity();
         armorRightArm.setArmor(armorEntity);
         armorRightArm.setArmorPoints(1);
-        armorRightArm.setBrokenArmorPoints(0);
         armorRightArm.setBodyLocalization(bodyLocalizationEntityRightArm);
         armorEntity.setArmorBodyLocalizations(List.of(armorRightArm, armorLeftArm));
 
@@ -126,7 +123,6 @@ class ArmorServiceImplTest {
         armorLeftArm.setId(1L);
         armorLeftArm.setBodyLocalization(bodyLocalizationDtoLeftArm);
         armorLeftArm.setArmorPoints(1);
-        armorLeftArm.setBrokenArmorPoints(0);
 
         BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDtoRightArm = new BaseDto<>();
         bodyLocalizationDtoRightArm.setId(2L);
@@ -135,7 +131,6 @@ class ArmorServiceImplTest {
         armorRightArm.setId(2L);
         armorRightArm.setBodyLocalization(bodyLocalizationDtoRightArm);
         armorRightArm.setArmorPoints(1);
-        armorRightArm.setBrokenArmorPoints(0);
 
         armorDto.setArmorBodyLocalizations(List.of(armorRightArm, armorLeftArm));
 
