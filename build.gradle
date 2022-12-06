@@ -24,6 +24,7 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
     implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     implementation 'org.mockito:mockito-junit-jupiter:4.8.0'
+    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
