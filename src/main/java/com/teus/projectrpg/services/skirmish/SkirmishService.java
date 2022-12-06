@@ -43,18 +43,27 @@ public class SkirmishService {
     private void checkConditions(List<SkirmishCharacterEntity> skirmishCharacters) {
         skirmishCharacters.forEach(character -> {
             if (!character.getConditions().isEmpty()) {
-                ListIterator<CharacterConditionEntity> iterator = character.getConditions().listIterator();
-                while (iterator.hasNext()) {
-                    CharacterConditionEntity condition = iterator.next();
-                    switch (condition.getCondition().getName()) {
-                        case BLEEDING -> this.checkBleeding(condition, character, iterator);
-                        case DEAFENED -> this.checkDeafened(condition, iterator);
-                        case STUNNED -> this.checkStunned(character);
-                        case BLINDED -> this.checkBlinded(condition, iterator);
-                        case BROKEN -> this.checkBroken(character);
-                        case ABLAZE -> this.checkAblaze(character);
-                        case SURPRISED -> this.checkSurprised(iterator);
+                this.checkUnconscious(character.getConditions());
+                if (!character.getIsDead()) {
+                    ListIterator<CharacterConditionEntity> iterator = character.getConditions().listIterator();
+                    while (iterator.hasNext()) {
+                        CharacterConditionEntity condition = iterator.next();
+                        if (!character.getIsDead()) {
+                            switch (condition.getCondition().getName()) {
+                                case BLEEDING -> this.checkBleeding(condition, character, iterator);
+                                case DEAFENED -> this.checkDeafened(condition, iterator);
+                                case STUNNED -> this.checkStunned(character);
+                                case BLINDED -> this.checkBlinded(condition, iterator);
+                                case BROKEN -> this.checkBroken(character);
+                                case ABLAZE -> this.checkAblaze(character);
+                                case SURPRISED -> this.checkSurprised(iterator);
+                                case POISON -> this.checkPoison(condition, character);
+                            }
+                        } else {
+                            break;
+                        }
                     }
+                    this.checkIfProne(character);
                 }
             }
         });
@@ -117,6 +126,27 @@ public class SkirmishService {
         iterator.remove();
     }
 
+    private void checkPoison(CharacterConditionEntity condition, SkirmishCharacterEntity character) {
+        character.setCurrentWounds(character.getCurrentWounds() - condition.getValue());
+        createTestForCondition(character, ConditionType.POISON, 0);
+    }
+
+    private void checkUnconscious(List<CharacterConditionEntity> conditions) {
+        Optional<CharacterConditionEntity> unconscious = conditions.stream()
+                .filter(c -> c.getCondition().getName().equals(ConditionType.UNCONSCIOUS))
+                .findFirst();
+
+        if(unconscious.isPresent()) {
+            if(unconscious.get().getCounter() > 0) {
+                unconscious.get().setCounter(unconscious.get().getCounter() - 1);
+                if(unconscious.get().getCounter() <= 0) {
+                    unconscious.get().setValue(1);
+                    unconscious.get().setCounter(0);
+                }
+            }
+        }
+    }
+
     private void createTestForCondition(SkirmishCharacterEntity character, ConditionType conditionType, int modifier) {
         TestDto test = new TestDto();
         test.setSkirmishCharacter(new SkirmishCharacterDto(character));
@@ -131,8 +161,10 @@ public class SkirmishService {
         List<SkirmishCharacterEntity> skirmishCharacters = new ArrayList<>();
         for (TestDto test : this.endTurnCheck.getTests()) {
             SkirmishCharacterEntity character = skirmishCharacterService.findById(test.getSkirmishCharacter().getId());
-            this.checkConditionAfterTests(test, character);
-            skirmishCharacters.add(character);
+            if (!character.getIsDead()) {
+                this.checkConditionAfterTests(test, character);
+                skirmishCharacters.add(character);
+            }
         }
 
         this.skirmishCharacterService.saveAll(skirmishCharacters);
@@ -147,6 +179,7 @@ public class SkirmishService {
                 case STUNNED -> this.checkStunnedTest(test, condition.get(), character);
                 case BROKEN -> this.checkBrokenTest(test, condition.get(), character);
                 case ABLAZE -> this.checkAblazeTest(test, condition.get(), character);
+                case POISON -> this.checkPoisonTest(test, condition.get(), character);
             }
         }
 
@@ -171,17 +204,7 @@ public class SkirmishService {
         Optional<CharacterSkillEntity> skill = skillService.getSkillByType(character.getSkills(), SkillType.ENDURANCE);
         int skillValue = skill.map(CharacterSkillEntity::getValue).orElseGet(() -> characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.TOUGHNESS));
         if (test.getResult() <= (skillValue + test.getModifier())) {
-            condition.setValue(condition.getValue() - (getBonusPoints(skillValue) - getBonusPoints(test.getResult())) - 1);
-            if (condition.getValue() <= 0) {
-                character.removeConditionByType(condition.getCondition().getName());
-                if (character.getConditionByType(ConditionType.FATIGUED).isEmpty()) {
-                    CharacterConditionEntity newCondition = new CharacterConditionEntity();
-                    newCondition.setCondition(conditionService.findByName(ConditionType.FATIGUED));
-                    newCondition.setValue(1);
-                    newCondition.setCharacter(character);
-                    character.addCondition(newCondition);
-                }
-            }
+            addFatiguedAfterConditionRemoving(test, condition, character, skillValue);
         }
     }
 
@@ -233,6 +256,38 @@ public class SkirmishService {
         }
     }
 
+    private void checkPoisonTest(TestDto test,
+                                 CharacterConditionEntity condition,
+                                 SkirmishCharacterEntity character) {
+        Optional<CharacterSkillEntity> skill = skillService.getSkillByType(character.getSkills(), SkillType.ENDURANCE);
+        int skillValue = skill.map(CharacterSkillEntity::getValue).orElseGet(() -> characteristicService.getCharacteristicValueByType(character.getCharacteristics(), CharacteristicType.TOUGHNESS));
+
+        boolean isTestSuccessful = test.getResult() <= (skillValue + test.getModifier());
+
+        Optional<CharacterConditionEntity> unconscious = character.getConditionByType(ConditionType.UNCONSCIOUS);
+        if (unconscious.isPresent() && unconscious.get().getValue() > 0) {
+            if (!isTestSuccessful) {
+                character.setIsDead(true);
+            }
+        } else if (isTestSuccessful) {
+            addFatiguedAfterConditionRemoving(test, condition, character, skillValue);
+        }
+    }
+
+    private void addFatiguedAfterConditionRemoving(TestDto test, CharacterConditionEntity condition, SkirmishCharacterEntity character, int skillValue) {
+        condition.setValue(condition.getValue() - (getBonusPoints(skillValue) - getBonusPoints(test.getResult())) - 1);
+        if (condition.getValue() <= 0) {
+            character.removeConditionByType(condition.getCondition().getName());
+            if (character.getConditionByType(ConditionType.FATIGUED).isEmpty()) {
+                CharacterConditionEntity newCondition = new CharacterConditionEntity();
+                newCondition.setCondition(conditionService.findByName(ConditionType.FATIGUED));
+                newCondition.setValue(1);
+                newCondition.setCharacter(character);
+                character.addCondition(newCondition);
+            }
+        }
+    }
+
     public void receiveDamage(ReceivedDamageDto receivedDamage) {
         int finalDamage;
         SkirmishCharacterEntity character = skirmishCharacterService.findById(receivedDamage.getCharacterId());
@@ -266,18 +321,36 @@ public class SkirmishService {
             character.setAdvantage(0);
         }
 
-        if (character.getCurrentWounds() <= 0) {
-            character.setIsDead(true);
-            //TODO and possibility to choose between death and unconsciousness
-//            character.addCondition(new CharacterConditionEntity());
-            character.setCurrentWounds(0);
-        }
+        this.checkIfProne(character);
 
         if (character.getConditionByType(ConditionType.SURPRISED).isPresent()) {
             character.removeConditionByType(ConditionType.SURPRISED);
         }
 
         skirmishCharacterService.save(character);
+    }
+
+
+    public void checkIfProne(SkirmishCharacterEntity character) {
+        if (character.getCurrentWounds() <= 0) {
+            character.setCurrentWounds(0);
+            if (character.getConditionByType(ConditionType.PRONE).isEmpty()) {
+                CharacterConditionEntity prone = new CharacterConditionEntity();
+                prone.setCondition(conditionService.findByName(ConditionType.PRONE));
+                prone.setValue(1);
+                prone.setCharacter(character);
+                character.addCondition(prone);
+            }
+
+            if (character.getConditionByType(ConditionType.UNCONSCIOUS).isEmpty()) {
+                CharacterConditionEntity unconscious = new CharacterConditionEntity();
+                unconscious.setCondition(conditionService.findByName(ConditionType.UNCONSCIOUS));
+                unconscious.setValue(0);
+                unconscious.setCounter(getBonusPoints(character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS)));
+                unconscious.setCharacter(character);
+                character.addCondition(unconscious);
+            }
+        }
     }
 
     public void addAdvantagePoint(Long skirmishCharacterId) {
@@ -298,7 +371,7 @@ public class SkirmishService {
         skirmishCharacterService.save(character);
     }
 
-    private int getBonusPoints(int value) {
+    public int getBonusPoints(int value) {
         return (value / 10) % 100;
     }
 

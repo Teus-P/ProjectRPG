@@ -51,6 +51,21 @@ class SkirmishServiceTest {
     }
 
     @Test
+    void endTurnCheck_whenDead_dontCreateTests() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setCurrentWounds(0);
+        character.setIsDead(true);
+        addCondition(ConditionType.BLEEDING, 3, 0, character);
+        addCondition(ConditionType.POISON, 3, 0, character);
+        addCondition(ConditionType.STUNNED, 3, 0, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        assertTrue(endTurnCheck.getTests().isEmpty());
+    }
+
+    @Test
     void endTurnCheck_whenBleeding_receiveThreeDamage() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         addCondition(ConditionType.BLEEDING, 3, 0, character);
@@ -178,6 +193,18 @@ class SkirmishServiceTest {
     }
 
     @Test
+    void endTurnCheck_whenAblaze_createTest() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.ABLAZE, 3, 0, character);
+        TestDto test = createTestDto(character, ConditionType.ABLAZE);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        assertTrue(endTurnCheck.getTests().contains(test));
+    }
+
+    @Test
     void endTurnCheck_whenSurprised_removeCondition() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         addCondition(ConditionType.SURPRISED, 1, 0, character);
@@ -186,6 +213,52 @@ class SkirmishServiceTest {
         skirmishService.endTurnCheck(endTurnCheck);
 
         assertTrue(character.getConditions().isEmpty());
+    }
+
+    @Test
+    void endTurnCheck_whenPoison_removeThreeWoundsAndCreateTest() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.POISON, 3, 0, character);
+        TestDto test = createTestDto(character, ConditionType.POISON);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        Optional<TestDto> poisonTest = endTurnCheck.getTests().stream()
+                .filter(t -> t.getConditionType().getName().equals(ConditionType.POISON))
+                .findFirst();
+
+        assertTrue(poisonTest.isPresent());
+        assertTrue(character.getConditionByType(ConditionType.POISON).isPresent());
+        assertEquals(7, character.getCurrentWounds());
+    }
+
+    @Test
+    void endTurnCheck_whenUnconsciousWithZeroValue_decreaseCounter() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.UNCONSCIOUS, 0, 3, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        Optional<CharacterConditionEntity> unconscious = character.getConditionByType(ConditionType.UNCONSCIOUS);
+        assertTrue(unconscious.isPresent());
+        assertEquals(0, unconscious.get().getValue());
+        assertEquals(2, unconscious.get().getCounter());
+    }
+
+    @Test
+    void endTurnCheck_whenUnconsciousWithZeroValue_setOneValueAfterCounterIsDown() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.UNCONSCIOUS, 0, 1, character);
+
+        mockFindAllCharacters(Collections.singletonList(character));
+        skirmishService.endTurnCheck(endTurnCheck);
+
+        Optional<CharacterConditionEntity> unconscious = character.getConditionByType(ConditionType.UNCONSCIOUS);
+        assertTrue(unconscious.isPresent());
+        assertEquals(1, unconscious.get().getValue());
+        assertEquals(0, unconscious.get().getCounter());
     }
 
     @Test
@@ -500,6 +573,145 @@ class SkirmishServiceTest {
     }
 
     @Test
+    void endTurnCheckAfterTests_whenPoison_removeOneCondition_ifZeroSuccessPoints() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.POISON, 4, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.POISON,
+                0,
+                40,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.POISON).isPresent());
+        assertEquals(3, character.getConditionByType(ConditionType.POISON).get().getValue());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenPoison_removeThreeCondition_ifTwoSuccessPoints() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.POISON, 4, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.POISON,
+                0,
+                20,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.POISON).isPresent());
+        assertEquals(1, character.getConditionByType(ConditionType.POISON).get().getValue());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenPoison_removeWholeCondition() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.POISON, 3, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.POISON,
+                0,
+                29,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.POISON).isEmpty());
+        assertTrue(character.getConditionByType(ConditionType.FATIGUED).isPresent());
+        assertEquals(1, character.getConditionByType(ConditionType.FATIGUED).get().getValue());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenPoison_setIsDeadIfUnconsciousAndTestFailed() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.POISON, 3, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.POISON,
+                0,
+                41,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.POISON).isPresent());
+        assertTrue(character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent());
+        assertTrue(character.getIsDead());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenPoison_dontSetIsDeadIfUnconsciousAndTestSucceeded() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.POISON, 3, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.POISON,
+                0,
+                39,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.POISON).isPresent());
+        assertTrue(character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent());
+        assertFalse(character.getIsDead());
+    }
+
+    @Test
+    void endTurnCheckAfterTests_whenPoison_dontSetIsDeadIfUnconsciousAreOnlyCounterAndTestFailed() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        addCondition(ConditionType.POISON, 3, 0, character);
+        addCondition(ConditionType.UNCONSCIOUS, 0, 3, character);
+
+        TestDto testDto = new TestDto(
+                new SkirmishCharacterDto(character),
+                SkillType.ENDURANCE,
+                ConditionType.POISON,
+                0,
+                41,
+                true
+        );
+        endTurnCheck.setTests(Collections.singletonList(testDto));
+
+        mockFindById(character);
+        skirmishService.endTurnCheckAfterTests(endTurnCheck);
+
+        assertTrue(character.getConditionByType(ConditionType.POISON).isPresent());
+        assertTrue(character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent());
+        assertFalse(character.getIsDead());
+    }
+
+    @Test
     void receiveDamage_removeFourWounds_ifWeaponIsDamaging() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         character.setAdvantage(2);
@@ -616,7 +828,7 @@ class SkirmishServiceTest {
     }
 
     @Test
-    void receiveDamage_killCharacter_ifWoundsAreEqualToZero() {
+    void receiveDamage_proneCharacter_ifWoundsAreEqualToZero() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         character.setAdvantage(2);
 
@@ -632,7 +844,9 @@ class SkirmishServiceTest {
 
         assertEquals(0, character.getCurrentWounds());
         assertEquals(0, character.getAdvantage());
-        assertTrue(character.getIsDead());
+        assertTrue(character.getConditionByType(ConditionType.PRONE).isPresent());
+        assertTrue(character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent());
+        assertEquals(skirmishService.getBonusPoints(character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS)), character.getConditionByType(ConditionType.UNCONSCIOUS).get().getCounter());
     }
 
     @Test
