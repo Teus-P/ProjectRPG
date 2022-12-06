@@ -1,5 +1,8 @@
 package com.teus.projectrpg.services.skirmishcharacter;
 
+import com.teus.projectrpg.dto.CharacterDto;
+import com.teus.projectrpg.dto.SkirmishCharacterDto;
+import com.teus.projectrpg.entity.character.CharacterEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 
 import java.util.List;

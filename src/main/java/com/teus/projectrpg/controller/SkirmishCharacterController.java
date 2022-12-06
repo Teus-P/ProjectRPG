@@ -66,6 +66,27 @@ public class SkirmishCharacterController {
         }
     }
 
+    @PutMapping("/skirmishCharacters")
+    List<SkirmishCharacterEntity> putSkirmishCharacters(@RequestBody List<SkirmishCharacterDto> newSkirmishCharacters) {
+        List<SkirmishCharacterEntity> skirmishCharacterEntities = new ArrayList<>();
+
+        newSkirmishCharacters.forEach(newSkirmishCharacter -> {
+            SkirmishCharacterEntity skirmishCharacterEntity = new SkirmishCharacterEntity();
+            characterService.createCharacterFromDto(newSkirmishCharacter, skirmishCharacterEntity);
+            skirmishCharacterEntity.setSkirmishInitiative(newSkirmishCharacter.getSkirmishInitiative());
+            skirmishCharacterEntity.setAdvantage(newSkirmishCharacter.getAdvantage());
+            skirmishCharacterEntity.setCurrentWounds(newSkirmishCharacter.getCurrentWounds());
+            skirmishCharacterEntity.setIsDead(newSkirmishCharacter.getIsDead());
+            skirmishCharacterEntities.add(skirmishCharacterEntity);
+        });
+
+        try {
+            return skirmishCharacterService.saveAll(skirmishCharacterEntities);
+        } catch (DataIntegrityViolationException e) {
+            throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
+        }
+    }
+
     @DeleteMapping("/skirmishCharacter/{id}")
     void deleteSkirmishCharacter(@PathVariable Long id) {
         try {
