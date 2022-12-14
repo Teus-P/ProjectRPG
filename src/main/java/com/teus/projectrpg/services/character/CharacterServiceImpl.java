@@ -18,7 +18,6 @@ import com.teus.projectrpg.services.skill.SkillService;
 import com.teus.projectrpg.services.spell.SpellService;
 import com.teus.projectrpg.services.talent.TalentService;
 import com.teus.projectrpg.services.weaponservices.weapon.WeaponService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,9 +50,6 @@ public class CharacterServiceImpl implements CharacterService {
         this.injuryService = injuryService;
         this.conditionService = conditionService;
     }
-
-    @Autowired
-
 
     @Override
     public List<CharacterEntity> findAll() {

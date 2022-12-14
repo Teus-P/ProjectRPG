@@ -17,7 +17,6 @@ import com.teus.projectrpg.type.armor.ArmorQualityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,9 +36,6 @@ public class ArmorServiceImpl implements ArmorService {
         this.armorQualityService = armorQualityService;
         this.armorBodyLocalizationService = armorBodyLocalizationService;
     }
-
-    @Autowired
-
 
     @Override
     public List<ArmorEntity> findAll() {
