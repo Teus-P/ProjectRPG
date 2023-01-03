@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BaseDto <T, E extends BaseEntity>{
+public class BaseDto <T, E extends BaseEntity<T>>{
     protected Long id;
     protected T name;
     protected String nameTranslation;
@@ -15,6 +15,6 @@ public class BaseDto <T, E extends BaseEntity>{
 
     public BaseDto(E entity) {
         this.id = entity.getId();
-        this.name = (T) entity.getName();
+        this.name = entity.getName();
     }
 }
