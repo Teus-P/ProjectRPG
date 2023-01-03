@@ -11,7 +11,7 @@ import java.util.List;
 public class BaseServiceImpl implements BaseService {
 
     @Override
-    public <T, E extends BaseEntity> BaseDto<T, E> mapToDto(E entity) {
+    public <T, E extends BaseEntity<T>> BaseDto<T, E> mapToDto(E entity) {
         BaseDto<T, E> baseDto = new BaseDto<>();
         baseDto.setId(entity.getId());
         baseDto.setName((T) entity.getName());
@@ -20,7 +20,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public <T, E extends BaseEntity> List<BaseDto<T, E>> getBaseDtosList(List<E> entitiesList) {
+    public <T, E extends BaseEntity<T>> List<BaseDto<T, E>> getBaseDtosList(List<E> entitiesList) {
         List<BaseDto<T, E>> dtosList = new ArrayList<>();
 
         for (E entity : entitiesList) {
