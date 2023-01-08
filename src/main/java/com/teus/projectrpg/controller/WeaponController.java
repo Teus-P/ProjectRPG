@@ -17,6 +17,7 @@ import com.teus.projectrpg.type.weapon.WeaponReachType;
 import com.teus.projectrpg.type.weapon.WeaponType;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -41,15 +42,22 @@ public class WeaponController {
         this.baseService = baseService;
     }
 
+//    @GetMapping("/weapon")
+//    List<WeaponDto> getAllWeapons() {
+//        List<WeaponDto> weaponDtos = new ArrayList<>();
+//
+//        for (WeaponEntity weaponEntity : weaponService.findAll()) {
+//            weaponDtos.add(new WeaponDto(weaponEntity));
+//        }
+//
+//        return weaponDtos;
+//    }
+
     @GetMapping("/weapon")
-    List<WeaponDto> getAllWeapons() {
-        List<WeaponDto> weaponDtos = new ArrayList<>();
-
-        for (WeaponEntity weaponEntity : weaponService.findAll()) {
-            weaponDtos.add(new WeaponDto(weaponEntity));
-        }
-
-        return weaponDtos;
+    List<EntityModel<WeaponEntity>> getAllWeapons() {
+        return weaponService.findAll().stream()
+                .map(EntityModel::of)
+                .toList();
     }
 
     @PutMapping("/weapon")

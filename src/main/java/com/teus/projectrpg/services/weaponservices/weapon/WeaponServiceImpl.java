@@ -1,6 +1,5 @@
 package com.teus.projectrpg.services.weaponservices.weapon;
 
-import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.dto.WeaponDto;
 import com.teus.projectrpg.dto.WeaponQualityValueDto;
 import com.teus.projectrpg.entity.weapon.WeaponEntity;
@@ -13,7 +12,6 @@ import com.teus.projectrpg.services.weaponservices.weapontype.WeaponTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,7 +65,7 @@ public class WeaponServiceImpl implements WeaponService {
         weaponEntity.setName(weaponDto.getName());
         weaponEntity.setNameTranslation(weaponDto.getNameTranslation());
         weaponEntity.setWeaponType(weaponTypeService.findByName(weaponDto.getWeaponType().getName()));
-        weaponEntity.setWeaponGroup(weaponGroupService.findByName(weaponDto.getWeaponGroupType().getName()));
+        weaponEntity.setWeaponGroup(weaponGroupService.findByName(weaponDto.getWeaponGroup().getName()));
         weaponEntity.setWeaponReach(weaponReachService.findByName(weaponDto.getWeaponReach().getName()));
         weaponEntity.setWeaponRange(weaponDto.getWeaponRange());
         weaponEntity.setIsUsingStrength(weaponDto.getIsUsingStrength());

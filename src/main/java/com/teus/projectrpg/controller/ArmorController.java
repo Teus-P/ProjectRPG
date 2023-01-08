@@ -48,19 +48,19 @@ public class ArmorController {
     }
 
     @GetMapping("/armor")
-//    List<EntityModel<ArmorEntity>> getAllArmors() {
-    List<ArmorDto> getAllArmors() {
-        List<ArmorDto> armorDtos = new ArrayList<>();
+    List<EntityModel<ArmorEntity>> getAllArmors() {
+//    List<ArmorDto> getAllArmors() {
+//        List<ArmorDto> armorDtos = new ArrayList<>();
 
-        for (ArmorEntity armorEntity : armorService.findAll()) {
-            armorDtos.add(new ArmorDto(armorEntity));
-        }
+//        for (ArmorEntity armorEntity : armorService.findAll()) {
+//            armorDtos.add(new ArmorDto(armorEntity));
+//        }
 
-        return armorDtos;
+//        return armorDtos;
 
-//        return armorService.findAll().stream()
-//                .map(EntityModel::of)
-//                .toList();
+        return armorService.findAll().stream()
+                .map(EntityModel::of)
+                .toList();
     }
 
     @PutMapping("/armor")

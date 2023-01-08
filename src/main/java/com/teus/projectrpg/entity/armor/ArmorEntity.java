@@ -1,6 +1,7 @@
 package com.teus.projectrpg.entity.armor;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +31,7 @@ public class ArmorEntity {
     @JoinColumn(name = "armor_category_id", nullable = false)
     private ArmorCategoryEntity armorCategory;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "armor",
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
