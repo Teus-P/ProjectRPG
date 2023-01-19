@@ -2,7 +2,7 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.TalentDto;
 import com.teus.projectrpg.entity.talent.TalentEntity;
-import com.teus.projectrpg.services.talent.TalentService;
+import com.teus.projectrpg.service.talent.TalentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

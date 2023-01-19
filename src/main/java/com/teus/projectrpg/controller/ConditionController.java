@@ -1,11 +1,8 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.dto.ConditionDto;
 import com.teus.projectrpg.entity.condition.ConditionEntity;
-import com.teus.projectrpg.services.base.BaseService;
-import com.teus.projectrpg.services.condition.ConditionService;
-import com.teus.projectrpg.type.condition.ConditionType;
+import com.teus.projectrpg.service.condition.ConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -3,14 +3,10 @@ package com.teus.projectrpg.controller;
 import com.teus.projectrpg.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.dto.EndTurnCheckDto;
 import com.teus.projectrpg.dto.ReceivedDamageDto;
-import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
-import com.teus.projectrpg.services.skirmish.SkirmishService;
-import com.teus.projectrpg.services.skirmishcharacter.SkirmishCharacterService;
+import com.teus.projectrpg.service.skirmish.SkirmishService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class SkirmishController {

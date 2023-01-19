@@ -5,7 +5,7 @@ import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.CharacterDto;
 import com.teus.projectrpg.entity.character.CharacterEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
-import com.teus.projectrpg.services.character.CharacterService;
+import com.teus.projectrpg.service.character.CharacterService;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

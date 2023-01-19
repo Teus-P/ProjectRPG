@@ -2,7 +2,7 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
-import com.teus.projectrpg.services.bodylocalization.BodyLocalizationService;
+import com.teus.projectrpg.service.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

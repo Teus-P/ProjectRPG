@@ -2,8 +2,8 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.injury.InjuryEntity;
-import com.teus.projectrpg.services.base.BaseService;
-import com.teus.projectrpg.services.injury.InjuryService;
+import com.teus.projectrpg.service.base.BaseMapper;
+import com.teus.projectrpg.service.injury.InjuryService;
 import com.teus.projectrpg.type.injury.InjuryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +16,12 @@ import java.util.List;
 public class InjuryController {
 
     private final InjuryService injuryService;
-    private final BaseService baseService;
+    private final BaseMapper baseMapper;
 
     @Autowired
-    public InjuryController(InjuryService injuryService, BaseService baseService) {
+    public InjuryController(InjuryService injuryService, BaseMapper baseMapper) {
         this.injuryService = injuryService;
-        this.baseService = baseService;
+        this.baseMapper = baseMapper;
     }
 
     @GetMapping("/injury")
@@ -29,7 +29,7 @@ public class InjuryController {
         List<BaseDto<InjuryType, InjuryEntity>> injuriesDtos = new ArrayList<>();
 
         for (InjuryEntity injuryEntity : injuryService.findAll()) {
-            injuriesDtos.add(baseService.mapToDto(injuryEntity));
+            injuriesDtos.add(baseMapper.mapToBaseDto(injuryEntity));
         }
 
         return injuriesDtos;

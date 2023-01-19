@@ -2,7 +2,7 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.skill.SkillEntity;
-import com.teus.projectrpg.services.skill.SkillService;
+import com.teus.projectrpg.service.skill.SkillService;
 import com.teus.projectrpg.type.skill.SkillType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -2,7 +2,7 @@ package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.SpellDto;
 import com.teus.projectrpg.entity.spell.SpellEntity;
-import com.teus.projectrpg.services.spell.SpellService;
+import com.teus.projectrpg.service.spell.SpellService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
