@@ -1,9 +1,7 @@
 package com.teus.projectrpg.entity.armor;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -18,7 +16,6 @@ public class ArmorBodyLocalizationEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "armor_id", nullable = false)
     private ArmorEntity armor;

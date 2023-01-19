@@ -17,7 +17,7 @@ public class WeaponDto implements Serializable {
     private String name;
     private String nameTranslation;
     private BaseDto<WeaponType, WeaponTypeEntity> weaponType;
-    private BaseDto<WeaponGroupType, WeaponGroupEntity> weaponGroup;
+    private BaseDto<WeaponGroupType, WeaponGroupEntity> weaponGroupType;
     private BaseDto<WeaponReachType, WeaponReachEntity> weaponReach;
     private float weaponRange;
     private Boolean isUsingStrength;
@@ -33,7 +33,7 @@ public class WeaponDto implements Serializable {
         this.name = weaponEntity.getName();
         this.nameTranslation = weaponEntity.getNameTranslation();
         this.weaponType = new BaseDto<>(weaponEntity.getWeaponType());
-        this.weaponGroup = new BaseDto<>(weaponEntity.getWeaponGroup());
+        this.weaponGroupType = new BaseDto<>(weaponEntity.getWeaponGroup());
         this.weaponReach = new BaseDto<>(weaponEntity.getWeaponReach());
         this.weaponRange = weaponEntity.getWeaponRange();
         this.isUsingStrength = weaponEntity.getIsUsingStrength();
