@@ -19,15 +19,10 @@ import com.teus.projectrpg.type.armor.ArmorQualityType;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ArmorController {
@@ -48,7 +43,6 @@ public class ArmorController {
     }
 
     @GetMapping("/armor")
-//    List<EntityModel<ArmorEntity>> getAllArmors() {
     List<ArmorDto> getAllArmors() {
         List<ArmorDto> armorDtos = new ArrayList<>();
 
@@ -57,10 +51,6 @@ public class ArmorController {
         }
 
         return armorDtos;
-
-//        return armorService.findAll().stream()
-//                .map(EntityModel::of)
-//                .toList();
     }
 
     @PutMapping("/armor")
@@ -88,23 +78,17 @@ public class ArmorController {
     }
 
     @GetMapping("/armorCategory")
-    List<EntityModel<ArmorCategoryEntity>> getAllArmorCategories() {
-        return armorCategoryService.findAll().stream()
-                .map(EntityModel::of)
-                .toList();
+    List<BaseDto<ArmorCategoryType, ArmorCategoryEntity>> getAllArmorCategories() {
+        return this.baseService.getBaseDtosList(armorCategoryService.findAll());
     }
 
     @GetMapping("/armorPenalty")
-    List<EntityModel<ArmorPenaltyEntity>> getAllArmorPenalties() {
-        return armorPenaltyService.findAll().stream()
-                .map(EntityModel::of)
-                .toList();
+    List<BaseDto<ArmorPenaltyType, ArmorPenaltyEntity>> getAllArmorPenalties() {
+        return this.baseService.getBaseDtosList(armorPenaltyService.findAll());
     }
 
     @GetMapping("/armorQuality")
-    List<EntityModel<ArmorQualityEntity>> getAllArmorQualities() {
-        return armorQualityService.findAll().stream()
-                .map(EntityModel::of)
-                .toList();
+    List<BaseDto<ArmorQualityType, ArmorQualityEntity>> getAllArmorQualities() {
+        return this.baseService.getBaseDtosList(armorQualityService.findAll());
     }
 }

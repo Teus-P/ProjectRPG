@@ -21,7 +21,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-hateoas:2.6.4'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
     implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     implementation 'org.mockito:mockito-junit-jupiter:4.8.0'
