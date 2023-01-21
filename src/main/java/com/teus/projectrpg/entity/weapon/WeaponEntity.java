@@ -59,7 +59,4 @@ public class WeaponEntity {
             orphanRemoval = true)
     private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();
 
-    public void addWeaponQuality(WeaponQualityValueEntity weaponQuality) {
-        this.weaponQualities.add(weaponQuality);
-    }
 }

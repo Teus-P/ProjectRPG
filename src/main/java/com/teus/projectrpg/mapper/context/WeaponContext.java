@@ -20,12 +20,12 @@ public class WeaponContext {
         weapon.setWeaponQualities(weaponQualityValueEntities);
     }
 
-    @AfterMapping
-    public void setWeaponQualities(@MappingTarget WeaponDto weaponDto) {
-        List<WeaponQualityValueDto> weaponQualityValueDtos = weaponDto.getWeaponQualities().stream()
-                .peek(quality -> quality.setName(weaponDto))
-                .toList();
-
-        weaponDto.setWeaponQualities(weaponQualityValueDtos);
-    }
+//    @AfterMapping
+//    public void setWeaponQualities(@MappingTarget WeaponDto weaponDto) {
+//        List<WeaponQualityValueDto> weaponQualityValueDtos = weaponDto.getWeaponQualities().stream()
+//                .peek(quality -> quality.setName(weaponDto))
+//                .toList();
+//
+//        weaponDto.setWeaponQualities(weaponQualityValueDtos);
+//    }
 }

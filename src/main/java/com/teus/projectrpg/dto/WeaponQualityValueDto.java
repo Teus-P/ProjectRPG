@@ -1,5 +1,6 @@
 package com.teus.projectrpg.dto;
 
+import com.teus.projectrpg.entity.weapon.WeaponQualityEntity;
 import com.teus.projectrpg.entity.weapon.WeaponQualityValueEntity;
 import com.teus.projectrpg.type.weapon.WeaponQualityType;
 import lombok.Data;
@@ -8,8 +9,7 @@ import lombok.Data;
 public class WeaponQualityValueDto {
 
     private Long id;
-    private WeaponQualityType name;
-    private String nameTranslation;
+    private BaseDto<WeaponQualityType, WeaponQualityEntity> weaponQuality;
     private int value;
 
     public WeaponQualityValueDto() {
@@ -18,7 +18,7 @@ public class WeaponQualityValueDto {
 
     public WeaponQualityValueDto(WeaponQualityValueEntity weaponQualityValueEntity) {
         this.id = weaponQualityValueEntity.getId();
-        this.name = weaponQualityValueEntity.getWeaponQuality().getName();
+        this.weaponQuality = new BaseDto<>(weaponQualityValueEntity.getWeaponQuality());
         this.value = weaponQualityValueEntity.getValue();
     }
 }

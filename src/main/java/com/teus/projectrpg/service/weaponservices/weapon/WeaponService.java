@@ -14,6 +14,4 @@ public interface WeaponService {
     WeaponEntity findByName(String name);
 
     void deleteById(Long id);
-
-    WeaponEntity mapToEntity(WeaponDto weaponDto);
 }
