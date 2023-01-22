@@ -15,7 +15,7 @@ public class CharacterCreatureTraitDto {
 
     public CharacterCreatureTraitDto(CharacterCreatureTraitEntity traitEntity) {
         this.id = traitEntity.getId();
-        this.trait = new CreatureTraitDto(traitEntity.getCreatureTrait());
+        this.trait = new CreatureTraitDto(traitEntity.getTrait());
         this.value = traitEntity.getValue();
     }
 }

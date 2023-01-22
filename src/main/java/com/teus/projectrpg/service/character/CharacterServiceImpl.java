@@ -73,7 +73,7 @@ public class CharacterServiceImpl implements CharacterService {
         }
         characterEntity.setName(newCharacter.getName());
         characterEntity.setDescription(newCharacter.getDescription());
-        characterEntity.setGroupColumn(newCharacter.getGroup());
+        characterEntity.setGroup(newCharacter.getGroup());
         characterEntity.setIsRightHanded(newCharacter.getIsRightHanded());
 
         setCharacterCharacteristics(newCharacter, characterEntity);
@@ -129,7 +129,7 @@ public class CharacterServiceImpl implements CharacterService {
             if (traitDto.getTrait() != null) {
                 CharacterCreatureTraitEntity traitEntity = new CharacterCreatureTraitEntity();
                 traitEntity.setCharacter(characterEntity);
-                traitEntity.setCreatureTrait(creatureTraitService.findByName(traitDto.getTrait().getName()));
+                traitEntity.setTrait(creatureTraitService.findByName(traitDto.getTrait().getName()));
                 traitEntity.setValue(traitDto.getTrait().getHasValue() ? traitDto.getValue() : null);
                 characterEntity.addTrait(traitEntity);
             }

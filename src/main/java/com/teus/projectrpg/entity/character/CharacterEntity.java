@@ -34,7 +34,7 @@ public class CharacterEntity {
     private String description;
 
     @Column(name = "group_column")
-    private String groupColumn;
+    private String group;
 
     @Column(name = "is_right_handed")
     private Boolean isRightHanded;
