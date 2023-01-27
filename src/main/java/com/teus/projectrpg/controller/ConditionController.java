@@ -1,36 +1,26 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.dto.ConditionDto;
-import com.teus.projectrpg.entity.condition.ConditionEntity;
-import com.teus.projectrpg.services.base.BaseService;
-import com.teus.projectrpg.services.condition.ConditionService;
-import com.teus.projectrpg.type.condition.ConditionType;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.teus.projectrpg.mapper.ConditionMapper;
+import com.teus.projectrpg.service.condition.ConditionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class ConditionController {
 
     private final ConditionService conditionService;
+    private final ConditionMapper conditionMapper;
 
-    @Autowired
-    public ConditionController(ConditionService conditionService) {
+    public ConditionController(ConditionService conditionService, ConditionMapper conditionMapper) {
         this.conditionService = conditionService;
+        this.conditionMapper = conditionMapper;
     }
 
     @GetMapping("/condition")
     List<ConditionDto> getAllConditions() {
-        List<ConditionDto> conditionsDtos = new ArrayList<>();
-
-        for (ConditionEntity conditionEntity : conditionService.findAll()) {
-            conditionsDtos.add(new ConditionDto(conditionEntity));
-        }
-
-        return conditionsDtos;
+        return conditionMapper.toDtos(conditionService.findAll());
     }
 }

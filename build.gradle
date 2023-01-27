@@ -25,9 +25,12 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     implementation 'org.mockito:mockito-junit-jupiter:4.8.0'
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.3.Final'
+    compileOnly('org.mapstruct:mapstruct-processor:1.5.3.Final')
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor('org.mapstruct:mapstruct-processor:1.5.3.Final')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

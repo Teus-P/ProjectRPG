@@ -1,13 +1,14 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.exception.ElementNotFoundException;
-import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.CharacterDto;
 import com.teus.projectrpg.entity.character.CharacterEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
-import com.teus.projectrpg.services.character.CharacterService;
+import com.teus.projectrpg.exception.ElementNotFoundException;
+import com.teus.projectrpg.exception.FieldCannotBeNullException;
+import com.teus.projectrpg.mapper.CharacterMapper;
+import com.teus.projectrpg.mapper.context.CharacterContext;
+import com.teus.projectrpg.service.character.CharacterService;
 import org.hibernate.PropertyValueException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +19,14 @@ import java.util.List;
 public class CharacterController {
 
     private final CharacterService characterService;
+    private final CharacterMapper characterMapper;
 
-    @Autowired
-    public CharacterController(CharacterService characterService) {
+    private final CharacterContext characterContext;
+
+    public CharacterController(CharacterService characterService, CharacterMapper characterMapper, CharacterContext characterContext) {
         this.characterService = characterService;
+        this.characterMapper = characterMapper;
+        this.characterContext = characterContext;
     }
 
     @GetMapping("/character")
@@ -30,7 +35,7 @@ public class CharacterController {
         for (CharacterEntity characterEntity : characterService.findAll()) {
             //not the best solution...
             if (!(characterEntity instanceof SkirmishCharacterEntity)) {
-                characterDtos.add(new CharacterDto(characterEntity));
+                characterDtos.add(characterMapper.toDto(characterEntity, characterContext));
             }
         }
 
@@ -39,11 +44,8 @@ public class CharacterController {
 
     @PutMapping("/character")
     CharacterEntity putCharacter(@RequestBody CharacterDto newCharacter) {
-        CharacterEntity characterEntity = new CharacterEntity();
-        characterService.createCharacterFromDto(newCharacter, characterEntity);
-
         try {
-            return characterService.save(characterEntity);
+            return characterService.save(characterMapper.toEntity(newCharacter, characterContext));
         } catch (DataIntegrityViolationException e) {
             throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
         }

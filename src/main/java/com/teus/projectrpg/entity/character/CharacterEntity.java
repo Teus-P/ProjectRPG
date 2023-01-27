@@ -34,7 +34,7 @@ public class CharacterEntity {
     private String description;
 
     @Column(name = "group_column")
-    private String groupColumn;
+    private String group;
 
     @Column(name = "is_right_handed")
     private Boolean isRightHanded;
@@ -132,13 +132,6 @@ public class CharacterEntity {
                 .get().getValue();
     }
 
-    public CharacterBodyLocalizationEntity getCharacterBodyLocalisationByType(BodyLocalizationType bodyLocalizationType) {
-        return this.bodyLocalizations.stream()
-                .filter(c -> c.getBodyLocalization().getName().equals(bodyLocalizationType))
-                .findFirst()
-                .get();
-    }
-
     public int getArmorForLocalization(BodyLocalizationType localization) {
         CharacterBodyLocalizationEntity bodyLocalization = this.bodyLocalizations.stream()
                 .filter(c -> c.getBodyLocalization().getName().equals(localization))
@@ -147,43 +140,7 @@ public class CharacterEntity {
         return bodyLocalization.getArmorPoints() + bodyLocalization.getAdditionalArmorPoints();
     }
 
-    public void addCharacteristic(CharacterCharacteristicEntity characteristic) {
-        this.characteristics.add(characteristic);
-    }
-
-    public void addSkill(CharacterSkillEntity skill) {
-        this.skills.add(skill);
-    }
-
-    public void addTalent(CharacterTalentEntity talent) {
-        this.talents.add(talent);
-    }
-
-    public void addTrait(CharacterCreatureTraitEntity trait) {
-        this.traits.add(trait);
-    }
-
-    public void addSpell(SpellEntity spell) {
-        this.spells.add(spell);
-    }
-
-    public void addWeapon(CharacterWeaponEntity weapon) {
-        this.weapons.add(weapon);
-    }
-
-    public void addArmor(ArmorEntity armor) {
-        this.armors.add(armor);
-    }
-
-    public void addBodyLocalization(CharacterBodyLocalizationEntity bodyLocalization) {
-        this.bodyLocalizations.add(bodyLocalization);
-    }
-
     public void addCondition(CharacterConditionEntity condition) {
         this.conditions.add(condition);
-    }
-
-    public void addNote(NoteEntity note) {
-        this.notes.add(note);
     }
 }
