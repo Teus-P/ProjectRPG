@@ -12,15 +12,15 @@ import java.util.List;
 public class BaseMapperImpl implements BaseMapper {
 
     @Override
-    public <T, E extends BaseEntity<T>> BaseDto<T, E> toDto(E entity) {
-        BaseDto<T, E> baseDto = new BaseDto<>();
+    public <T, E extends BaseEntity<T>> BaseDto<T> toDto(E entity) {
+        BaseDto<T> baseDto = new BaseDto<>();
         BeanUtils.copyProperties(entity, baseDto);
         return baseDto;
     }
 
     @Override
-    public <T, E extends BaseEntity<T>> List<BaseDto<T, E>> toDtos(List<E> entitiesList) {
-        List<BaseDto<T, E>> dtosList = new ArrayList<>();
+    public <T, E extends BaseEntity<T>> List<BaseDto<T>> toDtos(List<E> entitiesList) {
+        List<BaseDto<T>> dtosList = new ArrayList<>();
 
         for (E entity : entitiesList) {
             dtosList.add(toDto(entity));

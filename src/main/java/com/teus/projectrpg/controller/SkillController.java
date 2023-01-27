@@ -1,7 +1,6 @@
 package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.BaseDto;
-import com.teus.projectrpg.entity.skill.SkillEntity;
 import com.teus.projectrpg.mapper.base.BaseMapper;
 import com.teus.projectrpg.service.skill.SkillService;
 import com.teus.projectrpg.type.skill.SkillType;
@@ -22,7 +21,7 @@ public class SkillController {
     }
 
     @GetMapping("/skill")
-    List<BaseDto<SkillType, SkillEntity>> getAllSkills() {
+    List<BaseDto<SkillType>> getAllSkills() {
         return baseMapper.toDtos(skillService.findAll());
     }
 }

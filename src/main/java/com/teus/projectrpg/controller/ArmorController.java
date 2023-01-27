@@ -1,20 +1,17 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.exception.ElementNotFoundException;
-import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.ArmorDto;
 import com.teus.projectrpg.dto.BaseDto;
-import com.teus.projectrpg.entity.armor.ArmorCategoryEntity;
 import com.teus.projectrpg.entity.armor.ArmorEntity;
-import com.teus.projectrpg.entity.armor.ArmorPenaltyEntity;
-import com.teus.projectrpg.entity.armor.ArmorQualityEntity;
-import com.teus.projectrpg.mapper.context.ArmorContext;
+import com.teus.projectrpg.exception.ElementNotFoundException;
+import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.mapper.ArmorMapper;
+import com.teus.projectrpg.mapper.base.BaseMapper;
+import com.teus.projectrpg.mapper.context.ArmorContext;
 import com.teus.projectrpg.service.armorservices.armor.ArmorService;
 import com.teus.projectrpg.service.armorservices.armorcategory.ArmorCategoryService;
 import com.teus.projectrpg.service.armorservices.armorpenalty.ArmorPenaltyService;
 import com.teus.projectrpg.service.armorservices.armorquality.ArmorQualityService;
-import com.teus.projectrpg.mapper.base.BaseMapper;
 import com.teus.projectrpg.type.armor.ArmorCategoryType;
 import com.teus.projectrpg.type.armor.ArmorPenaltyType;
 import com.teus.projectrpg.type.armor.ArmorQualityType;
@@ -54,7 +51,7 @@ public class ArmorController {
     ArmorEntity putArmor(@RequestBody ArmorDto newArmor) {
         ArmorEntity armorEntity = armorMapper.toEntity(newArmor, armorContext);
         ArmorEntity result = armorService.findByName(armorEntity.getName());
-        if(result != null) {
+        if (result != null) {
             armorEntity.setId(result.getId());
         }
 
@@ -75,17 +72,17 @@ public class ArmorController {
     }
 
     @GetMapping("/armorCategory")
-    List<BaseDto<ArmorCategoryType, ArmorCategoryEntity>> getAllArmorCategories() {
+    List<BaseDto<ArmorCategoryType>> getAllArmorCategories() {
         return this.baseMapper.toDtos(armorCategoryService.findAll());
     }
 
     @GetMapping("/armorPenalty")
-    List<BaseDto<ArmorPenaltyType, ArmorPenaltyEntity>> getAllArmorPenalties() {
+    List<BaseDto<ArmorPenaltyType>> getAllArmorPenalties() {
         return this.baseMapper.toDtos(armorPenaltyService.findAll());
     }
 
     @GetMapping("/armorQuality")
-    List<BaseDto<ArmorQualityType, ArmorQualityEntity>> getAllArmorQualities() {
+    List<BaseDto<ArmorQualityType>> getAllArmorQualities() {
         return this.baseMapper.toDtos(armorQualityService.findAll());
     }
 }

@@ -1,13 +1,12 @@
 package com.teus.projectrpg.dto;
 
-import com.teus.projectrpg.entity.condition.ConditionEntity;
 import com.teus.projectrpg.type.condition.ConditionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ConditionDto extends BaseDto<ConditionType, ConditionEntity>{
+public class ConditionDto extends BaseDto<ConditionType> {
 
     Boolean hasCounter;
 

@@ -9,8 +9,8 @@ import java.util.List;
 @Service
 public interface BaseMapper {
 
-    <T, E extends BaseEntity<T>> BaseDto<T, E> toDto(E entity);
+    <T, E extends BaseEntity<T>> BaseDto<T> toDto(E entity);
 
-    <T, E extends BaseEntity<T>> List<BaseDto<T, E>> toDtos(List<E> entitiesList);
+    <T, E extends BaseEntity<T>> List<BaseDto<T>> toDtos(List<E> entitiesList);
 
 }

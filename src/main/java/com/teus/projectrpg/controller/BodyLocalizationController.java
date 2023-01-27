@@ -1,7 +1,6 @@
 package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.BaseDto;
-import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.mapper.base.BaseMapper;
 import com.teus.projectrpg.service.bodylocalization.BodyLocalizationService;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
@@ -22,7 +21,7 @@ public class BodyLocalizationController {
     }
 
     @GetMapping("/bodyLocalization")
-    List<BaseDto<BodyLocalizationType, BodyLocalizationEntity>> getAllBodyLocalizations() {
+    List<BaseDto<BodyLocalizationType>> getAllBodyLocalizations() {
         return baseMapper.toDtos(bodyLocalizationService.findAll());
     }
 }

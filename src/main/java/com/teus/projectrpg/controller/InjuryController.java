@@ -1,7 +1,6 @@
 package com.teus.projectrpg.controller;
 
 import com.teus.projectrpg.dto.BaseDto;
-import com.teus.projectrpg.entity.injury.InjuryEntity;
 import com.teus.projectrpg.mapper.base.BaseMapper;
 import com.teus.projectrpg.service.injury.InjuryService;
 import com.teus.projectrpg.type.injury.InjuryType;
@@ -24,7 +23,7 @@ public class InjuryController {
     }
 
     @GetMapping("/injury")
-    List<BaseDto<InjuryType, InjuryEntity>> getAllInjuries() {
+    List<BaseDto<InjuryType>> getAllInjuries() {
         return baseMapper.toDtos(injuryService.findAll());
     }
 }

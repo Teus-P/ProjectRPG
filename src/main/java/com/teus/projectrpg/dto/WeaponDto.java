@@ -1,8 +1,5 @@
 package com.teus.projectrpg.dto;
 
-import com.teus.projectrpg.entity.weapon.WeaponGroupEntity;
-import com.teus.projectrpg.entity.weapon.WeaponReachEntity;
-import com.teus.projectrpg.entity.weapon.WeaponTypeEntity;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import com.teus.projectrpg.type.weapon.WeaponReachType;
 import com.teus.projectrpg.type.weapon.WeaponType;
@@ -17,9 +14,9 @@ public class WeaponDto implements Serializable {
     private Long id;
     private String name;
     private String nameTranslation;
-    private BaseDto<WeaponType, WeaponTypeEntity> weaponType;
-    private BaseDto<WeaponGroupType, WeaponGroupEntity> weaponGroup;
-    private BaseDto<WeaponReachType, WeaponReachEntity> weaponReach;
+    private BaseDto<WeaponType> weaponType;
+    private BaseDto<WeaponGroupType> weaponGroup;
+    private BaseDto<WeaponReachType> weaponReach;
     private float weaponRange;
     private Boolean isUsingStrength;
     private Boolean isUsingStrengthInRange;

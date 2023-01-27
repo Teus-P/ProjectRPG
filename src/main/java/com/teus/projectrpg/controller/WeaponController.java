@@ -74,22 +74,22 @@ public class WeaponController {
     }
 
     @GetMapping("/weaponType")
-    List<BaseDto<WeaponType, WeaponTypeEntity>> getAllWeaponTypes() {
+    List<BaseDto<WeaponType>> getAllWeaponTypes() {
         return this.baseMapper.toDtos(weaponTypeService.findAll());
     }
 
     @GetMapping("/weaponGroup")
-    List<BaseDto<WeaponGroupType, WeaponGroupEntity>> getAllWeaponGroups() {
+    List<BaseDto<WeaponGroupType>> getAllWeaponGroups() {
         return this.baseMapper.toDtos(weaponGroupService.findAll());
     }
 
     @GetMapping("/weaponReach")
-    List<BaseDto<WeaponReachType, WeaponReachEntity>> getAllWeaponReaches() {
+    List<BaseDto<WeaponReachType>> getAllWeaponReaches() {
         return this.baseMapper.toDtos(weaponReachService.findAll());
     }
 
     @GetMapping("/weaponQuality")
-    List<BaseDto<WeaponQualityType, WeaponQualityEntity>> getAllWeaponQualities() {
+    List<BaseDto<WeaponQualityType>> getAllWeaponQualities() {
         return this.baseMapper.toDtos(weaponQualityService.findAll());
     }
 }
