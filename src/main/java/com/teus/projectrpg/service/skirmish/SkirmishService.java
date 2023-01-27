@@ -5,6 +5,8 @@ import com.teus.projectrpg.entity.character.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.entity.character.CharacterSkillEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
+import com.teus.projectrpg.mapper.SkirmishCharacterMapper;
+import com.teus.projectrpg.mapper.context.CharacterContext;
 import com.teus.projectrpg.service.characteristic.CharacteristicService;
 import com.teus.projectrpg.service.condition.ConditionService;
 import com.teus.projectrpg.service.skill.SkillService;
@@ -22,14 +24,18 @@ public class SkirmishService {
     private final CharacteristicService characteristicService;
     private final SkillService skillService;
     private final ConditionService conditionService;
+    private final SkirmishCharacterMapper skirmishCharacterMapper;
+    private final CharacterContext characterContext;
 
     private EndTurnCheckDto endTurnCheck = new EndTurnCheckDto();
 
-    public SkirmishService(SkirmishCharacterService skirmishCharacterService, CharacteristicService characteristicService, SkillService skillService, ConditionService conditionService) {
+    public SkirmishService(SkirmishCharacterService skirmishCharacterService, CharacteristicService characteristicService, SkillService skillService, ConditionService conditionService, SkirmishCharacterMapper skirmishCharacterMapper, CharacterContext characterContext) {
         this.skirmishCharacterService = skirmishCharacterService;
         this.characteristicService = characteristicService;
         this.skillService = skillService;
         this.conditionService = conditionService;
+        this.skirmishCharacterMapper = skirmishCharacterMapper;
+        this.characterContext = characterContext;
     }
 
     public void endTurnCheck(EndTurnCheckDto endTurnCheck) {
@@ -149,7 +155,7 @@ public class SkirmishService {
 
     private void createTestForCondition(SkirmishCharacterEntity character, ConditionType conditionType, int modifier) {
         TestDto test = new TestDto();
-        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
+        test.setSkirmishCharacter(skirmishCharacterMapper.toDto(character, characterContext));
         test.setModifier(modifier);
         test.setConditionType(new ConditionDto(conditionType));
         test.setFeasible(true);

@@ -1,24 +1,27 @@
 package com.teus.projectrpg.mapper;
 
-import com.teus.projectrpg.dto.CharacterDto;
-import com.teus.projectrpg.entity.character.CharacterEntity;
+import com.teus.projectrpg.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.entity.note.NoteEntity;
+import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 import com.teus.projectrpg.mapper.context.CharacterContext;
 import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface CharacterMapper {
+public interface SkirmishCharacterMapper {
 
     @Mapping(source = "notes", target = "notes", qualifiedByName = "notesToStrings")
-    CharacterDto toDto(CharacterEntity entity, @Context CharacterContext context);
+    SkirmishCharacterDto toDto(SkirmishCharacterEntity entity, @Context CharacterContext context);
 
     @Mapping(source = "notes", target = "notes", qualifiedByName = "stringsToNotes")
-    CharacterEntity toEntity(CharacterDto dto, @Context CharacterContext context);
+    SkirmishCharacterEntity toEntity(SkirmishCharacterDto dto, @Context CharacterContext context);
 
-    @IterableMapping(elementTargetType = CharacterDto.class)
-    List<CharacterDto> toDtos(List<CharacterEntity> entities, @Context CharacterContext context);
+    @IterableMapping(elementTargetType = SkirmishCharacterDto.class)
+    List<SkirmishCharacterDto> toDtos(List<SkirmishCharacterEntity> entities, @Context CharacterContext context);
+
+    @IterableMapping(elementTargetType = SkirmishCharacterEntity.class)
+    List<SkirmishCharacterEntity> toEntities(List<SkirmishCharacterDto> dtos, @Context CharacterContext context);
 
     @Named("notesToStrings")
     static List<String> notesToStrings(List<NoteEntity> notes) {
@@ -38,4 +41,5 @@ public interface CharacterMapper {
                 })
                 .toList();
     }
+
 }

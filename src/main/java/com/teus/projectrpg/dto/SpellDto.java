@@ -5,17 +5,14 @@ import com.teus.projectrpg.entity.spell.SpellGroupEntity;
 import com.teus.projectrpg.type.spell.SpellGroupType;
 import com.teus.projectrpg.type.spell.SpellType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class SpellDto extends BaseDto<SpellType, SpellEntity>{
+public class SpellDto extends BaseDto<SpellType, SpellEntity> {
 
     BaseDto<SpellGroupType, SpellGroupEntity> spellGroup;
 
     public SpellDto() {
-    }
-
-    public SpellDto(SpellEntity entity) {
-        super(entity);
-        this.spellGroup = new BaseDto<>(entity.getSpellGroup());
     }
 }

@@ -1,4 +1,4 @@
-package com.teus.projectrpg.service.base;
+package com.teus.projectrpg.mapper.base;
 
 import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.base.BaseEntity;
@@ -12,18 +12,18 @@ import java.util.List;
 public class BaseMapperImpl implements BaseMapper {
 
     @Override
-    public <T, E extends BaseEntity<T>> BaseDto<T, E> mapToBaseDto(E entity) {
+    public <T, E extends BaseEntity<T>> BaseDto<T, E> toDto(E entity) {
         BaseDto<T, E> baseDto = new BaseDto<>();
         BeanUtils.copyProperties(entity, baseDto);
         return baseDto;
     }
 
     @Override
-    public <T, E extends BaseEntity<T>> List<BaseDto<T, E>> mapToBaseDtosList(List<E> entitiesList) {
+    public <T, E extends BaseEntity<T>> List<BaseDto<T, E>> toDtos(List<E> entitiesList) {
         List<BaseDto<T, E>> dtosList = new ArrayList<>();
 
         for (E entity : entitiesList) {
-            dtosList.add(mapToBaseDto(entity));
+            dtosList.add(toDto(entity));
         }
 
         return dtosList;

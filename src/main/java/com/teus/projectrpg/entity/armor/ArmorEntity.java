@@ -48,16 +48,4 @@ public class ArmorEntity {
             joinColumns = @JoinColumn(name = "armor_id"),
             inverseJoinColumns = @JoinColumn(name = "quality_id"))
     private List<ArmorQualityEntity> armorQualities = new ArrayList<>();
-
-    public void addBodyLocalization(ArmorBodyLocalizationEntity armorBodyLocalization) {
-        this.armorBodyLocalizations.add(armorBodyLocalization);
-    }
-
-    public void addArmorPenalty(ArmorPenaltyEntity armorPenalty) {
-        this.armorPenalties.add(armorPenalty);
-    }
-
-    public void addArmorQuality(ArmorQualityEntity armorQuality) {
-        this.armorQualities.add(armorQuality);
-    }
 }

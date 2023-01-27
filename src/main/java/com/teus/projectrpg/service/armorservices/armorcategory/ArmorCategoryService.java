@@ -1,7 +1,6 @@
 package com.teus.projectrpg.service.armorservices.armorcategory;
 
 import com.teus.projectrpg.entity.armor.ArmorCategoryEntity;
-import com.teus.projectrpg.type.armor.ArmorCategoryType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +9,4 @@ import java.util.List;
 public interface ArmorCategoryService {
 
     List<ArmorCategoryEntity> findAll();
-
-    ArmorCategoryEntity findByName(ArmorCategoryType armorCategoryType);
 }

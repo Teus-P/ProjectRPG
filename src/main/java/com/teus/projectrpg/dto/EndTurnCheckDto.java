@@ -12,9 +12,4 @@ public class EndTurnCheckDto {
 
     public EndTurnCheckDto() {
     }
-
-    public EndTurnCheckDto(int roundNumber, List<TestDto> tests) {
-        this.roundNumber = roundNumber;
-        this.tests = tests;
-    }
 }

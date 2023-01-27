@@ -8,6 +8,8 @@ import com.teus.projectrpg.entity.characteristic.CharacteristicEntity;
 import com.teus.projectrpg.entity.condition.CharacterConditionEntity;
 import com.teus.projectrpg.entity.condition.ConditionEntity;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
+import com.teus.projectrpg.mapper.SkirmishCharacterMapper;
+import com.teus.projectrpg.mapper.context.CharacterContext;
 import com.teus.projectrpg.service.skirmishcharacter.SkirmishCharacterService;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
@@ -30,14 +32,20 @@ class SkirmishServiceTest {
     @Autowired
     private SkirmishService skirmishService;
 
+    @Autowired
+    private SkirmishCharacterMapper skirmishCharacterMapper;
+
+    @Autowired
+    private CharacterContext characterContext;
+
     @MockBean
     private SkirmishCharacterService skirmishCharacterService;
 
     private EndTurnCheckDto endTurnCheck;
 
-    private static TestDto createTestDto(SkirmishCharacterEntity character, ConditionType bleeding) {
+    private TestDto createTestDto(SkirmishCharacterEntity character, ConditionType bleeding) {
         TestDto test = new TestDto();
-        test.setSkirmishCharacter(new SkirmishCharacterDto(character));
+        test.setSkirmishCharacter(skirmishCharacterMapper.toDto(character, characterContext));
         test.setConditionType(new ConditionDto(bleeding));
         test.setModifier(0);
         test.setFeasible(true);
@@ -219,7 +227,6 @@ class SkirmishServiceTest {
     void endTurnCheck_whenPoison_removeThreeWoundsAndCreateTest() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         addCondition(ConditionType.POISON, 3, 0, character);
-        TestDto test = createTestDto(character, ConditionType.POISON);
 
         mockFindAllCharacters(Collections.singletonList(character));
         skirmishService.endTurnCheck(endTurnCheck);
@@ -269,7 +276,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 null,
                 ConditionType.BLEEDING,
                 0,
@@ -292,7 +299,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 null,
                 ConditionType.BLEEDING,
                 0,
@@ -315,7 +322,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 null,
                 ConditionType.BLEEDING,
                 0,
@@ -339,7 +346,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 null,
                 ConditionType.BLEEDING,
                 0,
@@ -360,7 +367,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.STUNNED, 4, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.STUNNED,
                 0,
@@ -382,7 +389,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.STUNNED, 4, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.STUNNED,
                 0,
@@ -404,7 +411,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.STUNNED, 3, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.STUNNED,
                 0,
@@ -427,7 +434,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.BROKEN, 2, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.COOL,
                 ConditionType.BROKEN,
                 0,
@@ -449,7 +456,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.BROKEN, 2, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.COOL,
                 ConditionType.BROKEN,
                 0,
@@ -473,7 +480,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.FATIGUED, 1, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.COOL,
                 ConditionType.BROKEN,
                 0,
@@ -497,7 +504,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.STUNNED, 1, 0, character);
 
         TestDto brokenTestDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.COOL,
                 ConditionType.BROKEN,
                 0,
@@ -506,7 +513,7 @@ class SkirmishServiceTest {
         );
 
         TestDto stunnedTestDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.STUNNED,
                 1,
@@ -532,7 +539,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.ABLAZE, 2, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 null,
                 ConditionType.ABLAZE,
                 0,
@@ -555,7 +562,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.ABLAZE, 6, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 null,
                 ConditionType.ABLAZE,
                 0,
@@ -578,7 +585,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.POISON, 4, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.POISON,
                 0,
@@ -600,7 +607,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.POISON, 4, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.POISON,
                 0,
@@ -622,7 +629,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.POISON, 3, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.POISON,
                 0,
@@ -646,7 +653,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.POISON,
                 0,
@@ -670,7 +677,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.POISON,
                 0,
@@ -694,7 +701,7 @@ class SkirmishServiceTest {
         addCondition(ConditionType.UNCONSCIOUS, 0, 3, character);
 
         TestDto testDto = new TestDto(
-                new SkirmishCharacterDto(character),
+                skirmishCharacterMapper.toDto(character, characterContext),
                 SkillType.ENDURANCE,
                 ConditionType.POISON,
                 0,

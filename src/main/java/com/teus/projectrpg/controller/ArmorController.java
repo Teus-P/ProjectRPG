@@ -14,12 +14,11 @@ import com.teus.projectrpg.service.armorservices.armor.ArmorService;
 import com.teus.projectrpg.service.armorservices.armorcategory.ArmorCategoryService;
 import com.teus.projectrpg.service.armorservices.armorpenalty.ArmorPenaltyService;
 import com.teus.projectrpg.service.armorservices.armorquality.ArmorQualityService;
-import com.teus.projectrpg.service.base.BaseMapper;
+import com.teus.projectrpg.mapper.base.BaseMapper;
 import com.teus.projectrpg.type.armor.ArmorCategoryType;
 import com.teus.projectrpg.type.armor.ArmorPenaltyType;
 import com.teus.projectrpg.type.armor.ArmorQualityType;
 import org.hibernate.PropertyValueException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,15 +33,16 @@ public class ArmorController {
     private final ArmorPenaltyService armorPenaltyService;
     private final ArmorQualityService armorQualityService;
     private final ArmorMapper armorMapper;
+    private final ArmorContext armorContext;
 
-    @Autowired
-    public ArmorController(BaseMapper baseMapper, ArmorService armorService, ArmorCategoryService armorCategoryService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService, ArmorMapper armorMapper) {
+    public ArmorController(BaseMapper baseMapper, ArmorService armorService, ArmorCategoryService armorCategoryService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService, ArmorMapper armorMapper, ArmorContext armorContext) {
         this.baseMapper = baseMapper;
         this.armorService = armorService;
         this.armorCategoryService = armorCategoryService;
         this.armorPenaltyService = armorPenaltyService;
         this.armorQualityService = armorQualityService;
         this.armorMapper = armorMapper;
+        this.armorContext = armorContext;
     }
 
     @GetMapping("/armor")
@@ -52,7 +52,7 @@ public class ArmorController {
 
     @PutMapping("/armor")
     ArmorEntity putArmor(@RequestBody ArmorDto newArmor) {
-        ArmorEntity armorEntity = armorMapper.toEntity(newArmor, new ArmorContext());
+        ArmorEntity armorEntity = armorMapper.toEntity(newArmor, armorContext);
         ArmorEntity result = armorService.findByName(armorEntity.getName());
         if(result != null) {
             armorEntity.setId(result.getId());
@@ -76,16 +76,16 @@ public class ArmorController {
 
     @GetMapping("/armorCategory")
     List<BaseDto<ArmorCategoryType, ArmorCategoryEntity>> getAllArmorCategories() {
-        return this.baseMapper.mapToBaseDtosList(armorCategoryService.findAll());
+        return this.baseMapper.toDtos(armorCategoryService.findAll());
     }
 
     @GetMapping("/armorPenalty")
     List<BaseDto<ArmorPenaltyType, ArmorPenaltyEntity>> getAllArmorPenalties() {
-        return this.baseMapper.mapToBaseDtosList(armorPenaltyService.findAll());
+        return this.baseMapper.toDtos(armorPenaltyService.findAll());
     }
 
     @GetMapping("/armorQuality")
     List<BaseDto<ArmorQualityType, ArmorQualityEntity>> getAllArmorQualities() {
-        return this.baseMapper.mapToBaseDtosList(armorQualityService.findAll());
+        return this.baseMapper.toDtos(armorQualityService.findAll());
     }
 }

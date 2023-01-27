@@ -24,11 +24,14 @@ class ArmorServiceImplTest {
     @Autowired
     ArmorMapper armorMapper;
 
+    @Autowired
+    ArmorContext armorContext;
+
     @Test
     void whenConvertArmorDtoToArmorEntity_thenCorrect() {
         ArmorDto armorDto = prepareArmorDto();
 
-        ArmorEntity armorEntity = armorMapper.toEntity(armorDto, new ArmorContext());
+        ArmorEntity armorEntity = armorMapper.toEntity(armorDto, armorContext);
 
         compareDtoAndEntity(armorEntity, armorDto);
     }
@@ -37,7 +40,7 @@ class ArmorServiceImplTest {
     void whenConvertArmorEntityToArmorDto_thenCorrect() {
         ArmorEntity armorEntity = prepareArmorEntity();
 
-        ArmorDto armorDto = new ArmorDto(armorEntity);
+        ArmorDto armorDto = armorMapper.toDto(armorEntity);
 
         compareDtoAndEntity(armorEntity, armorDto);
     }

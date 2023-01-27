@@ -1,6 +1,5 @@
 package com.teus.projectrpg.service.bodylocalization;
 
-import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.entity.armor.BodyLocalizationEntity;
 import com.teus.projectrpg.type.armor.BodyLocalizationType;
 
@@ -13,6 +12,4 @@ public interface BodyLocalizationService {
     void save(BodyLocalizationEntity bodyLocalizationEntity);
 
     BodyLocalizationEntity findByName(BodyLocalizationType bodyLocalizationType);
-
-    BodyLocalizationEntity mapToEntity(BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto);
 }

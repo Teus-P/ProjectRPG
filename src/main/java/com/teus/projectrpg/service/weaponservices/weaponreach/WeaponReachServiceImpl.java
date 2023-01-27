@@ -2,14 +2,13 @@ package com.teus.projectrpg.service.weaponservices.weaponreach;
 
 import com.teus.projectrpg.entity.weapon.WeaponReachEntity;
 import com.teus.projectrpg.repository.weapon.WeaponReachRepository;
-import com.teus.projectrpg.type.weapon.WeaponReachType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class WeaponReachServiceImpl implements WeaponReachService{
+public class WeaponReachServiceImpl implements WeaponReachService {
 
     private final WeaponReachRepository weaponReachRepository;
 
@@ -21,10 +20,5 @@ public class WeaponReachServiceImpl implements WeaponReachService{
     @Override
     public List<WeaponReachEntity> findAll() {
         return weaponReachRepository.findAll();
-    }
-
-    @Override
-    public WeaponReachEntity findByName(WeaponReachType weaponReachType) {
-        return weaponReachRepository.findWeaponReachEntityByName(weaponReachType);
     }
 }

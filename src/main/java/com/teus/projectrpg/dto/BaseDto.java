@@ -12,9 +12,4 @@ public class BaseDto <T, E extends BaseEntity<T>>{
     protected String nameTranslation;
 
     public BaseDto(){}
-
-    public BaseDto(E entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-    }
 }

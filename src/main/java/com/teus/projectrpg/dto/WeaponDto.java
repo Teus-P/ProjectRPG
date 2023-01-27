@@ -1,13 +1,14 @@
 package com.teus.projectrpg.dto;
 
-import com.teus.projectrpg.entity.weapon.*;
+import com.teus.projectrpg.entity.weapon.WeaponGroupEntity;
+import com.teus.projectrpg.entity.weapon.WeaponReachEntity;
+import com.teus.projectrpg.entity.weapon.WeaponTypeEntity;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import com.teus.projectrpg.type.weapon.WeaponReachType;
 import com.teus.projectrpg.type.weapon.WeaponType;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,23 +27,5 @@ public class WeaponDto implements Serializable {
     private List<WeaponQualityValueDto> weaponQualities;
 
     public WeaponDto() {
-    }
-
-    public WeaponDto(WeaponEntity weaponEntity) {
-        this.id = weaponEntity.getId();
-        this.name = weaponEntity.getName();
-        this.nameTranslation = weaponEntity.getNameTranslation();
-        this.weaponType = new BaseDto<>(weaponEntity.getWeaponType());
-        this.weaponGroup = new BaseDto<>(weaponEntity.getWeaponGroup());
-        this.weaponReach = new BaseDto<>(weaponEntity.getWeaponReach());
-        this.weaponRange = weaponEntity.getWeaponRange();
-        this.isUsingStrength = weaponEntity.getIsUsingStrength();
-        this.isUsingStrengthInRange = weaponEntity.getIsUsingStrengthInRange();
-        this.damage = weaponEntity.getDamage();
-
-        this.weaponQualities = new ArrayList<>();
-        for (WeaponQualityValueEntity weaponQualityValueEntity : weaponEntity.getWeaponQualities()) {
-            this.weaponQualities.add(new WeaponQualityValueDto(weaponQualityValueEntity));
-        }
     }
 }
