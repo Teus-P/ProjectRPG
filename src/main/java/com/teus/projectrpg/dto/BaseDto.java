@@ -1,15 +1,10 @@
 package com.teus.projectrpg.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class BaseDto<T> {
     protected Long id;
     protected T name;
     protected String nameTranslation;
-
-    public BaseDto() {
-    }
 }

@@ -5,6 +5,5 @@ import com.teus.projectrpg.type.spell.SpellGroupType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SpellGroupRepository extends JpaRepository<SpellGroupEntity, SpellGroupType> {
-
     SpellGroupEntity findSpellGroupEntityByName(SpellGroupType spellGroupType);
 }

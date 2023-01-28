@@ -13,7 +13,4 @@ public class CharacterBodyLocalizationDto {
     private int armorPoints;
     private int additionalArmorPoints;
     private List<CharacterBodyLocalizationInjuryDto> injuries;
-
-    public CharacterBodyLocalizationDto() {
-    }
 }

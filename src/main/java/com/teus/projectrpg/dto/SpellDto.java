@@ -5,12 +5,9 @@ import com.teus.projectrpg.type.spell.SpellType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SpellDto extends BaseDto<SpellType> {
 
     BaseDto<SpellGroupType> spellGroup;
-
-    public SpellDto() {
-    }
 }

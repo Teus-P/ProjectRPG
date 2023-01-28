@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SkirmishServiceTest {
 
     @Autowired
-    private SkirmishService skirmishService;
+    private SkirmishServiceImpl skirmishService;
 
     @Autowired
     private SkirmishCharacterMapper skirmishCharacterMapper;
@@ -881,7 +881,7 @@ class SkirmishServiceTest {
     @Test
     void addAdditionalArmorPoint_addOnePoint() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
-        BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto = new BaseDto<>();
+        BaseDto<BodyLocalizationType> bodyLocalizationDto = new BaseDto<>();
         bodyLocalizationDto.setName(BodyLocalizationType.BODY);
 
         CharacterBodyLocalizationDto characterBodyLocalizationDto = new CharacterBodyLocalizationDto();
@@ -905,7 +905,7 @@ class SkirmishServiceTest {
     @Test
     void addAdditionalArmorPoint_removeOnePoint() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
-        BaseDto<BodyLocalizationType, BodyLocalizationEntity> bodyLocalizationDto = new BaseDto<>();
+        BaseDto<BodyLocalizationType> bodyLocalizationDto = new BaseDto<>();
         bodyLocalizationDto.setName(BodyLocalizationType.BODY);
 
         CharacterBodyLocalizationDto characterBodyLocalizationDto = new CharacterBodyLocalizationDto();

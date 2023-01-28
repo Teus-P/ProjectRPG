@@ -9,7 +9,4 @@ public class EndTurnCheckDto {
 
     private int roundNumber;
     private List<TestDto> tests;
-
-    public EndTurnCheckDto() {
-    }
 }

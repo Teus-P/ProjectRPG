@@ -8,13 +8,14 @@ import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.mapper.ArmorMapper;
 import com.teus.projectrpg.mapper.base.BaseMapper;
 import com.teus.projectrpg.mapper.context.ArmorContext;
-import com.teus.projectrpg.service.armorservices.armor.ArmorService;
-import com.teus.projectrpg.service.armorservices.armorcategory.ArmorCategoryService;
-import com.teus.projectrpg.service.armorservices.armorpenalty.ArmorPenaltyService;
-import com.teus.projectrpg.service.armorservices.armorquality.ArmorQualityService;
+import com.teus.projectrpg.service.armor.armor.ArmorService;
+import com.teus.projectrpg.service.armor.armorcategory.ArmorCategoryService;
+import com.teus.projectrpg.service.armor.armorpenalty.ArmorPenaltyService;
+import com.teus.projectrpg.service.armor.armorquality.ArmorQualityService;
 import com.teus.projectrpg.type.armor.ArmorCategoryType;
 import com.teus.projectrpg.type.armor.ArmorPenaltyType;
 import com.teus.projectrpg.type.armor.ArmorQualityType;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class ArmorController {
 
     private final BaseMapper baseMapper;
@@ -31,16 +33,6 @@ public class ArmorController {
     private final ArmorQualityService armorQualityService;
     private final ArmorMapper armorMapper;
     private final ArmorContext armorContext;
-
-    public ArmorController(BaseMapper baseMapper, ArmorService armorService, ArmorCategoryService armorCategoryService, ArmorPenaltyService armorPenaltyService, ArmorQualityService armorQualityService, ArmorMapper armorMapper, ArmorContext armorContext) {
-        this.baseMapper = baseMapper;
-        this.armorService = armorService;
-        this.armorCategoryService = armorCategoryService;
-        this.armorPenaltyService = armorPenaltyService;
-        this.armorQualityService = armorQualityService;
-        this.armorMapper = armorMapper;
-        this.armorContext = armorContext;
-    }
 
     @GetMapping("/armor")
     List<ArmorDto> getAllArmors() {

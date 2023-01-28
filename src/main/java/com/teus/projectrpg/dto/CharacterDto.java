@@ -23,7 +23,4 @@ public class CharacterDto implements Serializable {
     private List<CharacterBodyLocalizationDto> bodyLocalizations;
     private List<CharacterConditionDto> conditions;
     private List<String> notes;
-
-    public CharacterDto() {
-    }
 }

@@ -22,7 +22,4 @@ public class WeaponDto implements Serializable {
     private Boolean isUsingStrengthInRange;
     private int damage;
     private List<WeaponQualityValueDto> weaponQualities;
-
-    public WeaponDto() {
-    }
 }

@@ -7,7 +7,4 @@ public class CharacterTalentDto {
     private Long id;
     private TalentDto talent;
     private int value;
-
-    public CharacterTalentDto() {
-    }
 }

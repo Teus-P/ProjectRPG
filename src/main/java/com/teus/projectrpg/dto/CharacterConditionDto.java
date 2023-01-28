@@ -9,7 +9,4 @@ public class CharacterConditionDto {
     private ConditionDto condition;
     private int value;
     private int counter;
-
-    public CharacterConditionDto() {
-    }
 }

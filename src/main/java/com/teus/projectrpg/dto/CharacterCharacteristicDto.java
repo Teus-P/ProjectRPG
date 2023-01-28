@@ -8,7 +8,4 @@ public class CharacterCharacteristicDto {
     private Long id;
     private BaseDto<CharacteristicType> characteristic;
     private int value;
-
-    public CharacterCharacteristicDto() {
-    }
 }

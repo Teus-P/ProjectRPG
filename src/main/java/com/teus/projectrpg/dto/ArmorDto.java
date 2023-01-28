@@ -18,7 +18,4 @@ public class ArmorDto implements Serializable {
     private List<ArmorBodyLocalizationDto> armorBodyLocalizations;
     private List<BaseDto<ArmorPenaltyType>> armorPenalties;
     private List<BaseDto<ArmorQualityType>> armorQualities;
-
-    public ArmorDto() {
-    }
 }

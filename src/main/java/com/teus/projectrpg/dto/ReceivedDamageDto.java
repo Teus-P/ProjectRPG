@@ -11,7 +11,4 @@ public class ReceivedDamageDto {
     private BodyLocalizationType bodyLocalization;
     private Boolean isWeaponUndamaging;
     private Boolean isLosingTest;
-
-    public ReceivedDamageDto() {
-    }
 }

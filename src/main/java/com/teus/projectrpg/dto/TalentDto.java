@@ -4,11 +4,8 @@ import com.teus.projectrpg.type.talent.TalentType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TalentDto extends BaseDto<TalentType> {
     private String maxLevel;
-
-    public TalentDto() {
-    }
 }

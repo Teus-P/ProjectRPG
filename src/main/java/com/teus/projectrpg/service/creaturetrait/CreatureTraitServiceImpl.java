@@ -3,20 +3,16 @@ package com.teus.projectrpg.service.creaturetrait;
 import com.teus.projectrpg.entity.creaturetrait.CreatureTraitEntity;
 import com.teus.projectrpg.repository.creaturetrait.CreatureTraitRepository;
 import com.teus.projectrpg.type.creaturetrait.CreatureTraitType;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CreatureTraitServiceImpl implements CreatureTraitService{
+@RequiredArgsConstructor
+public class CreatureTraitServiceImpl implements CreatureTraitService {
 
     private final CreatureTraitRepository creatureTraitRepository;
-
-    @Autowired
-    public CreatureTraitServiceImpl(CreatureTraitRepository creatureTraitRepository) {
-        this.creatureTraitRepository = creatureTraitRepository;
-    }
 
     @Override
     public List<CreatureTraitEntity> findAll() {

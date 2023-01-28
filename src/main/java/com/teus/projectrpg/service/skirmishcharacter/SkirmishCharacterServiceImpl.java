@@ -3,20 +3,16 @@ package com.teus.projectrpg.service.skirmishcharacter;
 import com.teus.projectrpg.entity.skirmishcharacter.SkirmishCharacterEntity;
 import com.teus.projectrpg.exception.ElementNotFoundException;
 import com.teus.projectrpg.repository.skirmishcharacter.SkirmishCharacterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
 
     private final SkirmishCharacterRepository skirmishCharacterRepository;
-
-    @Autowired
-    public SkirmishCharacterServiceImpl(SkirmishCharacterRepository skirmishCharacterRepository) {
-        this.skirmishCharacterRepository = skirmishCharacterRepository;
-    }
 
     @Override
     public SkirmishCharacterEntity findById(Long id) {

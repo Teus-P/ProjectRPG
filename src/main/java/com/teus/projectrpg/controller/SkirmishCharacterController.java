@@ -9,6 +9,7 @@ import com.teus.projectrpg.mapper.SkirmishCharacterMapper;
 import com.teus.projectrpg.mapper.context.CharacterContext;
 import com.teus.projectrpg.service.skirmishcharacter.SkirmishCharacterService;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class SkirmishCharacterController {
 
     private final SkirmishCharacterService skirmishCharacterService;
     private final SkirmishCharacterMapper skirmishCharacterMapper;
     private final CharacterContext characterContext;
-
-    public SkirmishCharacterController(SkirmishCharacterService skirmishCharacterService, SkirmishCharacterMapper skirmishCharacterMapper, CharacterContext characterContext) {
-        this.skirmishCharacterService = skirmishCharacterService;
-        this.skirmishCharacterMapper = skirmishCharacterMapper;
-        this.characterContext = characterContext;
-    }
 
     @GetMapping("/skirmishCharacter")
     List<SkirmishCharacterDto> getAllSkirmishCharacters() {

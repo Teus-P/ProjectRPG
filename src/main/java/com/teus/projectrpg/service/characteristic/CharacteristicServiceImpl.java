@@ -4,20 +4,16 @@ import com.teus.projectrpg.entity.character.CharacterCharacteristicEntity;
 import com.teus.projectrpg.entity.characteristic.CharacteristicEntity;
 import com.teus.projectrpg.repository.characteristic.CharacteristicRepository;
 import com.teus.projectrpg.type.characteristic.CharacteristicType;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CharacteristicServiceImpl implements CharacteristicService {
 
     private final CharacteristicRepository characteristicRepository;
-
-    @Autowired
-    public CharacteristicServiceImpl(CharacteristicRepository characteristicRepository) {
-        this.characteristicRepository = characteristicRepository;
-    }
 
     @Override
     public CharacteristicEntity findByName(CharacteristicType characteristic) {

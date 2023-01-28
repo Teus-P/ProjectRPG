@@ -42,8 +42,4 @@ public class CharacterBodyLocalizationEntity {
             orphanRemoval = true
     )
     private List<CharacterBodyLocalizationInjuryEntity> injuries = new ArrayList<>();
-
-    public void addInjury(CharacterBodyLocalizationInjuryEntity injury) {
-        this.injuries.add(injury);
-    }
 }

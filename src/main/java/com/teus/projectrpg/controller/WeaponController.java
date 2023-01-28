@@ -1,22 +1,23 @@
 package com.teus.projectrpg.controller;
 
-import com.teus.projectrpg.exception.ElementNotFoundException;
-import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.dto.BaseDto;
 import com.teus.projectrpg.dto.WeaponDto;
-import com.teus.projectrpg.entity.weapon.*;
+import com.teus.projectrpg.entity.weapon.WeaponEntity;
+import com.teus.projectrpg.exception.ElementNotFoundException;
+import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.mapper.WeaponMapper;
-import com.teus.projectrpg.mapper.context.WeaponContext;
 import com.teus.projectrpg.mapper.base.BaseMapper;
-import com.teus.projectrpg.service.weaponservices.weapon.WeaponService;
-import com.teus.projectrpg.service.weaponservices.weapongroup.WeaponGroupService;
-import com.teus.projectrpg.service.weaponservices.weaponquality.WeaponQualityService;
-import com.teus.projectrpg.service.weaponservices.weaponreach.WeaponReachService;
-import com.teus.projectrpg.service.weaponservices.weapontype.WeaponTypeService;
+import com.teus.projectrpg.mapper.context.WeaponContext;
+import com.teus.projectrpg.service.weapon.weapon.WeaponService;
+import com.teus.projectrpg.service.weapon.weapongroup.WeaponGroupService;
+import com.teus.projectrpg.service.weapon.weaponquality.WeaponQualityService;
+import com.teus.projectrpg.service.weapon.weaponreach.WeaponReachService;
+import com.teus.projectrpg.service.weapon.weapontype.WeaponTypeService;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import com.teus.projectrpg.type.weapon.WeaponQualityType;
 import com.teus.projectrpg.type.weapon.WeaponReachType;
 import com.teus.projectrpg.type.weapon.WeaponType;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class WeaponController {
 
     private final WeaponService weaponService;
@@ -34,16 +36,6 @@ public class WeaponController {
     private final BaseMapper baseMapper;
     private final WeaponMapper weaponMapper;
 
-    public WeaponController(WeaponService weaponService, WeaponTypeService weaponTypeService, WeaponGroupService weaponGroupService, WeaponReachService weaponReachService, WeaponQualityService weaponQualityService, BaseMapper baseMapper, WeaponMapper weaponMapper) {
-        this.weaponService = weaponService;
-        this.weaponTypeService = weaponTypeService;
-        this.weaponGroupService = weaponGroupService;
-        this.weaponReachService = weaponReachService;
-        this.weaponQualityService = weaponQualityService;
-        this.baseMapper = baseMapper;
-        this.weaponMapper = weaponMapper;
-    }
-
     @GetMapping("/weapon")
     List<WeaponDto> getAllWeapons() {
         return weaponMapper.toDtos(weaponService.findAll());
@@ -53,7 +45,7 @@ public class WeaponController {
     WeaponEntity putWeapon(@RequestBody WeaponDto newWeapon) {
         WeaponEntity weaponEntity = weaponMapper.toEntity(newWeapon, new WeaponContext());
         WeaponEntity result = weaponService.findByName(weaponEntity.getName());
-        if(result != null) {
+        if (result != null) {
             weaponEntity.setId(result.getId());
         }
 

@@ -9,7 +9,4 @@ public class WeaponQualityValueDto {
     private Long id;
     private BaseDto<WeaponQualityType> weaponQuality;
     private int value;
-
-    public WeaponQualityValueDto() {
-    }
 }

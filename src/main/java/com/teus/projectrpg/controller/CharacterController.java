@@ -8,6 +8,7 @@ import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.mapper.CharacterMapper;
 import com.teus.projectrpg.mapper.context.CharacterContext;
 import com.teus.projectrpg.service.character.CharacterService;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class CharacterController {
 
     private final CharacterService characterService;
     private final CharacterMapper characterMapper;
 
     private final CharacterContext characterContext;
-
-    public CharacterController(CharacterService characterService, CharacterMapper characterMapper, CharacterContext characterContext) {
-        this.characterService = characterService;
-        this.characterMapper = characterMapper;
-        this.characterContext = characterContext;
-    }
 
     @GetMapping("/character")
     List<CharacterDto> getAllCharacters() {

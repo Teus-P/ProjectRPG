@@ -4,12 +4,9 @@ import com.teus.projectrpg.type.creaturetrait.CreatureTraitType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CreatureTraitDto extends BaseDto<CreatureTraitType> {
 
     private Boolean hasValue;
-
-    public CreatureTraitDto() {
-    }
 }

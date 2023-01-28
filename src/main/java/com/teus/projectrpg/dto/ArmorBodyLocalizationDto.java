@@ -8,7 +8,4 @@ public class ArmorBodyLocalizationDto {
     private Long id;
     private BaseDto<BodyLocalizationType> bodyLocalization;
     private int armorPoints;
-
-    public ArmorBodyLocalizationDto() {
-    }
 }

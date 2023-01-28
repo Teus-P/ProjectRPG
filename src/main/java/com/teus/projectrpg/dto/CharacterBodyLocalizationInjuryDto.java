@@ -9,7 +9,4 @@ public class CharacterBodyLocalizationInjuryDto {
     private Long id;
     private BaseDto<InjuryType> injury;
     private int value;
-
-    public CharacterBodyLocalizationInjuryDto() {
-    }
 }

@@ -3,20 +3,16 @@ package com.teus.projectrpg.service.injury;
 import com.teus.projectrpg.entity.injury.InjuryEntity;
 import com.teus.projectrpg.repository.injury.InjuryRepository;
 import com.teus.projectrpg.type.injury.InjuryType;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class InjuryServiceImpl implements InjuryService{
+@RequiredArgsConstructor
+public class InjuryServiceImpl implements InjuryService {
 
     private final InjuryRepository injuryRepository;
-
-    @Autowired
-    public InjuryServiceImpl(InjuryRepository injuryRepository) {
-        this.injuryRepository = injuryRepository;
-    }
 
     @Override
     public List<InjuryEntity> findAll() {

@@ -8,7 +8,4 @@ public class CharacterSkillDto {
     private Long id;
     private BaseDto<SkillType> skill;
     private int value;
-
-    public CharacterSkillDto() {
-    }
 }

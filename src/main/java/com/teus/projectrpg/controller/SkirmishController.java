@@ -3,19 +3,17 @@ package com.teus.projectrpg.controller;
 import com.teus.projectrpg.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.dto.EndTurnCheckDto;
 import com.teus.projectrpg.dto.ReceivedDamageDto;
-import com.teus.projectrpg.service.skirmish.SkirmishService;
+import com.teus.projectrpg.service.skirmish.SkirmishServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class SkirmishController {
 
-    private final SkirmishService skirmishService;
-
-    public SkirmishController(SkirmishService skirmishService) {
-        this.skirmishService = skirmishService;
-    }
+    private final SkirmishServiceImpl skirmishService;
 
     @PostMapping("/endTurnCheck")
     public EndTurnCheckDto endTurnCheck(@RequestBody EndTurnCheckDto endTurnCheck) {
