@@ -291,7 +291,7 @@ public class SkirmishServiceImpl implements SkirmishService{
         int finalDamage;
         SkirmishCharacterEntity character = skirmishCharacterService.findById(receivedDamage.getCharacterId());
         int toughnessBonus = ((character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS) / 10) % 100);
-        int armorForLocalization = character.getArmorForLocalization(receivedDamage.getBodyLocalization());
+        int armorForLocalization = character.getArmorForLocalization(receivedDamage.getBodyLocalization()) + receivedDamage.getShield();
 
         if (receivedDamage.getIsWeaponUndamaging()) {
             armorForLocalization *= 2;
