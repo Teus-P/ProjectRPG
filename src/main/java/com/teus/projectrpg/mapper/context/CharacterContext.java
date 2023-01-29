@@ -19,6 +19,7 @@ import com.teus.projectrpg.service.skill.SkillService;
 import com.teus.projectrpg.service.spell.SpellService;
 import com.teus.projectrpg.service.talent.TalentService;
 import com.teus.projectrpg.service.weapon.weapon.WeaponService;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CharacterContext {
 
     private final CharacteristicService characteristicService;
@@ -38,19 +40,6 @@ public class CharacterContext {
     private final BodyLocalizationService bodyLocalizationService;
     private final InjuryService injuryService;
     private final ConditionService conditionService;
-
-    public CharacterContext(CharacteristicService characteristicService, SkillService skillService, TalentService talentService, SpellService spellService, CreatureTraitService creatureTraitService, WeaponService weaponService, ArmorService armorService, BodyLocalizationService bodyLocalizationService, InjuryService injuryService, ConditionService conditionService) {
-        this.characteristicService = characteristicService;
-        this.skillService = skillService;
-        this.talentService = talentService;
-        this.spellService = spellService;
-        this.creatureTraitService = creatureTraitService;
-        this.weaponService = weaponService;
-        this.armorService = armorService;
-        this.bodyLocalizationService = bodyLocalizationService;
-        this.injuryService = injuryService;
-        this.conditionService = conditionService;
-    }
 
     @AfterMapping
     public void setCharacterDtoParameters(@MappingTarget CharacterDto characterDto) {
