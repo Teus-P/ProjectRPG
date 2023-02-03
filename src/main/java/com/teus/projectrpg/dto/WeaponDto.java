@@ -1,5 +1,6 @@
 package com.teus.projectrpg.dto;
 
+import com.teus.projectrpg.type.AvailabilityType;
 import com.teus.projectrpg.type.weapon.WeaponGroupType;
 import com.teus.projectrpg.type.weapon.WeaponReachType;
 import com.teus.projectrpg.type.weapon.WeaponType;
@@ -22,4 +23,7 @@ public class WeaponDto implements Serializable {
     private Boolean isUsingStrengthInRange;
     private int damage;
     private List<WeaponQualityValueDto> weaponQualities;
+    private String price;
+    private String encumbrance;
+    private BaseDto<AvailabilityType> availability;
 }

@@ -1,6 +1,7 @@
 package com.teus.projectrpg.entity.weapon;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.teus.projectrpg.entity.shared.AvailabilityEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -59,4 +60,14 @@ public class WeaponEntity {
             orphanRemoval = true)
     private List<WeaponQualityValueEntity> weaponQualities = new ArrayList<>();
 
+    @Column(name = "price")
+    private String price;
+
+    @Column(name = "encumbrance")
+    private String encumbrance;
+
+    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "availability_id", nullable = false)
+    private AvailabilityEntity availability;
 }
