@@ -1,6 +1,7 @@
 package com.teus.projectrpg.entity.armor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.teus.projectrpg.entity.shared.AvailabilityEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,4 +49,15 @@ public class ArmorEntity {
             joinColumns = @JoinColumn(name = "armor_id"),
             inverseJoinColumns = @JoinColumn(name = "quality_id"))
     private List<ArmorQualityEntity> armorQualities = new ArrayList<>();
+
+    @Column(name = "price")
+    private String price;
+
+    @Column(name = "encumbrance")
+    private String encumbrance;
+
+    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "availability_id", nullable = false)
+    private AvailabilityEntity availability;
 }

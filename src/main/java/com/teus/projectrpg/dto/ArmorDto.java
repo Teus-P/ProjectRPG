@@ -1,5 +1,6 @@
 package com.teus.projectrpg.dto;
 
+import com.teus.projectrpg.type.AvailabilityType;
 import com.teus.projectrpg.type.armor.ArmorCategoryType;
 import com.teus.projectrpg.type.armor.ArmorPenaltyType;
 import com.teus.projectrpg.type.armor.ArmorQualityType;
@@ -18,4 +19,7 @@ public class ArmorDto implements Serializable {
     private List<ArmorBodyLocalizationDto> armorBodyLocalizations;
     private List<BaseDto<ArmorPenaltyType>> armorPenalties;
     private List<BaseDto<ArmorQualityType>> armorQualities;
+    private String price;
+    private String encumbrance;
+    private BaseDto<AvailabilityType> availability;
 }

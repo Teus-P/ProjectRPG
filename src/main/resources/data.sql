@@ -63,20 +63,20 @@ INSERT IGNORE INTO projectrpg.condition_entity(id, name, has_counter) VALUES (10
 INSERT IGNORE INTO projectrpg.condition_entity(id, name, has_counter) VALUES (11, 'SURPRISED', false);
 INSERT IGNORE INTO projectrpg.condition_entity(id, name, has_counter) VALUES (12, 'UNCONSCIOUS', true);
 
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (1, 'LEATHER_JACK', 'Skórzana kurta', 1);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (2, 'LEATHER_JERKIN', 'Skórzany kaftan', 1);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (3, 'LEATHER_LEGGINGS', 'Skórzane nogawice', 1);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (4, 'LEATHER_SKULLCAP', 'Skórzany hełm', 1);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (5, 'COLLAR', 'Kolet', 2);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (6, 'MAIL_CHAUSSES', 'Nogawice kolcze', 3);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (7, 'MAIL_COAT', 'Kolczuga', 3);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (8, 'MAIL_COIF', 'Czepiec kolczy', 3);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (9, 'MAIL_SHIRT', 'Kaftan kolczy', 3);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (10, 'BREASTPLATE', 'Napierśnik', 4);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (11, 'OPEN_HELM', 'Hełm otwarty', 4);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (12, 'BRACERS', 'Naramienniki', 4);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (13, 'PLATE_LEGGINGS', 'Nagolenniki płytowe', 4);
-INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id) VALUES (14, 'HELM', 'Hełm', 4);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (1, 'LEATHER_JACK', 'Skórzana kurta', 1, '12S', '1', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (2, 'LEATHER_JERKIN', 'Skórzany kaftan', 1, '10S', '1', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (3, 'LEATHER_LEGGINGS', 'Skórzane nogawice', 1, '14S', '1', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (4, 'LEATHER_SKULLCAP', 'Skórzany hełm', 1, '8S', '0', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (5, 'COLLAR', 'Kolet', 2, '18S', '2', 5);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (6, 'MAIL_CHAUSSES', 'Nogawice kolcze', 3, '2G', '3', 5);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (7, 'MAIL_COAT', 'Kolczuga', 3, '3G', '3', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (8, 'MAIL_COIF', 'Czepiec kolczy', 3, '1G', '2', 5);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (9, 'MAIL_SHIRT', 'Kaftan kolczy', 3, '2G', '2', 5);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (10, 'BREASTPLATE', 'Napierśnik', 4, '10G', '3', 5);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (11, 'OPEN_HELM', 'Hełm otwarty', 4, '2G', '1', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (12, 'BRACERS', 'Naramienniki', 4, '8G', '3', 4);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (13, 'PLATE_LEGGINGS', 'Nagolenniki płytowe', 4, '10G', '3', 4);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (14, 'HELM', 'Hełm', 4, '3G', '2', 4);
 
 INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (1, 1, 2, 1);
 INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (2, 1, 3, 1);
