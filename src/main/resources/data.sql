@@ -1,3 +1,9 @@
+INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (1, 'COMMON');
+INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (2, 'EXOTIC');
+INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (3, 'NA');
+INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (4, 'RARE');
+INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (5, 'SCARCE');
+
 INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (1, 'SOFT_LEATHER');
 INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (2, 'BOILED_LEATHER');
 INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (3, 'MAIL');
@@ -409,12 +415,6 @@ INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (140, 1, 65, 12);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (141, 1, 65, 37);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (142, 1, 66, 38);
-
-INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (1, 'COMMON');
-INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (2, 'EXOTIC');
-INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (3, 'NA');
-INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (4, 'RARE');
-INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (5, 'SCARCE');
 
 INSERT IGNORE INTO projectrpg.skill(id, name) VALUE (1, 'ART_CARTOGRAPHY');
 INSERT IGNORE INTO projectrpg.skill(id, name) VALUE (2, 'ART_ENGRAVING');
