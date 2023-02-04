@@ -39,5 +39,8 @@ public enum WeaponQualityType {
     BULKY,
     //Up in Arms
     UNBALANCED,
-    SLASH
+    SLASH,
+    BALLOCK_KNIFE,
+    LANCE,
+    TRIP
 }

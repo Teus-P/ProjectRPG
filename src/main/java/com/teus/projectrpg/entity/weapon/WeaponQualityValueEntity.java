@@ -24,5 +24,5 @@ public class WeaponQualityValueEntity {
     private WeaponQualityEntity weaponQuality;
 
     @Column(name = "value")
-    private int value;
+    private String value;
 }
