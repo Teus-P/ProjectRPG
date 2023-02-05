@@ -193,6 +193,7 @@ INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (38, 'SLASH');
 INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (39, 'BALLOCK_KNIFE');
 INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (40, 'LANCE');
 INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (41, 'TRIP');
+INSERT IGNORE INTO projectrpg.weapon_quality(id, name) VALUES (42, 'SPREAD');
 
 INSERT IGNORE INTO projectrpg.weapon_reach(id, name) VALUES (1, 'AVERAGE');
 INSERT IGNORE INTO projectrpg.weapon_reach(id, name) VALUES (2, 'LONG');

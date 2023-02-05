@@ -42,5 +42,6 @@ public enum WeaponQualityType {
     SLASH,
     BALLOCK_KNIFE,
     LANCE,
-    TRIP
+    TRIP,
+    SPREAD
 }
