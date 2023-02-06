@@ -4,29 +4,6 @@ INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (3, 'NA');
 INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (4, 'RARE');
 INSERT IGNORE INTO projectrpg.availability(id, name) VALUES (5, 'SCARCE');
 
-INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (1, 'SOFT_LEATHER');
-INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (2, 'BOILED_LEATHER');
-INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (3, 'MAIL');
-INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (4, 'PLATE');
-INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (5, 'OTHER');
-
-INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (1, 'MINUS_TEN_PERCEPTION');
-INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (2, 'MINUS_TEN_STEALTH');
-INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (3, 'MINUS_TWENTY_PERCEPTION');
-
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (1, 'FLEXIBLE');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (2, 'IMPENETRABLE');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (3, 'PARTIAL');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (4, 'WEAKPOINTS');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (5, 'DURABLE');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (6, 'FINE');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (7, 'LIGHTWEIGHT');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (8, 'PRACTICAL');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (9, 'UGLY');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (10, 'SHODDY');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (11, 'UNRELIABLE');
-INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (12, 'BULKY');
-
 INSERT IGNORE INTO projectrpg.body_localization(id, name) VALUES (1, 'HEAD');
 INSERT IGNORE INTO projectrpg.body_localization(id, name) VALUES (2, 'RIGHT_ARM');
 INSERT IGNORE INTO projectrpg.body_localization(id, name) VALUES (3, 'LEFT_ARM');
@@ -63,6 +40,29 @@ INSERT IGNORE INTO projectrpg.condition_entity(id, name, has_counter) VALUES (10
 INSERT IGNORE INTO projectrpg.condition_entity(id, name, has_counter) VALUES (11, 'SURPRISED', false);
 INSERT IGNORE INTO projectrpg.condition_entity(id, name, has_counter) VALUES (12, 'UNCONSCIOUS', true);
 
+INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (1, 'SOFT_LEATHER');
+INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (2, 'BOILED_LEATHER');
+INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (3, 'MAIL');
+INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (4, 'PLATE');
+INSERT IGNORE INTO projectrpg.armor_category (id, name) VALUES (5, 'OTHER');
+
+INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (1, 'MINUS_TEN_PERCEPTION');
+INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (2, 'MINUS_TEN_STEALTH');
+INSERT IGNORE INTO projectrpg.armor_penalty(id, name) VALUES (3, 'MINUS_TWENTY_PERCEPTION');
+
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (1, 'FLEXIBLE');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (2, 'IMPENETRABLE');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (3, 'PARTIAL');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (4, 'WEAKPOINTS');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (5, 'DURABLE');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (6, 'FINE');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (7, 'LIGHTWEIGHT');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (8, 'PRACTICAL');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (9, 'UGLY');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (10, 'SHODDY');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (11, 'UNRELIABLE');
+INSERT IGNORE INTO projectrpg.armor_quality (id, name) VALUES (12, 'BULKY');
+
 INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (1, 'LEATHER_JACK', 'Skórzana kurta', 1, '12S', '1', 1);
 INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (2, 'LEATHER_JERKIN', 'Skórzany kaftan', 1, '10S', '1', 1);
 INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (3, 'LEATHER_LEGGINGS', 'Skórzane nogawice', 1, '14S', '1', 1);
@@ -77,6 +77,9 @@ INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_
 INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (12, 'BRACERS', 'Naramienniki', 4, '8G', '3', 4);
 INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (13, 'PLATE_LEGGINGS', 'Nagolenniki płytowe', 4, '10G', '3', 4);
 INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (14, 'HELM', 'Hełm', 4, '3G', '2', 4);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (15, 'ARMOR_1', 'Pancerz (1)', 5, '-', '-', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (16, 'ARMOR_2', 'Pancerz (2)', 5, '-', '-', 1);
+INSERT IGNORE INTO projectrpg.armor (id, name, name_translation, armor_category_id, price, encumbrance, availability_id) VALUES (17, 'ARMOR_3', 'Pancerz (3)', 5, '-', '-', 1);
 
 INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (1, 1, 2, 1);
 INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (2, 1, 3, 1);
@@ -100,6 +103,25 @@ INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_locali
 INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (20, 13, 5, 2);
 INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (21, 13, 6, 2);
 INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (22, 14, 1, 2);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (23, 15, 1, 1);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (24, 15, 2, 1);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (25, 15, 3, 1);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (26, 15, 4, 1);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (27, 15, 5, 1);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (28, 15, 6, 1);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (29, 16, 1, 2);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (30, 16, 2, 2);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (31, 16, 3, 2);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (32, 16, 4, 2);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (33, 16, 5, 2);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (34, 16, 6, 2);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (35, 17, 1, 3);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (36, 17, 2, 3);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (37, 17, 3, 3);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (38, 17, 4, 3);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (39, 17, 5, 3);
+INSERT IGNORE INTO projectrpg.armor_body_localization (id, armor_id, body_localization_id, armor_points) VALUES (40, 17, 6, 3);
+
 
 INSERT IGNORE INTO projectrpg.armor_armor_penalty (armor_id, penalty_id) VALUES (6, 2);
 INSERT IGNORE INTO projectrpg.armor_armor_penalty (armor_id, penalty_id) VALUES (7, 2);
