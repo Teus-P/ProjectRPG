@@ -584,7 +584,6 @@ INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (255, 1, 98, 22);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (256, 6, 98, 24);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (257, 1, 98, 23);
-
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (258, 1, 99, 11);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (259, 1, 99, 12);
 INSERT IGNORE INTO projectrpg.weapon_quality_value(id, value, weapon_id, weapon_quality_id) VALUES (260, 1, 99, 44);
