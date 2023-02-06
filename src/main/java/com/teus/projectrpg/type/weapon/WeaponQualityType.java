@@ -43,5 +43,12 @@ public enum WeaponQualityType {
     BALLOCK_KNIFE,
     LANCE,
     TRIP,
-    SPREAD
+    SPREAD,
+    INFECTED,
+    PAPER_CARTRIDGE,
+    AQSHY_INFUSED_POWDER,
+    LARGE_BULLET_AND_POWDER,
+    GRAPPLE,
+    MATCHLOCK,
+    CANE_PISTOL
 }
