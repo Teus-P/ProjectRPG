@@ -1,15 +1,15 @@
 package com.teus.projectrpg.service.armor.armor;
 
-import com.teus.projectrpg.dto.ArmorBodyLocalizationDto;
-import com.teus.projectrpg.dto.ArmorDto;
-import com.teus.projectrpg.dto.BaseDto;
-import com.teus.projectrpg.entity.armor.*;
-import com.teus.projectrpg.mapper.context.ArmorContext;
-import com.teus.projectrpg.mapper.ArmorMapper;
-import com.teus.projectrpg.type.armor.ArmorCategoryType;
-import com.teus.projectrpg.type.armor.ArmorPenaltyType;
-import com.teus.projectrpg.type.armor.ArmorQualityType;
-import com.teus.projectrpg.type.armor.BodyLocalizationType;
+import com.teus.projectrpg.armor.dto.ArmorBodyLocalizationDto;
+import com.teus.projectrpg.armor.dto.ArmorDto;
+import com.teus.projectrpg.armor.entity.*;
+import com.teus.projectrpg.base.dto.BaseDto;
+import com.teus.projectrpg.armor.mapper.ArmorContext;
+import com.teus.projectrpg.armor.mapper.ArmorMapper;
+import com.teus.projectrpg.armor.type.ArmorCategoryType;
+import com.teus.projectrpg.armor.type.ArmorPenaltyType;
+import com.teus.projectrpg.armor.type.ArmorQualityType;
+import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
