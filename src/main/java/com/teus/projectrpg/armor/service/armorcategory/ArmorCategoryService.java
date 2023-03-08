@@ -1,6 +1,7 @@
 package com.teus.projectrpg.armor.service.armorcategory;
 
-import com.teus.projectrpg.armor.entity.ArmorCategoryEntity;
+import com.teus.projectrpg.armor.type.ArmorCategoryType;
+import com.teus.projectrpg.base.dto.BaseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,5 +9,5 @@ import java.util.List;
 @Service
 public interface ArmorCategoryService {
 
-    List<ArmorCategoryEntity> findAll();
+    List<BaseDto<ArmorCategoryType>> findAll();
 }

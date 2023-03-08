@@ -1,13 +1,6 @@
 package com.teus.projectrpg.armor;
 
 import com.teus.projectrpg.armor.dto.ArmorDto;
-import com.teus.projectrpg.base.dto.BaseDto;
-import com.teus.projectrpg.armor.entity.ArmorEntity;
-import com.teus.projectrpg.exception.ElementNotFoundException;
-import com.teus.projectrpg.exception.FieldCannotBeNullException;
-import com.teus.projectrpg.armor.mapper.ArmorMapper;
-import com.teus.projectrpg.base.mapper.BaseMapper;
-import com.teus.projectrpg.armor.mapper.ArmorContext;
 import com.teus.projectrpg.armor.service.armor.ArmorService;
 import com.teus.projectrpg.armor.service.armorcategory.ArmorCategoryService;
 import com.teus.projectrpg.armor.service.armorpenalty.ArmorPenaltyService;
@@ -15,66 +8,75 @@ import com.teus.projectrpg.armor.service.armorquality.ArmorQualityService;
 import com.teus.projectrpg.armor.type.ArmorCategoryType;
 import com.teus.projectrpg.armor.type.ArmorPenaltyType;
 import com.teus.projectrpg.armor.type.ArmorQualityType;
+import com.teus.projectrpg.base.dto.BaseDto;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.PropertyValueException;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class ArmorController {
 
-    private final BaseMapper baseMapper;
     private final ArmorService armorService;
     private final ArmorCategoryService armorCategoryService;
     private final ArmorPenaltyService armorPenaltyService;
     private final ArmorQualityService armorQualityService;
-    private final ArmorMapper armorMapper;
-    private final ArmorContext armorContext;
 
     @GetMapping("/armor")
-    List<ArmorDto> getAllArmors() {
-        return armorMapper.toDtos(armorService.findAll());
+    public ResponseEntity<List<ArmorDto>> getAllArmors() {
+        List<ArmorDto> armors = armorService.findAll();
+        if (armors.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(armors);
     }
 
     @PutMapping("/armor")
-    ArmorEntity putArmor(@RequestBody ArmorDto newArmor) {
-        ArmorEntity armorEntity = armorMapper.toEntity(newArmor, armorContext);
-        ArmorEntity result = armorService.findByName(armorEntity.getName());
-        if (result != null) {
-            armorEntity.setId(result.getId());
-        }
-
-        try {
-            return armorService.save(armorEntity);
-        } catch (DataIntegrityViolationException e) {
-            throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
-        }
+    public ResponseEntity<ArmorDto> putArmor(@Valid @RequestBody ArmorDto newArmor) {
+        return ResponseEntity.ok(armorService.save(newArmor));
     }
 
     @DeleteMapping("/armor/{id}")
-    void deleteArmor(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteArmor(@PathVariable Long id) {
         try {
             armorService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException ex) {
+            return ResponseEntity.notFound().build();
         } catch (Exception ex) {
-            throw new ElementNotFoundException(id);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/armorCategory")
-    List<BaseDto<ArmorCategoryType>> getAllArmorCategories() {
-        return this.baseMapper.toDtos(armorCategoryService.findAll());
+    public ResponseEntity<List<BaseDto<ArmorCategoryType>>> getAllArmorCategories() {
+        List<BaseDto<ArmorCategoryType>> armorCategories = armorCategoryService.findAll();
+        if (armorCategories.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(armorCategories);
     }
 
     @GetMapping("/armorPenalty")
-    List<BaseDto<ArmorPenaltyType>> getAllArmorPenalties() {
-        return this.baseMapper.toDtos(armorPenaltyService.findAll());
+    public ResponseEntity<List<BaseDto<ArmorPenaltyType>>> getAllArmorPenalties() {
+        List<BaseDto<ArmorPenaltyType>> armorPenalties = armorPenaltyService.findAll();
+        if (armorPenalties.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(armorPenalties);
     }
 
     @GetMapping("/armorQuality")
-    List<BaseDto<ArmorQualityType>> getAllArmorQualities() {
-        return this.baseMapper.toDtos(armorQualityService.findAll());
+    public ResponseEntity<List<BaseDto<ArmorQualityType>>> getAllArmorQualities() {
+        List<BaseDto<ArmorQualityType>> armorQualities = armorQualityService.findAll();
+        if (armorQualities.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(armorQualities);
     }
 }

@@ -1,14 +1,15 @@
 package com.teus.projectrpg.armor.service.armor;
 
+import com.teus.projectrpg.armor.dto.ArmorDto;
 import com.teus.projectrpg.armor.entity.ArmorEntity;
 
 import java.util.List;
 
 public interface ArmorService {
 
-    List<ArmorEntity> findAll();
+    List<ArmorDto> findAll();
 
-    ArmorEntity save(ArmorEntity armorEntity);
+    ArmorDto save(ArmorDto newArmor);
 
     void deleteById(Long id);
 
