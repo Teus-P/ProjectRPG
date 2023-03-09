@@ -35,8 +35,8 @@ public class ArmorServiceImpl implements ArmorService {
         }
 
         try {
-            ArmorEntity saveArmorEntity = armorRepository.save(armorEntity);
-            return armorMapper.toDto(saveArmorEntity);
+            ArmorEntity savedArmorEntity = armorRepository.save(armorEntity);
+            return armorMapper.toDto(savedArmorEntity);
         } catch (DataIntegrityViolationException ex) {
             throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
         }
