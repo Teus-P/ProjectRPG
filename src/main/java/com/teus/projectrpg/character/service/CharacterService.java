@@ -1,13 +1,13 @@
 package com.teus.projectrpg.character.service;
 
-import com.teus.projectrpg.character.entity.CharacterEntity;
+import com.teus.projectrpg.character.dto.CharacterDto;
 
 import java.util.List;
 
 public interface CharacterService {
-    List<CharacterEntity> findAll();
+    List<CharacterDto> findAll();
 
-    CharacterEntity save(CharacterEntity characterEntity);
+    CharacterDto save(CharacterDto newCharacter);
 
     void deleteById(Long id);
 }
