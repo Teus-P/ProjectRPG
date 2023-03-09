@@ -1,6 +1,8 @@
 package com.teus.projectrpg.bodylocalization.service;
 
 import com.teus.projectrpg.armor.entity.BodyLocalizationEntity;
+import com.teus.projectrpg.base.dto.BaseDto;
+import com.teus.projectrpg.base.mapper.BaseMapper;
 import com.teus.projectrpg.bodylocalization.repository.BodyLocalizationRepository;
 import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +15,11 @@ import java.util.List;
 public class BodyLocalizationServiceImpl implements BodyLocalizationService {
 
     private final BodyLocalizationRepository bodyLocalizationRepository;
+    private final BaseMapper baseMapper;
 
     @Override
-    public List<BodyLocalizationEntity> findAll() {
-        return bodyLocalizationRepository.findAll();
+    public List<BaseDto<BodyLocalizationType>> findAll() {
+        return baseMapper.toDtos(bodyLocalizationRepository.findAll());
     }
 
     @Override
