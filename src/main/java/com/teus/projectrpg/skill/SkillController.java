@@ -17,7 +17,7 @@ public class SkillController {
     private final SkillService skillService;
 
     @GetMapping("/skill")
-    ResponseEntity<List<BaseDto<SkillType>>> getAllSkills() {
+    public ResponseEntity<List<BaseDto<SkillType>>> getAllSkills() {
         List<BaseDto<SkillType>> skillDtos = skillService.findAll();
         if (skillDtos.isEmpty()) {
             return ResponseEntity.noContent().build();

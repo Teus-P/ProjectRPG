@@ -16,7 +16,7 @@ public class ConditionController {
     private final ConditionService conditionService;
 
     @GetMapping("/condition")
-    ResponseEntity<List<ConditionDto>> getAllConditions() {
+    public ResponseEntity<List<ConditionDto>> getAllConditions() {
         List<ConditionDto> conditionDtos = conditionService.findAll();
         if (conditionDtos.isEmpty()) {
             return ResponseEntity.noContent().build();

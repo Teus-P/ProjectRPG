@@ -17,7 +17,7 @@ public class InjuryController {
     private final InjuryService injuryService;
 
     @GetMapping("/injury")
-    ResponseEntity<List<BaseDto<InjuryType>>> getAllInjuries() {
+    public ResponseEntity<List<BaseDto<InjuryType>>> getAllInjuries() {
         List<BaseDto<InjuryType>> injuryDtos = injuryService.findAll();
         if (injuryDtos.isEmpty()) {
             return ResponseEntity.noContent().build();

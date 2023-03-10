@@ -16,7 +16,7 @@ public class SpellController {
     private final SpellService spellService;
 
     @GetMapping("/spell")
-    ResponseEntity<List<SpellDto>> getAllSpells() {
+    public ResponseEntity<List<SpellDto>> getAllSpells() {
         List<SpellDto> spellDtos = spellService.findAll();
         if (spellDtos.isEmpty()) {
             return ResponseEntity.noContent().build();

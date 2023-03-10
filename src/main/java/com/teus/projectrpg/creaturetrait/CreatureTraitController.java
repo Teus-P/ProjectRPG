@@ -16,7 +16,7 @@ public class CreatureTraitController {
     private final CreatureTraitService creatureTraitService;
 
     @GetMapping("/creatureTrait")
-    ResponseEntity<List<CreatureTraitDto>> getAllCreatureTraits() {
+    public ResponseEntity<List<CreatureTraitDto>> getAllCreatureTraits() {
         List<CreatureTraitDto> creatureTraitDtos = creatureTraitService.findAll();
         if (creatureTraitDtos.isEmpty()) {
             return ResponseEntity.noContent().build();
