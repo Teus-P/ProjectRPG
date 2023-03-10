@@ -1,4 +1,4 @@
-package com.teus.projectrpg.service.armor.armor;
+package com.teus.projectrpg.service.armor;
 
 import com.teus.projectrpg.armor.dto.ArmorBodyLocalizationDto;
 import com.teus.projectrpg.armor.dto.ArmorDto;

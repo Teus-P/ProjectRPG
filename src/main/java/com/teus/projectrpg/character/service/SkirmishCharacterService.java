@@ -1,5 +1,6 @@
 package com.teus.projectrpg.character.service;
 
+import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.character.entity.SkirmishCharacterEntity;
 
 import java.util.List;
@@ -10,9 +11,11 @@ public interface SkirmishCharacterService {
 
     List<SkirmishCharacterEntity> findAll();
 
-    SkirmishCharacterEntity save(SkirmishCharacterEntity skirmishCharacterEntity);
+    List<SkirmishCharacterDto> sortByInitiative();
 
-    List<SkirmishCharacterEntity> saveAll(List<SkirmishCharacterEntity> skirmishCharacterEntity);
+    SkirmishCharacterDto save(SkirmishCharacterDto newSkirmishCharacter);
+
+    List<SkirmishCharacterDto> saveAll(List<SkirmishCharacterDto> skirmishCharacterDtos);
 
     void deleteById(Long id);
 

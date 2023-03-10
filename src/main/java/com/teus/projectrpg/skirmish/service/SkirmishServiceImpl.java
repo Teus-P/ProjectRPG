@@ -1,19 +1,19 @@
 package com.teus.projectrpg.skirmish.service;
 
 import com.teus.projectrpg.character.dto.CharacterBodyLocalizationDto;
-import com.teus.projectrpg.condition.dto.ConditionDto;
 import com.teus.projectrpg.character.entity.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.character.entity.CharacterSkillEntity;
-import com.teus.projectrpg.condition.entity.CharacterConditionEntity;
 import com.teus.projectrpg.character.entity.SkirmishCharacterEntity;
-import com.teus.projectrpg.character.mapper.SkirmishCharacterMapper;
 import com.teus.projectrpg.character.mapper.CharacterContext;
-import com.teus.projectrpg.characteristic.service.CharacteristicService;
-import com.teus.projectrpg.condition.service.ConditionService;
-import com.teus.projectrpg.skill.service.SkillService;
+import com.teus.projectrpg.character.mapper.SkirmishCharacterMapper;
 import com.teus.projectrpg.character.service.SkirmishCharacterService;
+import com.teus.projectrpg.characteristic.service.CharacteristicService;
 import com.teus.projectrpg.characteristic.type.CharacteristicType;
+import com.teus.projectrpg.condition.dto.ConditionDto;
+import com.teus.projectrpg.condition.entity.CharacterConditionEntity;
+import com.teus.projectrpg.condition.service.ConditionService;
 import com.teus.projectrpg.condition.type.ConditionType;
+import com.teus.projectrpg.skill.service.SkillService;
 import com.teus.projectrpg.skill.type.SkillType;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
@@ -25,7 +25,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class SkirmishServiceImpl implements SkirmishService{
+public class SkirmishServiceImpl implements SkirmishService {
     private final SkirmishCharacterService skirmishCharacterService;
     private final CharacteristicService characteristicService;
     private final SkillService skillService;
@@ -40,7 +40,7 @@ public class SkirmishServiceImpl implements SkirmishService{
         List<SkirmishCharacterEntity> skirmishCharacters = this.skirmishCharacterService.findAll();
         checkConditions(skirmishCharacters);
 
-        this.skirmishCharacterService.saveAll(skirmishCharacters);
+        this.skirmishCharacterService.saveAll(skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext));
     }
 
     private void checkConditions(List<SkirmishCharacterEntity> skirmishCharacters) {
@@ -139,10 +139,10 @@ public class SkirmishServiceImpl implements SkirmishService{
                 .filter(c -> c.getCondition().getName().equals(ConditionType.UNCONSCIOUS))
                 .findFirst();
 
-        if(unconscious.isPresent()) {
-            if(unconscious.get().getCounter() > 0) {
+        if (unconscious.isPresent()) {
+            if (unconscious.get().getCounter() > 0) {
                 unconscious.get().setCounter(unconscious.get().getCounter() - 1);
-                if(unconscious.get().getCounter() <= 0) {
+                if (unconscious.get().getCounter() <= 0) {
                     unconscious.get().setValue(1);
                     unconscious.get().setCounter(0);
                 }
@@ -170,7 +170,7 @@ public class SkirmishServiceImpl implements SkirmishService{
             }
         }
 
-        this.skirmishCharacterService.saveAll(skirmishCharacters);
+        this.skirmishCharacterService.saveAll(skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext));
         return this.endTurnCheck;
     }
 
@@ -330,7 +330,7 @@ public class SkirmishServiceImpl implements SkirmishService{
             character.removeConditionByType(ConditionType.SURPRISED);
         }
 
-        skirmishCharacterService.save(character);
+        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
 
 
@@ -361,7 +361,7 @@ public class SkirmishServiceImpl implements SkirmishService{
         int newAdvantage = character.getAdvantage() + 1;
         character.setAdvantage(newAdvantage);
 
-        skirmishCharacterService.save(character);
+        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
 
     public void removeAdvantagePoint(Long skirmishCharacterId) {
@@ -371,7 +371,7 @@ public class SkirmishServiceImpl implements SkirmishService{
             character.setAdvantage(newAdvantage);
         }
 
-        skirmishCharacterService.save(character);
+        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
 
     public int getBonusPoints(int value) {
@@ -387,7 +387,7 @@ public class SkirmishServiceImpl implements SkirmishService{
                 .ifPresent(o -> o.setAdditionalArmorPoints(o.getAdditionalArmorPoints() + 1));
 
         character.setBodyLocalizations(bodyLocalizations);
-        skirmishCharacterService.save(character);
+        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
 
     public void removeAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization) {
@@ -399,6 +399,6 @@ public class SkirmishServiceImpl implements SkirmishService{
                 .ifPresent(o -> o.setAdditionalArmorPoints(o.getAdditionalArmorPoints() - 1));
 
         character.setBodyLocalizations(bodyLocalizations);
-        skirmishCharacterService.save(character);
+        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
 }
