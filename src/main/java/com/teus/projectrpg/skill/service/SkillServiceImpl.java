@@ -1,5 +1,7 @@
 package com.teus.projectrpg.skill.service;
 
+import com.teus.projectrpg.base.dto.BaseDto;
+import com.teus.projectrpg.base.mapper.BaseMapper;
 import com.teus.projectrpg.character.entity.CharacterSkillEntity;
 import com.teus.projectrpg.skill.entity.SkillEntity;
 import com.teus.projectrpg.skill.repository.SkillRepository;
@@ -15,10 +17,11 @@ import java.util.Optional;
 public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
+    private final BaseMapper baseMapper;
 
     @Override
-    public List<SkillEntity> findAll() {
-        return skillRepository.findAll();
+    public List<BaseDto<SkillType>> findAll() {
+        return baseMapper.toDtos(skillRepository.findAll());
     }
 
     @Override
