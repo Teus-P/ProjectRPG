@@ -1,6 +1,8 @@
 package com.teus.projectrpg.spell.service;
 
+import com.teus.projectrpg.spell.dto.SpellDto;
 import com.teus.projectrpg.spell.entity.SpellEntity;
+import com.teus.projectrpg.spell.mapper.SpellMapper;
 import com.teus.projectrpg.spell.repository.SpellRepository;
 import com.teus.projectrpg.spell.type.SpellType;
 import lombok.RequiredArgsConstructor;
@@ -10,13 +12,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SpellServiceImpl implements SpellService{
+public class SpellServiceImpl implements SpellService {
 
     private final SpellRepository spellRepository;
+    private final SpellMapper spellMapper;
 
     @Override
-    public List<SpellEntity> findAll() {
-        return spellRepository.findAll();
+    public List<SpellDto> findAll() {
+        return spellMapper.toDtos(spellRepository.findAll());
     }
 
     @Override
