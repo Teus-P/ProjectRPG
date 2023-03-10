@@ -2,12 +2,6 @@ package com.teus.projectrpg.weapon;
 
 import com.teus.projectrpg.base.dto.BaseDto;
 import com.teus.projectrpg.weapon.dto.WeaponDto;
-import com.teus.projectrpg.weapon.entity.WeaponEntity;
-import com.teus.projectrpg.exception.ElementNotFoundException;
-import com.teus.projectrpg.exception.FieldCannotBeNullException;
-import com.teus.projectrpg.weapon.mapper.WeaponMapper;
-import com.teus.projectrpg.base.mapper.BaseMapper;
-import com.teus.projectrpg.weapon.mapper.WeaponContext;
 import com.teus.projectrpg.weapon.service.weapon.WeaponService;
 import com.teus.projectrpg.weapon.service.weapongroup.WeaponGroupService;
 import com.teus.projectrpg.weapon.service.weaponquality.WeaponQualityService;
@@ -18,10 +12,12 @@ import com.teus.projectrpg.weapon.type.WeaponQualityType;
 import com.teus.projectrpg.weapon.type.WeaponReachType;
 import com.teus.projectrpg.weapon.type.WeaponType;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.PropertyValueException;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,55 +29,66 @@ public class WeaponController {
     private final WeaponGroupService weaponGroupService;
     private final WeaponReachService weaponReachService;
     private final WeaponQualityService weaponQualityService;
-    private final BaseMapper baseMapper;
-    private final WeaponMapper weaponMapper;
 
     @GetMapping("/weapon")
-    List<WeaponDto> getAllWeapons() {
-        return weaponMapper.toDtos(weaponService.findAll());
+    public ResponseEntity<List<WeaponDto>> getAllWeapons() {
+        List<WeaponDto> weaponDtos = weaponService.findAll();
+        if (weaponDtos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(weaponDtos);
     }
 
     @PutMapping("/weapon")
-    WeaponEntity putWeapon(@RequestBody WeaponDto newWeapon) {
-        WeaponEntity weaponEntity = weaponMapper.toEntity(newWeapon, new WeaponContext());
-        WeaponEntity result = weaponService.findByName(weaponEntity.getName());
-        if (result != null) {
-            weaponEntity.setId(result.getId());
-        }
-
-        try {
-            return weaponService.save(weaponEntity);
-        } catch (DataIntegrityViolationException e) {
-            throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
-        }
+    public ResponseEntity<WeaponDto> putWeapon(@Valid @RequestBody WeaponDto newWeapon) {
+        return ResponseEntity.ok(weaponService.save(newWeapon));
     }
 
     @DeleteMapping("/weapon/{id}")
-    void deleteWeapon(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteWeapon(@PathVariable Long id) {
         try {
             weaponService.deleteById(id);
+            return ResponseEntity.notFound().build();
+        } catch (EmptyResultDataAccessException ex) {
+            return ResponseEntity.notFound().build();
         } catch (Exception ex) {
-            throw new ElementNotFoundException(id);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/weaponType")
-    List<BaseDto<WeaponType>> getAllWeaponTypes() {
-        return this.baseMapper.toDtos(weaponTypeService.findAll());
+    public ResponseEntity<List<BaseDto<WeaponType>>> getAllWeaponTypes() {
+        List<BaseDto<WeaponType>> weaponTypeDtos = weaponTypeService.findAll();
+        if (weaponTypeDtos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(weaponTypeDtos);
     }
 
     @GetMapping("/weaponGroup")
-    List<BaseDto<WeaponGroupType>> getAllWeaponGroups() {
-        return this.baseMapper.toDtos(weaponGroupService.findAll());
+    public ResponseEntity<List<BaseDto<WeaponGroupType>>> getAllWeaponGroups() {
+        List<BaseDto<WeaponGroupType>> weaponGroupDtos = weaponGroupService.findAll();
+        if (weaponGroupDtos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(weaponGroupDtos);
     }
 
     @GetMapping("/weaponReach")
-    List<BaseDto<WeaponReachType>> getAllWeaponReaches() {
-        return this.baseMapper.toDtos(weaponReachService.findAll());
+    public ResponseEntity<List<BaseDto<WeaponReachType>>> getAllWeaponReaches() {
+        List<BaseDto<WeaponReachType>> weaponReachDtos = weaponReachService.findAll();
+        if (weaponReachDtos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(weaponReachDtos);
     }
 
     @GetMapping("/weaponQuality")
-    List<BaseDto<WeaponQualityType>> getAllWeaponQualities() {
-        return this.baseMapper.toDtos(weaponQualityService.findAll());
+    ResponseEntity<List<BaseDto<WeaponQualityType>>> getAllWeaponQualities() {
+        List<BaseDto<WeaponQualityType>> weaponQualityDtos = weaponQualityService.findAll();
+        if (weaponQualityDtos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(weaponQualityDtos);
     }
 }
