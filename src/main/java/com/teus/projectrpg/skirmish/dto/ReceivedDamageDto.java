@@ -12,4 +12,5 @@ public class ReceivedDamageDto {
     private Boolean isWeaponUndamaging;
     private Boolean isLosingTest;
     private int shield;
+    private Boolean isSuddenDeath;
 }

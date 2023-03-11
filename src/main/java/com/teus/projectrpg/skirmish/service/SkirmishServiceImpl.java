@@ -324,7 +324,11 @@ public class SkirmishServiceImpl implements SkirmishService {
             character.setAdvantage(0);
         }
 
-        this.checkIfProne(character);
+        if (receivedDamage.getIsSuddenDeath()) {
+            checkSuddenDeath(character);
+        } else {
+            this.checkIfProne(character);
+        }
 
         if (character.getConditionByType(ConditionType.SURPRISED).isPresent()) {
             character.removeConditionByType(ConditionType.SURPRISED);
@@ -355,6 +359,14 @@ public class SkirmishServiceImpl implements SkirmishService {
             }
         }
     }
+
+    private void checkSuddenDeath(SkirmishCharacterEntity character) {
+        if (character.getCurrentWounds() <= 0) {
+            character.setCurrentWounds(0);
+            character.setIsDead(true);
+        }
+    }
+
 
     public void addAdvantagePoint(Long skirmishCharacterId) {
         SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);

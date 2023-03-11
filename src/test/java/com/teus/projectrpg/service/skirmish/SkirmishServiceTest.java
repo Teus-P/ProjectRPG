@@ -735,6 +735,7 @@ class SkirmishServiceTest {
         receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
         receivedDamageDto.setIsWeaponUndamaging(false);
         receivedDamageDto.setIsLosingTest(true);
+        receivedDamageDto.setIsSuddenDeath(true);
 
         mockFindById(character);
         skirmishService.receiveDamage(receivedDamageDto);
@@ -755,6 +756,7 @@ class SkirmishServiceTest {
         receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
         receivedDamageDto.setIsWeaponUndamaging(false);
         receivedDamageDto.setIsLosingTest(true);
+        receivedDamageDto.setIsSuddenDeath(true);
 
         mockFindById(character);
         skirmishService.receiveDamage(receivedDamageDto);
@@ -775,6 +777,7 @@ class SkirmishServiceTest {
         receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
         receivedDamageDto.setIsWeaponUndamaging(false);
         receivedDamageDto.setIsLosingTest(true);
+        receivedDamageDto.setIsSuddenDeath(true);
 
         mockFindById(character);
         skirmishService.receiveDamage(receivedDamageDto);
@@ -794,6 +797,7 @@ class SkirmishServiceTest {
         receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
         receivedDamageDto.setIsWeaponUndamaging(true);
         receivedDamageDto.setIsLosingTest(true);
+        receivedDamageDto.setIsSuddenDeath(true);
 
         mockFindById(character);
         skirmishService.receiveDamage(receivedDamageDto);
@@ -813,6 +817,7 @@ class SkirmishServiceTest {
         receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
         receivedDamageDto.setIsWeaponUndamaging(true);
         receivedDamageDto.setIsLosingTest(true);
+        receivedDamageDto.setIsSuddenDeath(true);
 
         mockFindById(character);
         skirmishService.receiveDamage(receivedDamageDto);
@@ -832,6 +837,7 @@ class SkirmishServiceTest {
         receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
         receivedDamageDto.setIsWeaponUndamaging(true);
         receivedDamageDto.setIsLosingTest(false);
+        receivedDamageDto.setIsSuddenDeath(true);
 
         mockFindById(character);
         skirmishService.receiveDamage(receivedDamageDto);
@@ -841,7 +847,7 @@ class SkirmishServiceTest {
     }
 
     @Test
-    void receiveDamage_proneCharacter_ifWoundsAreEqualToZero() {
+    void receiveDamage_proneCharacter_ifWoundsAreEqualToZeroAndSuddenDeathIsOff() {
         SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
         character.setAdvantage(2);
 
@@ -851,6 +857,7 @@ class SkirmishServiceTest {
         receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
         receivedDamageDto.setIsWeaponUndamaging(true);
         receivedDamageDto.setIsLosingTest(true);
+        receivedDamageDto.setIsSuddenDeath(false);
 
         mockFindById(character);
         skirmishService.receiveDamage(receivedDamageDto);
@@ -860,6 +867,27 @@ class SkirmishServiceTest {
         assertTrue(character.getConditionByType(ConditionType.PRONE).isPresent());
         assertTrue(character.getConditionByType(ConditionType.UNCONSCIOUS).isPresent());
         assertEquals(skirmishService.getBonusPoints(character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS)), character.getConditionByType(ConditionType.UNCONSCIOUS).get().getCounter());
+    }
+
+    @Test
+    void receiveDamage_killCharacter_ifWoundsAreEqualToZeroAndSuddenDeathIsOn() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        character.setAdvantage(2);
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(20);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(true);
+        receivedDamageDto.setIsLosingTest(true);
+        receivedDamageDto.setIsSuddenDeath(true);
+
+        mockFindById(character);
+        skirmishService.receiveDamage(receivedDamageDto);
+
+        assertEquals(0, character.getCurrentWounds());
+        assertEquals(0, character.getAdvantage());
+        assertTrue(character.getIsDead());
     }
 
     @Test
