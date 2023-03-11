@@ -11,7 +11,7 @@ public interface SkirmishCharacterService {
 
     List<SkirmishCharacterEntity> findAll();
 
-    List<SkirmishCharacterDto> sortByInitiative();
+    List<SkirmishCharacterDto> getAllSortedByInitiative();
 
     SkirmishCharacterDto save(SkirmishCharacterDto newSkirmishCharacter);
 

@@ -35,7 +35,7 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
     }
 
     @Override
-    public List<SkirmishCharacterDto> sortByInitiative() {
+    public List<SkirmishCharacterDto> getAllSortedByInitiative() {
         return this.sortByInitiative(this.findAll());
     }
 
@@ -44,6 +44,7 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
                 .compareFalseFirst(o1.getIsDead(), o2.getIsDead())
                 .compare(o2.getSkirmishInitiative(), o1.getSkirmishInitiative())
                 .compare(o2.getCharacteristicValueByType(CharacteristicType.INITIATIVE), o1.getCharacteristicValueByType(CharacteristicType.INITIATIVE))
+                .compare(o1.getName(), o2.getName())
                 .result());
 
         return skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext);

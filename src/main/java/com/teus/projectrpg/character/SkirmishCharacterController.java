@@ -19,7 +19,7 @@ public class SkirmishCharacterController {
 
     @GetMapping("/skirmishCharacter")
     public ResponseEntity<List<SkirmishCharacterDto>> getAllSkirmishCharacters() {
-        List<SkirmishCharacterDto> skirmishCharacters = this.skirmishCharacterService.sortByInitiative();
+        List<SkirmishCharacterDto> skirmishCharacters = this.skirmishCharacterService.getAllSortedByInitiative();
         if (skirmishCharacters.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
