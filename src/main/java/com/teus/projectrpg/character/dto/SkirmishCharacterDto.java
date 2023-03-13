@@ -10,4 +10,5 @@ public class SkirmishCharacterDto extends CharacterDto {
     private int skirmishInitiative;
     private int advantage;
     private Boolean isDead;
+    private int sequenceNumber;
 }

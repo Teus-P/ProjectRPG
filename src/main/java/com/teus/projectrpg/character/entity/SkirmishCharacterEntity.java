@@ -24,4 +24,7 @@ public class SkirmishCharacterEntity extends CharacterEntity {
 
     @Column
     private Boolean isDead;
+
+    @Column
+    private int sequenceNumber;
 }

@@ -45,6 +45,7 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
                 .compare(o2.getSkirmishInitiative(), o1.getSkirmishInitiative())
                 .compare(o2.getCharacteristicValueByType(CharacteristicType.INITIATIVE), o1.getCharacteristicValueByType(CharacteristicType.INITIATIVE))
                 .compare(o1.getName(), o2.getName())
+                .compare(o1.getSequenceNumber(), o2.getSequenceNumber())
                 .result());
 
         return skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext);
