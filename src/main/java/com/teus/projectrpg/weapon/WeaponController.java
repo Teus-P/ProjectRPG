@@ -48,7 +48,7 @@ public class WeaponController {
     public ResponseEntity<Void> deleteWeapon(@PathVariable Long id) {
         try {
             weaponService.deleteById(id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         } catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.notFound().build();
         } catch (Exception ex) {

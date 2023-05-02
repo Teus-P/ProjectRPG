@@ -28,6 +28,7 @@ public class WeaponServiceImpl implements WeaponService {
     @Override
     public WeaponDto save(WeaponDto newWeapon) {
         WeaponEntity weaponEntity = weaponMapper.toEntity(newWeapon, new WeaponContext());
+        weaponEntity.setIsBaseWeapon(false);
         try {
             WeaponEntity savedWeaponEntity = weaponRepository.save(weaponEntity);
             return weaponMapper.toDto(savedWeaponEntity);
