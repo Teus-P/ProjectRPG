@@ -60,4 +60,7 @@ public class ArmorEntity {
     @ManyToOne
     @JoinColumn(name = "availability_id", nullable = false)
     private AvailabilityEntity availability;
+
+    @Column(name = "is_base_armor", nullable = false)
+    private Boolean isBaseArmor;
 }

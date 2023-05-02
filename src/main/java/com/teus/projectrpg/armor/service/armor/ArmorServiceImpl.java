@@ -29,11 +29,7 @@ public class ArmorServiceImpl implements ArmorService {
     @Override
     public ArmorDto save(ArmorDto newArmor) {
         ArmorEntity armorEntity = armorMapper.toEntity(newArmor, armorContext);
-        ArmorEntity result = this.findByName(armorEntity.getName());
-        if (result != null) {
-            armorEntity.setId(result.getId());
-        }
-
+        armorEntity.setIsBaseArmor(false);
         try {
             ArmorEntity savedArmorEntity = armorRepository.save(armorEntity);
             return armorMapper.toDto(savedArmorEntity);

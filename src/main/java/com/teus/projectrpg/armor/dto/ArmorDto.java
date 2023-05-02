@@ -23,4 +23,5 @@ public class ArmorDto implements Serializable {
     private String price;
     private String encumbrance;
     private BaseDto<AvailabilityType> availability;
+    private Boolean isBaseArmor;
 }
