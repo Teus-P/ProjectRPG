@@ -1130,3 +1130,7 @@ INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (25, 'TELEPO
 INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (26, 'CHAIN_ATTACK', 2);
 INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (27, 'DARK_VISION', 2);
 INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (28, 'BLAST', 2);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (29, 'IDYLL', 16);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (30, 'WARD', 2);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (31, 'RAISE_DEAD', 14);
+INSERT IGNORE INTO projectrpg.spell(id, name, spell_group_id) VALUE (32, 'VANHELS_CALL', 14);

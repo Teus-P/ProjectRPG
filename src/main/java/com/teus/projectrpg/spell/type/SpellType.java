@@ -28,5 +28,10 @@ public enum SpellType {
     TELEPORT,
     CHAIN_ATTACK,
     DARK_VISION,
-    BLAST
+    BLAST,
+    IDYLL,
+    AETHYRIC_ARMS,
+    WARD,
+    RAISE_DEAD,
+    VANHELS_CALL
 }
