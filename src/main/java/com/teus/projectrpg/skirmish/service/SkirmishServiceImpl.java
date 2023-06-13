@@ -295,7 +295,11 @@ public class SkirmishServiceImpl implements SkirmishService {
         int finalDamage;
         SkirmishCharacterEntity character = skirmishCharacterService.findById(receivedDamage.getCharacterId());
         int toughnessBonus = ((character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS) / 10) % 100);
-        int armorForLocalization = character.getArmorForLocalization(receivedDamage.getBodyLocalization()) + receivedDamage.getShield();
+
+        int armorForLocalization = 0;
+        if(!receivedDamage.getIsIgnoringArmor()) {
+            armorForLocalization = character.getArmorForLocalization(receivedDamage.getBodyLocalization()) + receivedDamage.getShield();
+        }
 
         if (receivedDamage.getIsWeaponUndamaging()) {
             armorForLocalization *= 2;
@@ -333,6 +337,19 @@ public class SkirmishServiceImpl implements SkirmishService {
         if (character.getConditionByType(ConditionType.SURPRISED).isPresent()) {
             character.removeConditionByType(ConditionType.SURPRISED);
         }
+
+        List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations();
+        bodyLocalizations.stream()
+                .filter(o -> o.getBodyLocalization().getName().equals(receivedDamage.getBodyLocalization()))
+                .findFirst()
+                .ifPresent(o -> {
+                    o.setAdditionalArmorPoints(o.getAdditionalArmorPoints() - receivedDamage.getDestroyArmorValue());
+                    if(Math.abs(o.getAdditionalArmorPoints()) > o.getArmorPoints()) {
+                        o.setAdditionalArmorPoints(-o.getArmorPoints());
+                    }
+                });
+
+        character.setBodyLocalizations(bodyLocalizations);
 
         skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
