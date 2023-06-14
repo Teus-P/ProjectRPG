@@ -9,13 +9,17 @@ public interface SkirmishCharacterService {
 
     SkirmishCharacterEntity findById(Long id);
 
+    List<SkirmishCharacterEntity> findAllById(List<Long> ids);
+
     List<SkirmishCharacterEntity> findAll();
 
     List<SkirmishCharacterDto> getAllSortedByInitiative();
 
     SkirmishCharacterDto save(SkirmishCharacterDto newSkirmishCharacter);
 
-    List<SkirmishCharacterDto> saveAll(List<SkirmishCharacterDto> skirmishCharacterDtos);
+    List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> skirmishCharacterDtos);
+
+    List<SkirmishCharacterDto> saveAllEntities(List<SkirmishCharacterEntity> skirmishCharacterEntities);
 
     void deleteById(Long id);
 

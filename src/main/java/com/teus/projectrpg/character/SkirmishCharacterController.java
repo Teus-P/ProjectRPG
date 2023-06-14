@@ -33,7 +33,7 @@ public class SkirmishCharacterController {
 
     @PutMapping("/skirmishCharacters")
     public ResponseEntity<List<SkirmishCharacterDto>> putSkirmishCharacters(@Valid @RequestBody List<SkirmishCharacterDto> newSkirmishCharacters) {
-        return ResponseEntity.ok(skirmishCharacterService.saveAll(newSkirmishCharacters));
+        return ResponseEntity.ok(skirmishCharacterService.saveAllDtos(newSkirmishCharacters));
     }
 
     @DeleteMapping("/skirmishCharacter/{id}")

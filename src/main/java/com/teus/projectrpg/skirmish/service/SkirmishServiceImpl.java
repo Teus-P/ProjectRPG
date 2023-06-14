@@ -1,6 +1,7 @@
 package com.teus.projectrpg.skirmish.service;
 
 import com.teus.projectrpg.character.dto.CharacterBodyLocalizationDto;
+import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.character.entity.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.character.entity.CharacterSkillEntity;
 import com.teus.projectrpg.character.entity.SkirmishCharacterEntity;
@@ -15,6 +16,7 @@ import com.teus.projectrpg.condition.service.ConditionService;
 import com.teus.projectrpg.condition.type.ConditionType;
 import com.teus.projectrpg.skill.service.SkillService;
 import com.teus.projectrpg.skill.type.SkillType;
+import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
 import com.teus.projectrpg.skirmish.dto.TestDto;
@@ -40,7 +42,7 @@ public class SkirmishServiceImpl implements SkirmishService {
         List<SkirmishCharacterEntity> skirmishCharacters = this.skirmishCharacterService.findAll();
         checkConditions(skirmishCharacters);
 
-        this.skirmishCharacterService.saveAll(skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext));
+        this.skirmishCharacterService.saveAllDtos(skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext));
     }
 
     private void checkConditions(List<SkirmishCharacterEntity> skirmishCharacters) {
@@ -170,7 +172,7 @@ public class SkirmishServiceImpl implements SkirmishService {
             }
         }
 
-        this.skirmishCharacterService.saveAll(skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext));
+        this.skirmishCharacterService.saveAllDtos(skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext));
         return this.endTurnCheck;
     }
 
@@ -430,4 +432,27 @@ public class SkirmishServiceImpl implements SkirmishService {
         character.setBodyLocalizations(bodyLocalizations);
         skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
+
+    public List<SkirmishCharacterDto> addConditions(AddConditionsDto addConditions) {
+        List<SkirmishCharacterEntity> characters = skirmishCharacterService.findAllById(addConditions.getCharactersIds());
+        characters.forEach(character -> addConditions.getConditions().forEach(condition -> {
+            Optional<CharacterConditionEntity> conditionByType = character.getConditionByType(condition.getCondition().getName());
+            if (conditionByType.isEmpty()) {
+                CharacterConditionEntity characterConditionEntity = new CharacterConditionEntity();
+                characterConditionEntity.setCharacter(character);
+                characterConditionEntity.setCondition(conditionService.findByName(condition.getCondition().getName()));
+                characterConditionEntity.setValue(condition.getValue());
+                characterConditionEntity.setCounter(condition.getCounter());
+                character.addCondition(characterConditionEntity);
+            } else {
+                conditionByType.ifPresent(c -> {
+                    c.setValue(c.getValue() + condition.getValue());
+                    c.setCounter(c.getCounter() + condition.getCounter());
+                });
+            }
+        }));
+
+        return skirmishCharacterService.saveAllEntities(characters);
+    }
 }
+

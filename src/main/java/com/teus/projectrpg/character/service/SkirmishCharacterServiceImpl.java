@@ -30,6 +30,11 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
     }
 
     @Override
+    public List<SkirmishCharacterEntity> findAllById(List<Long> ids) {
+        return skirmishCharacterRepository.findAllById(ids);
+    }
+
+    @Override
     public List<SkirmishCharacterEntity> findAll() {
         return skirmishCharacterRepository.findAll();
     }
@@ -63,8 +68,18 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
     }
 
     @Override
-    public List<SkirmishCharacterDto> saveAll(List<SkirmishCharacterDto> skirmishCharacterDtos) {
+    public List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> skirmishCharacterDtos) {
         List<SkirmishCharacterEntity> skirmishCharacterEntities = skirmishCharacterMapper.toEntities(skirmishCharacterDtos, characterContext);
+        try {
+            List<SkirmishCharacterEntity> savedCharacters = skirmishCharacterRepository.saveAll(skirmishCharacterEntities);
+            return skirmishCharacterMapper.toDtos(savedCharacters, characterContext);
+        } catch (DataIntegrityViolationException ex) {
+            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
+        }
+    }
+
+    @Override
+    public List<SkirmishCharacterDto> saveAllEntities(List<SkirmishCharacterEntity> skirmishCharacterEntities) {
         try {
             List<SkirmishCharacterEntity> savedCharacters = skirmishCharacterRepository.saveAll(skirmishCharacterEntities);
             return skirmishCharacterMapper.toDtos(savedCharacters, characterContext);
