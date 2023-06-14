@@ -14,6 +14,7 @@ public class CharacterDto implements Serializable {
     private String name;
     private String description;
     private String group;
+    private String status;
     private Boolean isRightHanded;
     private List<CharacterCharacteristicDto> characteristics;
     private List<CharacterSkillDto> skills;
