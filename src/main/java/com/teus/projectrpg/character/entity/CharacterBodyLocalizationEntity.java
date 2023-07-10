@@ -1,7 +1,7 @@
 package com.teus.projectrpg.character.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.teus.projectrpg.armor.entity.BodyLocalizationEntity;
+import com.teus.projectrpg.bodylocalization.entity.BodyLocalizationEntity;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,5 +1,6 @@
 package com.teus.projectrpg.armor.entity;
 
+import com.teus.projectrpg.bodylocalization.entity.BodyLocalizationEntity;
 import lombok.Getter;
 import lombok.Setter;
 

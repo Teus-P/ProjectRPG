@@ -9,6 +9,7 @@ import com.teus.projectrpg.armor.mapper.ArmorMapper;
 import com.teus.projectrpg.armor.type.ArmorCategoryType;
 import com.teus.projectrpg.armor.type.ArmorPenaltyType;
 import com.teus.projectrpg.armor.type.ArmorQualityType;
+import com.teus.projectrpg.bodylocalization.entity.BodyLocalizationEntity;
 import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

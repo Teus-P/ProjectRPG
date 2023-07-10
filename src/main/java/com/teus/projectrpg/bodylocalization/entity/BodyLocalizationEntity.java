@@ -1,4 +1,4 @@
-package com.teus.projectrpg.armor.entity;
+package com.teus.projectrpg.bodylocalization.entity;
 
 import com.teus.projectrpg.base.entity.BaseEntity;
 import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;

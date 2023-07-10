@@ -1,5 +1,6 @@
 package com.teus.projectrpg.armor.entity;
 
+import com.teus.projectrpg.bodylocalization.entity.BodyLocalizationEntity;
 import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

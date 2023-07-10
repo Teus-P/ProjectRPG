@@ -3,7 +3,7 @@ package com.teus.projectrpg.service.skirmish;
 import com.teus.projectrpg.base.dto.BaseDto;
 import com.teus.projectrpg.character.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.condition.dto.ConditionDto;
-import com.teus.projectrpg.armor.entity.BodyLocalizationEntity;
+import com.teus.projectrpg.bodylocalization.entity.BodyLocalizationEntity;
 import com.teus.projectrpg.character.entity.CharacterBodyLocalizationEntity;
 import com.teus.projectrpg.character.entity.CharacterCharacteristicEntity;
 import com.teus.projectrpg.characteristic.entity.CharacteristicEntity;
