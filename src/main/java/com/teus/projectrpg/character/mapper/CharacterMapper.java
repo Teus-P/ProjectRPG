@@ -2,39 +2,19 @@ package com.teus.projectrpg.character.mapper;
 
 import com.teus.projectrpg.character.dto.CharacterDto;
 import com.teus.projectrpg.character.entity.CharacterEntity;
-import com.teus.projectrpg.character.entity.NoteEntity;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.Context;
+import org.mapstruct.IterableMapping;
+import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CharacterMapper {
 
-    @Mapping(source = "notes", target = "notes", qualifiedByName = "notesToStrings")
-    CharacterDto toDto(CharacterEntity entity, @Context CharacterContext context);
+	CharacterDto toDto(CharacterEntity entity, @Context CharacterContext context);
 
-    @Mapping(source = "notes", target = "notes", qualifiedByName = "stringsToNotes")
-    CharacterEntity toEntity(CharacterDto dto, @Context CharacterContext context);
+	CharacterEntity toEntity(CharacterDto dto, @Context CharacterContext context);
 
-    @IterableMapping(elementTargetType = CharacterDto.class)
-    List<CharacterDto> toDtos(List<CharacterEntity> entities, @Context CharacterContext context);
+	@IterableMapping(elementTargetType = CharacterDto.class)
+	List<CharacterDto> toDtos(List<CharacterEntity> entities, @Context CharacterContext context);
 
-    @Named("notesToStrings")
-    static List<String> notesToStrings(List<NoteEntity> notes) {
-        return notes.stream()
-                .map(NoteEntity::getNote)
-                .toList();
-    }
-
-    @Named("stringsToNotes")
-    static List<NoteEntity> stringsToNotes(List<String> notes) {
-        return notes.stream()
-                .filter(note -> !note.isEmpty())
-                .map(note -> {
-                    NoteEntity noteEntity = new NoteEntity();
-                    noteEntity.setNote(note);
-                    return noteEntity;
-                })
-                .toList();
-    }
 }
