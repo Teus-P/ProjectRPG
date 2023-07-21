@@ -72,6 +72,7 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
 	public List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> skirmishCharacterDtos) {
 		List<SkirmishCharacterEntity> skirmishCharacterEntities = skirmishCharacterMapper.toEntities(skirmishCharacterDtos,
 				characterContext);
+		skirmishCharacterEntities.forEach(s -> s.getCharacter().setType("COPY"));
 		try {
 			List<SkirmishCharacterEntity> savedCharacters = skirmishCharacterRepository.saveAll(skirmishCharacterEntities);
 			return skirmishCharacterMapper.toDtos(savedCharacters, characterContext);
