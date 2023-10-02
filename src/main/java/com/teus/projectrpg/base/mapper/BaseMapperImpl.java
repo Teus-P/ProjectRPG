@@ -28,6 +28,4 @@ public class BaseMapperImpl implements BaseMapper {
 
         return dtosList;
     }
-
-
 }
