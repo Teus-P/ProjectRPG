@@ -178,12 +178,23 @@ public class SkirmishServiceImpl implements SkirmishService {
 			SkirmishCharacterEntity character = skirmishCharacterService.findById(test.getSkirmishCharacter().getId());
 			if (!character.getIsDead()) {
 				this.checkConditionAfterTests(test, character);
-				skirmishCharacters.add(character);
+				this.updateOrAddSkirmishCharacter(skirmishCharacters, character);
 			}
 		}
 
 		this.skirmishCharacterService.saveAllDtos(skirmishCharacterMapper.toDtos(skirmishCharacters, characterContext));
 		return this.endTurnCheck;
+	}
+
+	private void updateOrAddSkirmishCharacter(List<SkirmishCharacterEntity> skirmishCharacters, SkirmishCharacterEntity character) {
+		Optional<SkirmishCharacterEntity> existingCharacter = skirmishCharacters.stream()
+				.filter(existing -> existing.getId().equals(character.getId()))
+				.findFirst();
+
+		existingCharacter.ifPresentOrElse(
+				existing -> skirmishCharacters.set(skirmishCharacters.indexOf(existing), existing),
+				() -> skirmishCharacters.add(character)
+		);
 	}
 
 	private void checkConditionAfterTests(TestDto test, SkirmishCharacterEntity character) {
