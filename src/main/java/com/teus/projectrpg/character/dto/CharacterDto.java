@@ -12,6 +12,7 @@ public class CharacterDto implements Serializable {
 	private Long id;
 	private String name;
 	private String description;
+	private String groupType;
 	private String group;
 	private String status;
 	private Boolean isRightHanded;

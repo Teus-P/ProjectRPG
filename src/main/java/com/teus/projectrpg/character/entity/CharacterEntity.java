@@ -36,6 +36,9 @@ public class CharacterEntity {
 	@Column
 	private String description;
 
+	@Column(name = "group_type_column")
+	private String groupType;
+
 	@Column(name = "group_column")
 	private String group;
 
