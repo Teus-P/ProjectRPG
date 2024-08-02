@@ -1,6 +1,7 @@
 package com.teus.projectrpg.weapon;
 
 import com.teus.projectrpg.base.dto.BaseDto;
+import com.teus.projectrpg.exception.ErrorResponse;
 import com.teus.projectrpg.weapon.dto.WeaponDto;
 import com.teus.projectrpg.weapon.service.weapon.WeaponService;
 import com.teus.projectrpg.weapon.service.weapongroup.WeaponGroupService;
@@ -12,12 +13,14 @@ import com.teus.projectrpg.weapon.type.WeaponQualityType;
 import com.teus.projectrpg.weapon.type.WeaponReachType;
 import com.teus.projectrpg.weapon.type.WeaponType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -90,5 +93,11 @@ public class WeaponController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(weaponQualityDtos);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(409, ex.getMessage(), new Date());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }

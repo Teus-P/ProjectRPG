@@ -1,14 +1,11 @@
 package com.teus.projectrpg.weapon.service.weapon;
 
-import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.weapon.dto.WeaponDto;
 import com.teus.projectrpg.weapon.entity.WeaponEntity;
 import com.teus.projectrpg.weapon.mapper.WeaponContext;
 import com.teus.projectrpg.weapon.mapper.WeaponMapper;
 import com.teus.projectrpg.weapon.repository.WeaponRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.PropertyValueException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,12 +26,16 @@ public class WeaponServiceImpl implements WeaponService {
     public WeaponDto save(WeaponDto newWeapon) {
         WeaponEntity weaponEntity = weaponMapper.toEntity(newWeapon, new WeaponContext());
         weaponEntity.setIsBaseWeapon(false);
-        try {
-            WeaponEntity savedWeaponEntity = weaponRepository.save(weaponEntity);
-            return weaponMapper.toDto(savedWeaponEntity);
-        } catch (DataIntegrityViolationException ex) {
-            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
+        int maxId = weaponRepository.findMaxId();
+        // TODO setting the ID does not work here
+        if (maxId < 5000) {
+            weaponEntity.setId(5000L);
+        } else {
+            weaponEntity.setId(maxId + 1L);
         }
+        WeaponEntity savedWeaponEntity = weaponRepository.save(weaponEntity);
+        return weaponMapper.toDto(savedWeaponEntity);
+
     }
 
     @Override
