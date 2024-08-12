@@ -8,6 +8,6 @@ import lombok.Data;
 public class CharacterBodyLocalizationInjuryDto {
 
     private Long id;
-    private BaseDto<InjuryType> injury;
+    private BaseDto<InjuryType> model;
     private int value;
 }

@@ -7,6 +7,6 @@ import lombok.Data;
 public class CharacterCreatureTraitDto {
 
     private Long id;
-    private CreatureTraitDto trait;
+    private CreatureTraitDto model;
     private String value;
 }

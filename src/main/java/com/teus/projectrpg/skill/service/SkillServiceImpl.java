@@ -32,7 +32,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Optional<CharacterSkillEntity> getSkillByType(List<CharacterSkillEntity> characteristics, SkillType skillType) {
         return characteristics.stream()
-                .filter(c -> c.getSkill().getName().equals(skillType))
+                .filter(c -> c.getModel().getName().equals(skillType))
                 .findFirst();
     }
 }

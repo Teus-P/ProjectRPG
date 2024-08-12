@@ -81,7 +81,7 @@ public class CharacterContext {
 	protected void setSkills(CharacterEntity character) {
 		List<CharacterSkillEntity> skills = character.getSkills().stream().peek(element -> {
 			element.setCharacter(character);
-			element.setSkill(skillService.findByName(element.getSkill().getName()));
+			element.setModel(skillService.findByName(element.getModel().getName()));
 		}).toList();
 		character.setSkills(skills);
 	}
@@ -89,7 +89,7 @@ public class CharacterContext {
 	protected void setTalents(CharacterEntity character) {
 		List<CharacterTalentEntity> talents = character.getTalents().stream().peek(element -> {
 			element.setCharacter(character);
-			element.setTalent(talentService.findByName(element.getTalent().getName()));
+			element.setModel(talentService.findByName(element.getModel().getName()));
 		}).toList();
 		character.setTalents(talents);
 	}
@@ -97,7 +97,7 @@ public class CharacterContext {
 	protected void setTraits(CharacterEntity character) {
 		List<CharacterCreatureTraitEntity> traits = character.getTraits().stream().peek(element -> {
 			element.setCharacter(character);
-			element.setTrait(creatureTraitService.findByName(element.getTrait().getName()));
+			element.setModel(creatureTraitService.findByName(element.getModel().getName()));
 		}).toList();
 		character.setTraits(traits);
 	}
@@ -146,7 +146,7 @@ public class CharacterContext {
 	protected void setInjuries(CharacterBodyLocalizationEntity bodyLocalization) {
 		List<CharacterBodyLocalizationInjuryEntity> injuries = bodyLocalization.getInjuries().stream().peek(element -> {
 			element.setCharacterBodyLocalization(bodyLocalization);
-			element.setInjury(injuryService.findByName(element.getInjury().getName()));
+			element.setModel(injuryService.findByName(element.getModel().getName()));
 		}).toList();
 
 		bodyLocalization.setInjuries(injuries);
