@@ -23,9 +23,9 @@ class ArmorDtoTest {
 		armorCategory.setId(1L);
 		armorCategory.setName(ArmorCategoryType.SOFT_LEATHER);
 		armorCategory.setNameTranslation("ARMOR");
-		List<ArmorBodyLocalizationDto> armorBodyLocalizations = new ArrayList<>();
-		ArmorBodyLocalizationDto armorBodyLocalizationDto = new ArmorBodyLocalizationDto();
-		armorBodyLocalizations.add(armorBodyLocalizationDto);
+		List<CharacterArmorBodyLocalizationDto> armorBodyLocalizations = new ArrayList<>();
+		CharacterArmorBodyLocalizationDto characterArmorBodyLocalizationDto = new CharacterArmorBodyLocalizationDto();
+		armorBodyLocalizations.add(characterArmorBodyLocalizationDto);
 		List<BaseDto<ArmorPenaltyType>> armorPenalties = new ArrayList<>();
 		BaseDto<ArmorPenaltyType> armorPenaltyDto = new BaseDto<>();
 		armorPenaltyDto.setId(1L);
@@ -50,7 +50,7 @@ class ArmorDtoTest {
 		armorDto.setName(name);
 		armorDto.setNameTranslation(nameTranslation);
 		armorDto.setArmorCategory(armorCategory);
-		armorDto.setArmorBodyLocalizations(armorBodyLocalizations);
+		armorDto.setBodyLocalizations(armorBodyLocalizations);
 		armorDto.setArmorPenalties(armorPenalties);
 		armorDto.setArmorQualities(armorQualities);
 		armorDto.setPrice(price);
@@ -62,7 +62,7 @@ class ArmorDtoTest {
 		Assertions.assertEquals(name, armorDto.getName());
 		Assertions.assertEquals(nameTranslation, armorDto.getNameTranslation());
 		Assertions.assertEquals(armorCategory, armorDto.getArmorCategory());
-		Assertions.assertEquals(armorBodyLocalizations, armorDto.getArmorBodyLocalizations());
+		Assertions.assertEquals(armorBodyLocalizations, armorDto.getBodyLocalizations());
 		Assertions.assertEquals(armorPenalties, armorDto.getArmorPenalties());
 		Assertions.assertEquals(armorQualities, armorDto.getArmorQualities());
 		Assertions.assertEquals(price, armorDto.getPrice());

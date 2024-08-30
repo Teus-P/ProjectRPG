@@ -21,6 +21,8 @@ public interface SkirmishCharacterService {
 
     List<SkirmishCharacterDto> saveAllEntities(List<SkirmishCharacterEntity> skirmishCharacterEntities);
 
+    void calculateArmorPoints(SkirmishCharacterEntity skirmishCharacterEntity);
+
     void deleteById(Long id);
 
     void deleteAll();

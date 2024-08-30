@@ -1,8 +1,8 @@
 package com.teus.projectrpg.armor.service.armorbodylocalization;
 
-import com.teus.projectrpg.armor.entity.ArmorBodyLocalizationEntity;
+import com.teus.projectrpg.armor.entity.CharacterArmorBodyLocalizationEntity;
 
 public interface ArmorBodyLocalizationService {
 
-    void save(ArmorBodyLocalizationEntity armorBodyLocalization);
+    void save(CharacterArmorBodyLocalizationEntity armorBodyLocalization);
 }

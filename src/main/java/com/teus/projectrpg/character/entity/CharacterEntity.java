@@ -1,7 +1,6 @@
 package com.teus.projectrpg.character.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.teus.projectrpg.armor.entity.ArmorEntity;
 import com.teus.projectrpg.spell.entity.SpellEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,9 +74,9 @@ public class CharacterEntity {
 	@OneToMany(mappedBy = "character", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
 	private List<CharacterWeaponEntity> weapons = new ArrayList<>();
 
-	@ManyToMany
-	@JoinTable(name = "character_armor", joinColumns = @JoinColumn(name = "character_id"), inverseJoinColumns = @JoinColumn(name = "armor_id"))
-	private List<ArmorEntity> armors = new ArrayList<>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "character", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
+	private List<CharacterArmorEntity> armors = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "character", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)

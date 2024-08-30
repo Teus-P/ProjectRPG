@@ -16,7 +16,7 @@ class ArmorEntityTest {
 		String name = "Plate Armor";
 		String nameTranslation = "Zbroja płytowa";
 		ArmorCategoryEntity armorCategory = new ArmorCategoryEntity();
-		List<ArmorBodyLocalizationEntity> armorBodyLocalizations = new ArrayList<>();
+		List<CharacterArmorBodyLocalizationEntity> armorBodyLocalizations = new ArrayList<>();
 		List<ArmorPenaltyEntity> armorPenalties = new ArrayList<>();
 		List<ArmorQualityEntity> armorQualities = new ArrayList<>();
 		String price = "100 ZK";
@@ -28,7 +28,7 @@ class ArmorEntityTest {
 		armorEntity.setName(name);
 		armorEntity.setNameTranslation(nameTranslation);
 		armorEntity.setArmorCategory(armorCategory);
-		armorEntity.setArmorBodyLocalizations(armorBodyLocalizations);
+		armorEntity.setBodyLocalizations(armorBodyLocalizations);
 		armorEntity.setArmorPenalties(armorPenalties);
 		armorEntity.setArmorQualities(armorQualities);
 		armorEntity.setPrice(price);
@@ -40,7 +40,7 @@ class ArmorEntityTest {
 		Assertions.assertEquals(name, armorEntity.getName());
 		Assertions.assertEquals(nameTranslation, armorEntity.getNameTranslation());
 		Assertions.assertEquals(armorCategory, armorEntity.getArmorCategory());
-		Assertions.assertEquals(armorBodyLocalizations, armorEntity.getArmorBodyLocalizations());
+		Assertions.assertEquals(armorBodyLocalizations, armorEntity.getBodyLocalizations());
 		Assertions.assertEquals(armorPenalties, armorEntity.getArmorPenalties());
 		Assertions.assertEquals(armorQualities, armorEntity.getArmorQualities());
 		Assertions.assertEquals(price, armorEntity.getPrice());

@@ -5,6 +5,7 @@ import com.teus.projectrpg.armor.entity.ArmorEntity;
 import com.teus.projectrpg.armor.mapper.ArmorContext;
 import com.teus.projectrpg.armor.mapper.ArmorMapper;
 import com.teus.projectrpg.armor.repository.ArmorRepository;
+import com.teus.projectrpg.exception.ElementAlreadyExistsException;
 import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
@@ -28,6 +29,9 @@ public class ArmorServiceImpl implements ArmorService {
 
     @Override
     public ArmorDto save(ArmorDto newArmor) {
+        if (armorRepository.findArmorEntityByName(newArmor.getName()) != null) {
+            throw new ElementAlreadyExistsException(newArmor.getName());
+        }
         ArmorEntity armorEntity = armorMapper.toEntity(newArmor, armorContext);
         armorEntity.setIsBaseArmor(false);
         try {
