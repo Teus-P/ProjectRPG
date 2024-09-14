@@ -27,7 +27,6 @@ public class WeaponServiceImpl implements WeaponService {
         WeaponEntity weaponEntity = weaponMapper.toEntity(newWeapon, new WeaponContext());
         weaponEntity.setIsBaseWeapon(false);
         int maxId = weaponRepository.findMaxId();
-        // TODO setting the ID does not work here
         if (maxId < 5000) {
             weaponEntity.setId(5000L);
         } else {
@@ -35,7 +34,6 @@ public class WeaponServiceImpl implements WeaponService {
         }
         WeaponEntity savedWeaponEntity = weaponRepository.save(weaponEntity);
         return weaponMapper.toDto(savedWeaponEntity);
-
     }
 
     @Override

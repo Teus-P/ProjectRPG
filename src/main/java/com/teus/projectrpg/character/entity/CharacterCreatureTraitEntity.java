@@ -23,7 +23,7 @@ public class CharacterCreatureTraitEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "creature_trait_id", nullable = false)
-    private CreatureTraitEntity trait;
+    private CreatureTraitEntity model;
 
     @Column(name = "value")
     private String value;

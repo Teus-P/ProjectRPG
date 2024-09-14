@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class CharacterTalentDto {
     private Long id;
-    private TalentDto talent;
+    private TalentDto model;
     private int value;
 }

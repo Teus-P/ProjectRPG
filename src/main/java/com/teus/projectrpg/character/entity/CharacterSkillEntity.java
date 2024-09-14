@@ -22,7 +22,7 @@ public class CharacterSkillEntity {
 
     @ManyToOne
     @JoinColumn(name = "skill_id", nullable = false)
-    private SkillEntity skill;
+    private SkillEntity model;
 
     @Column(name = "value")
     private int value;

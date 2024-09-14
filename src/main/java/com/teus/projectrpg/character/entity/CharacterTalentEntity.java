@@ -22,7 +22,7 @@ public class CharacterTalentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "talent_id", nullable = false)
-    private TalentEntity talent;
+    private TalentEntity model;
 
     @Column(name = "value")
     private int value;

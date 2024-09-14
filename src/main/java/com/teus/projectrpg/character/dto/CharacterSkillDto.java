@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class CharacterSkillDto {
     private Long id;
-    private BaseDto<SkillType> skill;
+    private BaseDto<SkillType> model;
     private int value;
 }

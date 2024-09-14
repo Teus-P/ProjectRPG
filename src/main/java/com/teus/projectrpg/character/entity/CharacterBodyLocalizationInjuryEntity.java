@@ -23,7 +23,7 @@ public class CharacterBodyLocalizationInjuryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "injury_id")
-    private InjuryEntity injury;
+    private InjuryEntity model;
 
     @Column(name = "value")
     private int value;
