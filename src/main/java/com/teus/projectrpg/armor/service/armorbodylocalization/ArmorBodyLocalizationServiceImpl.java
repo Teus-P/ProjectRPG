@@ -1,6 +1,6 @@
 package com.teus.projectrpg.armor.service.armorbodylocalization;
 
-import com.teus.projectrpg.armor.entity.ArmorBodyLocalizationEntity;
+import com.teus.projectrpg.armor.entity.CharacterArmorBodyLocalizationEntity;
 import com.teus.projectrpg.armor.repository.ArmorBodyLocalizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class ArmorBodyLocalizationServiceImpl implements ArmorBodyLocalizationSe
     private final ArmorBodyLocalizationRepository armorBodyLocalizationRepository;
 
     @Override
-    public void save(ArmorBodyLocalizationEntity armorBodyLocalization) {
+    public void save(CharacterArmorBodyLocalizationEntity armorBodyLocalization) {
         armorBodyLocalizationRepository.save(armorBodyLocalization);
     }
 }

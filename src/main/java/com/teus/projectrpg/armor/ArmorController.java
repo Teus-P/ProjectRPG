@@ -5,9 +5,11 @@ import com.teus.projectrpg.armor.service.armor.ArmorService;
 import com.teus.projectrpg.armor.service.armorcategory.ArmorCategoryService;
 import com.teus.projectrpg.armor.service.armorpenalty.ArmorPenaltyService;
 import com.teus.projectrpg.armor.service.armorquality.ArmorQualityService;
+import com.teus.projectrpg.armor.service.armortype.ArmorTypeService;
 import com.teus.projectrpg.armor.type.ArmorCategoryType;
 import com.teus.projectrpg.armor.type.ArmorPenaltyType;
 import com.teus.projectrpg.armor.type.ArmorQualityType;
+import com.teus.projectrpg.armor.type.ArmorType;
 import com.teus.projectrpg.base.dto.BaseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -24,6 +26,7 @@ public class ArmorController {
 
     private final ArmorService armorService;
     private final ArmorCategoryService armorCategoryService;
+    private final ArmorTypeService armorTypeService;
     private final ArmorPenaltyService armorPenaltyService;
     private final ArmorQualityService armorQualityService;
 
@@ -60,6 +63,15 @@ public class ArmorController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(armorCategories);
+    }
+
+    @GetMapping("/armorType")
+    public ResponseEntity<List<BaseDto<ArmorType>>> getAllArmorTypes() {
+        List<BaseDto<ArmorType>> armorTypes = armorTypeService.findAll();
+        if (armorTypes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(armorTypes);
     }
 
     @GetMapping("/armorPenalty")

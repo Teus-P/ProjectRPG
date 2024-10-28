@@ -1,6 +1,6 @@
 package com.teus.projectrpg.service.armor;
 
-import com.teus.projectrpg.armor.dto.ArmorBodyLocalizationDto;
+import com.teus.projectrpg.armor.dto.CharacterArmorBodyLocalizationDto;
 import com.teus.projectrpg.armor.dto.ArmorDto;
 import com.teus.projectrpg.armor.entity.*;
 import com.teus.projectrpg.base.dto.BaseDto;
@@ -53,11 +53,11 @@ class ArmorServiceImplTest {
         assertEquals(armorEntity.getArmorCategory().getId(), armorDto.getArmorCategory().getId());
         assertEquals(armorEntity.getArmorCategory().getName(), armorDto.getArmorCategory().getName());
 
-        for (int i = 0; i < armorEntity.getArmorBodyLocalizations().size(); i++) {
-            assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getId(), armorDto.getArmorBodyLocalizations().get(i).getId());
-            assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getBodyLocalization().getId(), armorDto.getArmorBodyLocalizations().get(i).getBodyLocalization().getId());
-            assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getBodyLocalization().getName(), armorDto.getArmorBodyLocalizations().get(i).getBodyLocalization().getName());
-            assertEquals(armorEntity.getArmorBodyLocalizations().get(i).getArmorPoints(), armorDto.getArmorBodyLocalizations().get(i).getArmorPoints());
+        for (int i = 0; i < armorEntity.getBodyLocalizations().size(); i++) {
+            assertEquals(armorEntity.getBodyLocalizations().get(i).getId(), armorDto.getBodyLocalizations().get(i).getId());
+            assertEquals(armorEntity.getBodyLocalizations().get(i).getBodyLocalization().getId(), armorDto.getBodyLocalizations().get(i).getBodyLocalization().getId());
+            assertEquals(armorEntity.getBodyLocalizations().get(i).getBodyLocalization().getName(), armorDto.getBodyLocalizations().get(i).getBodyLocalization().getName());
+            assertEquals(armorEntity.getBodyLocalizations().get(i).getArmorPoints(), armorDto.getBodyLocalizations().get(i).getArmorPoints());
         }
 
         for (int i = 0; i < armorEntity.getArmorQualities().size(); i++) {
@@ -85,18 +85,18 @@ class ArmorServiceImplTest {
         BodyLocalizationEntity bodyLocalizationEntityLeftArm = new BodyLocalizationEntity();
         bodyLocalizationEntityLeftArm.setId(1L);
         bodyLocalizationEntityLeftArm.setName(BodyLocalizationType.LEFT_ARM);
-        ArmorBodyLocalizationEntity armorLeftArm = new ArmorBodyLocalizationEntity();
-        armorLeftArm.setArmor(armorEntity);
+        CharacterArmorBodyLocalizationEntity armorLeftArm = new CharacterArmorBodyLocalizationEntity();
+        armorLeftArm.setCharacterArmor(armorEntity);
         armorLeftArm.setArmorPoints(1);
         armorLeftArm.setBodyLocalization(bodyLocalizationEntityLeftArm);
         BodyLocalizationEntity bodyLocalizationEntityRightArm = new BodyLocalizationEntity();
         bodyLocalizationEntityRightArm.setId(2L);
         bodyLocalizationEntityRightArm.setName(BodyLocalizationType.RIGHT_ARM);
-        ArmorBodyLocalizationEntity armorRightArm = new ArmorBodyLocalizationEntity();
-        armorRightArm.setArmor(armorEntity);
+        CharacterArmorBodyLocalizationEntity armorRightArm = new CharacterArmorBodyLocalizationEntity();
+        armorRightArm.setCharacterArmor(armorEntity);
         armorRightArm.setArmorPoints(1);
         armorRightArm.setBodyLocalization(bodyLocalizationEntityRightArm);
-        armorEntity.setArmorBodyLocalizations(List.of(armorRightArm, armorLeftArm));
+        armorEntity.setBodyLocalizations(List.of(armorRightArm, armorLeftArm));
 
         ArmorQualityEntity armorQualityEntity = new ArmorQualityEntity();
         armorQualityEntity.setId(5L);
@@ -125,7 +125,7 @@ class ArmorServiceImplTest {
         BaseDto<BodyLocalizationType> bodyLocalizationDtoLeftArm = new BaseDto<>();
         bodyLocalizationDtoLeftArm.setId(1L);
         bodyLocalizationDtoLeftArm.setName(BodyLocalizationType.LEFT_ARM);
-        ArmorBodyLocalizationDto armorLeftArm = new ArmorBodyLocalizationDto();
+        CharacterArmorBodyLocalizationDto armorLeftArm = new CharacterArmorBodyLocalizationDto();
         armorLeftArm.setId(1L);
         armorLeftArm.setBodyLocalization(bodyLocalizationDtoLeftArm);
         armorLeftArm.setArmorPoints(1);
@@ -133,12 +133,12 @@ class ArmorServiceImplTest {
         BaseDto<BodyLocalizationType> bodyLocalizationDtoRightArm = new BaseDto<>();
         bodyLocalizationDtoRightArm.setId(2L);
         bodyLocalizationDtoRightArm.setName(BodyLocalizationType.RIGHT_ARM);
-        ArmorBodyLocalizationDto armorRightArm = new ArmorBodyLocalizationDto();
+        CharacterArmorBodyLocalizationDto armorRightArm = new CharacterArmorBodyLocalizationDto();
         armorRightArm.setId(2L);
         armorRightArm.setBodyLocalization(bodyLocalizationDtoRightArm);
         armorRightArm.setArmorPoints(1);
 
-        armorDto.setArmorBodyLocalizations(List.of(armorRightArm, armorLeftArm));
+        armorDto.setBodyLocalizations(List.of(armorRightArm, armorLeftArm));
 
         BaseDto<ArmorQualityType> armorQualityDto = new BaseDto<>();
         armorQualityDto.setId(5L);

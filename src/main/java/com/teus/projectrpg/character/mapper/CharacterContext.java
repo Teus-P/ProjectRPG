@@ -1,21 +1,11 @@
 package com.teus.projectrpg.character.mapper;
 
-import com.teus.projectrpg.armor.entity.ArmorBodyLocalizationEntity;
-import com.teus.projectrpg.armor.entity.ArmorEntity;
+import com.teus.projectrpg.armor.entity.CharacterArmorBodyLocalizationEntity;
 import com.teus.projectrpg.armor.service.armor.ArmorService;
 import com.teus.projectrpg.bodylocalization.service.BodyLocalizationService;
 import com.teus.projectrpg.character.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.character.dto.CharacterDto;
-import com.teus.projectrpg.character.entity.CharacterBodyLocalizationEntity;
-import com.teus.projectrpg.character.entity.CharacterBodyLocalizationInjuryEntity;
-import com.teus.projectrpg.character.entity.CharacterCharacteristicEntity;
-import com.teus.projectrpg.character.entity.CharacterConditionEntity;
-import com.teus.projectrpg.character.entity.CharacterCreatureTraitEntity;
-import com.teus.projectrpg.character.entity.CharacterEntity;
-import com.teus.projectrpg.character.entity.CharacterSkillEntity;
-import com.teus.projectrpg.character.entity.CharacterTalentEntity;
-import com.teus.projectrpg.character.entity.CharacterWeaponEntity;
-import com.teus.projectrpg.character.entity.NoteEntity;
+import com.teus.projectrpg.character.entity.*;
 import com.teus.projectrpg.characteristic.service.CharacteristicService;
 import com.teus.projectrpg.condition.service.ConditionService;
 import com.teus.projectrpg.creaturetrait.service.CreatureTraitService;
@@ -116,32 +106,48 @@ public class CharacterContext {
 	}
 
 	protected void setArmor(CharacterEntity character) {
-		List<ArmorEntity> armors = character.getArmors().stream().map(element -> armorService.findByName(element.getName())).toList();
+		List<CharacterArmorEntity> armors = character.getArmors().stream().peek(element -> {
+			element.setCharacter(character);
+			element.setArmor(armorService.findByName(element.getArmor().getName()));
+			List<CharacterArmorBodyLocalizationEntity> list = element.getArmorBodyLocalizations().stream()
+					.peek(armorBodyLocalization -> armorBodyLocalization.setCharacterArmor(element)).toList();
+			element.setArmorBodyLocalizations(list);
+		}).toList();
 		character.setArmors(armors);
 	}
+
+//	    public void setArmorParameters(@MappingTarget ArmorEntity armor) {
+//        armor.setArmorBodyLocalizations(setArmorBodyLocalizations(armor));
+//    }
+//
+//    public List<ArmorBodyLocalizationEntity> setArmorBodyLocalizations(ArmorEntity armor) {
+//        return armor.getArmorBodyLocalizations().stream()
+//                .peek(armorBodyLocalization -> armorBodyLocalization.setArmor(armor))
+//                .toList();
+//    }
 
 	protected void setBodyLocalizations(CharacterEntity character) {
 		List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations().stream().peek(element -> {
 			element.setCharacter(character);
 			element.setBodyLocalization(bodyLocalizationService.findByName(element.getBodyLocalization().getName()));
-			element.setArmorPoints(this.calculateArmorPointsForBodyLocalization(element, character.getArmors()));
+//			element.setArmorPoints(this.calculateArmorPointsForBodyLocalization(element, character.getArmors()));
 			this.setInjuries(element);
 		}).toList();
 		character.setBodyLocalizations(bodyLocalizations);
 	}
 
-	public int calculateArmorPointsForBodyLocalization(CharacterBodyLocalizationEntity bodyLocalization, List<ArmorEntity> armors) {
-		int armorPoints = 0;
-		for (ArmorEntity armor : armors) {
-			for (ArmorBodyLocalizationEntity armorBodyLocalization : armor.getArmorBodyLocalizations()) {
-				if (armorBodyLocalization.getBodyLocalization().equals(bodyLocalization.getBodyLocalization())) {
-					armorPoints += armorBodyLocalization.getArmorPoints();
-				}
-			}
-		}
-
-		return armorPoints;
-	}
+//bodyLocalizations	public int calculateArmorPointsForBodyLocalization(CharacterBodyLocalizationEntity bodyLocalization, List<ArmorEntity> armors) {
+//		int armorPoints = 0;
+//		for (ArmorEntity armor : armors) {
+//			for (ArmorBodyLocalizationEntity armorBodyLocalization : armor.getArmorBodyLocalizations()) {
+//				if (armorBodyLocalization.getBodyLocalization().equals(bodyLocalization.getBodyLocalization())) {
+//					armorPoints += armorBodyLocalization.getArmorPoints();
+//				}
+//			}
+//		}
+//
+//		return armorPoints;
+//	}
 
 	protected void setInjuries(CharacterBodyLocalizationEntity bodyLocalization) {
 		List<CharacterBodyLocalizationInjuryEntity> injuries = bodyLocalization.getInjuries().stream().peek(element -> {

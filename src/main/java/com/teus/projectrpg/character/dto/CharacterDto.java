@@ -23,7 +23,7 @@ public class CharacterDto implements Serializable {
 	private List<CharacterCreatureTraitDto> traits;
 	private List<SpellDto> spells;
 	private List<CharacterWeaponDto> weapons;
-	private List<ArmorDto> armors;
+	private List<CharacterArmorDto> armors;
 	private List<CharacterBodyLocalizationDto> bodyLocalizations;
 	private List<CharacterConditionDto> conditions;
 	private List<NoteDto> notes;

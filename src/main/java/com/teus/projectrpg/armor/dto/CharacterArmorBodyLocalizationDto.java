@@ -5,7 +5,7 @@ import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;
 import lombok.Data;
 
 @Data
-public class ArmorBodyLocalizationDto {
+public class CharacterArmorBodyLocalizationDto {
     private Long id;
     private BaseDto<BodyLocalizationType> bodyLocalization;
     private int armorPoints;

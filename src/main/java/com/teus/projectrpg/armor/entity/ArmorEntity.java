@@ -1,7 +1,7 @@
 package com.teus.projectrpg.armor.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teus.projectrpg.availability.entity.AvailabilityEntity;
+import com.teus.projectrpg.bodylocalization.entity.BodyLocalizationEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,12 +31,16 @@ public class ArmorEntity {
     @JoinColumn(name = "armor_category_id", nullable = false)
     private ArmorCategoryEntity armorCategory;
 
-    @JsonIgnore
-    @OneToMany(
-            mappedBy = "armor",
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
-    private List<ArmorBodyLocalizationEntity> armorBodyLocalizations = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "armor_type_id", nullable = false)
+    private ArmorTypeEntity armorType;
+
+    @ManyToMany
+    @JoinTable(name = "armor_body_localization",
+            joinColumns = @JoinColumn(name = "armor_id"),
+            inverseJoinColumns = @JoinColumn(name = "body_localization_id"))
+    private List<BodyLocalizationEntity> bodyLocalizations = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "armor_armor_penalty",
@@ -63,4 +67,10 @@ public class ArmorEntity {
 
     @Column(name = "is_base_armor", nullable = false)
     private Boolean isBaseArmor;
+
+    @Column(name = "armor_points", nullable = false)
+    private int armorPoints;
+
+    @Column(name = "layer", nullable = false)
+    private int layer;
 }
