@@ -2,7 +2,6 @@ package com.teus.projectrpg.armor.mapper;
 
 import com.teus.projectrpg.armor.dto.ArmorDto;
 import com.teus.projectrpg.armor.entity.ArmorEntity;
-import org.mapstruct.Context;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 
@@ -13,7 +12,7 @@ public interface ArmorMapper {
 
     ArmorDto toDto(ArmorEntity entity);
 
-    ArmorEntity toEntity(ArmorDto dto, @Context ArmorContext context);
+    ArmorEntity toEntity(ArmorDto dto);
 
     @IterableMapping(elementTargetType = ArmorDto.class)
     List<ArmorDto> toDtos(List<ArmorEntity> entities);

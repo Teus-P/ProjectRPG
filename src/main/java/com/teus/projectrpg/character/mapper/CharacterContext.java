@@ -116,38 +116,14 @@ public class CharacterContext {
 		character.setArmors(armors);
 	}
 
-//	    public void setArmorParameters(@MappingTarget ArmorEntity armor) {
-//        armor.setArmorBodyLocalizations(setArmorBodyLocalizations(armor));
-//    }
-//
-//    public List<ArmorBodyLocalizationEntity> setArmorBodyLocalizations(ArmorEntity armor) {
-//        return armor.getArmorBodyLocalizations().stream()
-//                .peek(armorBodyLocalization -> armorBodyLocalization.setArmor(armor))
-//                .toList();
-//    }
-
 	protected void setBodyLocalizations(CharacterEntity character) {
 		List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations().stream().peek(element -> {
 			element.setCharacter(character);
 			element.setBodyLocalization(bodyLocalizationService.findByName(element.getBodyLocalization().getName()));
-//			element.setArmorPoints(this.calculateArmorPointsForBodyLocalization(element, character.getArmors()));
 			this.setInjuries(element);
 		}).toList();
 		character.setBodyLocalizations(bodyLocalizations);
 	}
-
-//bodyLocalizations	public int calculateArmorPointsForBodyLocalization(CharacterBodyLocalizationEntity bodyLocalization, List<ArmorEntity> armors) {
-//		int armorPoints = 0;
-//		for (ArmorEntity armor : armors) {
-//			for (ArmorBodyLocalizationEntity armorBodyLocalization : armor.getArmorBodyLocalizations()) {
-//				if (armorBodyLocalization.getBodyLocalization().equals(bodyLocalization.getBodyLocalization())) {
-//					armorPoints += armorBodyLocalization.getArmorPoints();
-//				}
-//			}
-//		}
-//
-//		return armorPoints;
-//	}
 
 	protected void setInjuries(CharacterBodyLocalizationEntity bodyLocalization) {
 		List<CharacterBodyLocalizationInjuryEntity> injuries = bodyLocalization.getInjuries().stream().peek(element -> {

@@ -4,7 +4,6 @@ import com.teus.projectrpg.armor.dto.CharacterArmorBodyLocalizationDto;
 import com.teus.projectrpg.armor.dto.ArmorDto;
 import com.teus.projectrpg.armor.entity.*;
 import com.teus.projectrpg.base.dto.BaseDto;
-import com.teus.projectrpg.armor.mapper.ArmorContext;
 import com.teus.projectrpg.armor.mapper.ArmorMapper;
 import com.teus.projectrpg.armor.type.ArmorCategoryType;
 import com.teus.projectrpg.armor.type.ArmorPenaltyType;
@@ -25,14 +24,11 @@ class ArmorServiceImplTest {
     @Autowired
     ArmorMapper armorMapper;
 
-    @Autowired
-    ArmorContext armorContext;
-
     @Test
     void whenConvertArmorDtoToArmorEntity_thenCorrect() {
         ArmorDto armorDto = prepareArmorDto();
 
-        ArmorEntity armorEntity = armorMapper.toEntity(armorDto, armorContext);
+        ArmorEntity armorEntity = armorMapper.toEntity(armorDto);
 
         compareDtoAndEntity(armorEntity, armorDto);
     }

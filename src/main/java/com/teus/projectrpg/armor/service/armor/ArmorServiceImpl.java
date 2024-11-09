@@ -2,7 +2,6 @@ package com.teus.projectrpg.armor.service.armor;
 
 import com.teus.projectrpg.armor.dto.ArmorDto;
 import com.teus.projectrpg.armor.entity.ArmorEntity;
-import com.teus.projectrpg.armor.mapper.ArmorContext;
 import com.teus.projectrpg.armor.mapper.ArmorMapper;
 import com.teus.projectrpg.armor.repository.ArmorRepository;
 import com.teus.projectrpg.exception.ElementAlreadyExistsException;
@@ -20,7 +19,6 @@ public class ArmorServiceImpl implements ArmorService {
 
     private final ArmorRepository armorRepository;
     private final ArmorMapper armorMapper;
-    private final ArmorContext armorContext;
 
     @Override
     public List<ArmorDto> findAll() {
@@ -32,7 +30,7 @@ public class ArmorServiceImpl implements ArmorService {
         if (armorRepository.findArmorEntityByName(newArmor.getName()) != null) {
             throw new ElementAlreadyExistsException(newArmor.getName());
         }
-        ArmorEntity armorEntity = armorMapper.toEntity(newArmor, armorContext);
+        ArmorEntity armorEntity = armorMapper.toEntity(newArmor);
         armorEntity.setIsBaseArmor(false);
         try {
             ArmorEntity savedArmorEntity = armorRepository.save(armorEntity);
