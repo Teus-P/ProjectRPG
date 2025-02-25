@@ -4,15 +4,9 @@ import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;
 import com.teus.projectrpg.characteristic.type.CharacteristicType;
 import com.teus.projectrpg.condition.type.ConditionType;
 import java.util.Optional;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import com.teus.projectrpg.skirmish.entity.SkirmishGroupEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,6 +39,10 @@ public class SkirmishCharacterEntity {
 
 	@Column
 	private int sequenceNumber;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "skirmish_group_id")
+	private SkirmishGroupEntity skirmishGroup;
 
 	public Optional<CharacterConditionEntity> getConditionByType(ConditionType conditionType) {
 		return this.character.getConditions().stream().filter(c -> c.getCondition().getName().equals(conditionType)).findFirst();

@@ -1,5 +1,6 @@
 package com.teus.projectrpg.character.dto;
 
+import com.teus.projectrpg.skirmish.dto.SkirmishGroupDto;
 import lombok.Data;
 
 @Data
@@ -12,5 +13,5 @@ public class SkirmishCharacterDto {
 	private int advantage;
 	private Boolean isDead;
 	private int sequenceNumber;
-
+	private SkirmishGroupDto skirmishGroup;
 }

@@ -452,9 +452,8 @@ public class SkirmishServiceImpl implements SkirmishService {
         int newAdvantage = character.getAdvantage() - 1;
         if (newAdvantage >= 0) {
             character.setAdvantage(newAdvantage);
+            skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
         }
-
-        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
     }
 
     public int getBonusPoints(int value) {
