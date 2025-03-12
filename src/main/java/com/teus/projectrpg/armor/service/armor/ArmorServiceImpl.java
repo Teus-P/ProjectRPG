@@ -27,7 +27,10 @@ public class ArmorServiceImpl implements ArmorService {
 
     @Override
     public ArmorDto save(ArmorDto newArmor) {
-        if (armorRepository.findArmorEntityByName(newArmor.getName()) != null) {
+        if (
+                armorRepository.findArmorEntityByName(newArmor.getName()) != null
+                && newArmor.getId() == 0
+        ) {
             throw new ElementAlreadyExistsException(newArmor.getName());
         }
         ArmorEntity armorEntity = armorMapper.toEntity(newArmor);
