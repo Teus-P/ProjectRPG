@@ -26,11 +26,13 @@ public class WeaponServiceImpl implements WeaponService {
     public WeaponDto save(WeaponDto newWeapon) {
         WeaponEntity weaponEntity = weaponMapper.toEntity(newWeapon, new WeaponContext());
         weaponEntity.setIsBaseWeapon(false);
-        int maxId = weaponRepository.findMaxId();
-        if (maxId < 5000) {
-            weaponEntity.setId(5000L);
-        } else {
-            weaponEntity.setId(maxId + 1L);
+        if (weaponEntity.getId() == null || weaponEntity.getId() == 0) {
+            int maxId = weaponRepository.findMaxId();
+            if (maxId < 5000) {
+                weaponEntity.setId(5000L);
+            } else {
+                weaponEntity.setId(maxId + 1L);
+            }
         }
         WeaponEntity savedWeaponEntity = weaponRepository.save(weaponEntity);
         return weaponMapper.toDto(savedWeaponEntity);
