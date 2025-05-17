@@ -19,4 +19,7 @@ public class TalentEntity extends BaseEntity<TalentType> {
 
     @Column
     private String maxLevel;
+
+    @Column
+    private boolean isSkirmishTalent;
 }

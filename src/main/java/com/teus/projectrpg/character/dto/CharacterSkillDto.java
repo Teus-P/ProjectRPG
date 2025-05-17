@@ -1,12 +1,11 @@
 package com.teus.projectrpg.character.dto;
 
-import com.teus.projectrpg.base.dto.BaseDto;
-import com.teus.projectrpg.skill.type.SkillType;
+import com.teus.projectrpg.skill.dto.SkillDto;
 import lombok.Data;
 
 @Data
 public class CharacterSkillDto {
     private Long id;
-    private BaseDto<SkillType> model;
+    private SkillDto model;
     private int value;
 }

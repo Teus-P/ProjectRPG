@@ -16,4 +16,7 @@ public class SkillEntity extends BaseEntity<SkillType> {
     @Column
     @Enumerated(EnumType.STRING)
     private SkillType name;
+
+    @Column
+    private boolean isSkirmishSkill;
 }

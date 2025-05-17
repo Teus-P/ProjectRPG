@@ -1,9 +1,9 @@
 package com.teus.projectrpg.skill.service;
 
-import com.teus.projectrpg.base.dto.BaseDto;
-import com.teus.projectrpg.base.mapper.BaseMapper;
 import com.teus.projectrpg.character.entity.CharacterSkillEntity;
+import com.teus.projectrpg.skill.dto.SkillDto;
 import com.teus.projectrpg.skill.entity.SkillEntity;
+import com.teus.projectrpg.skill.mapper.SkillMapper;
 import com.teus.projectrpg.skill.repository.SkillRepository;
 import com.teus.projectrpg.skill.type.SkillType;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,11 @@ import java.util.Optional;
 public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
-    private final BaseMapper baseMapper;
+    private final SkillMapper skillMapper;
 
     @Override
-    public List<BaseDto<SkillType>> findAll() {
-        return baseMapper.toDtos(skillRepository.findAll());
+    public List<SkillDto> findAll() {
+        return skillMapper.toDtos(skillRepository.findAll());
     }
 
     @Override
