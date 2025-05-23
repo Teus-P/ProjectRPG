@@ -8,4 +8,5 @@ public class CharacterSkillDto {
     private Long id;
     private SkillDto model;
     private int value;
+    private String specialisation;
 }

@@ -8,4 +8,5 @@ public class CharacterTalentDto {
     private Long id;
     private TalentDto model;
     private int value;
+    private String specialisation;
 }

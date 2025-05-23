@@ -22,4 +22,7 @@ public class TalentEntity extends BaseEntity<TalentType> {
 
     @Column
     private boolean isSkirmishTalent;
+
+    @Column
+    private boolean hasSpecialisation;
 }

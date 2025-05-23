@@ -13,4 +13,7 @@ public class TalentDto extends BaseDto<TalentType> {
 
     @JsonProperty("isSkirmishTalent")
     private boolean isSkirmishTalent;
+
+    private boolean hasSpecialisation;
+
 }

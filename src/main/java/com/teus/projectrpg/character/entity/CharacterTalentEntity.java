@@ -26,4 +26,7 @@ public class CharacterTalentEntity {
 
     @Column(name = "value")
     private int value;
+
+    @Column(name = "specialisation")
+    private String specialisation;
 }

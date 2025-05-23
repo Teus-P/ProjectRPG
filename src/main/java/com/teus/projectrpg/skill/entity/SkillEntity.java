@@ -19,4 +19,7 @@ public class SkillEntity extends BaseEntity<SkillType> {
 
     @Column
     private boolean isSkirmishSkill;
+
+    @Column
+    private boolean hasSpecialisation;
 }
