@@ -872,7 +872,7 @@ class SkirmishServiceTest {
 	}
 
 	private void mockFindCharacterById(CharacterEntity character) {
-		Mockito.when(characterService.findById(character.getId())).thenReturn(character);
+		Mockito.when(characterService.findEntityById(character.getId())).thenReturn(character);
 	}
 
 	private List<SkirmishCharacterEntity> createSkirmishCharacterTestList() {

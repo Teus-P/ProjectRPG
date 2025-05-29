@@ -461,7 +461,7 @@ public class SkirmishServiceImpl implements SkirmishService {
     }
 
     public void addAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization) {
-        CharacterEntity character = characterService.findById(bodyLocalization.getCharacterId());
+        CharacterEntity character = characterService.findEntityById(bodyLocalization.getCharacterId());
         List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations();
         bodyLocalizations.stream()
                 .filter(o -> o.getBodyLocalization().getName().equals(bodyLocalization.getBodyLocalization().getName()))
@@ -473,7 +473,7 @@ public class SkirmishServiceImpl implements SkirmishService {
     }
 
     public void removeAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization) {
-        CharacterEntity character = characterService.findById(bodyLocalization.getCharacterId());
+        CharacterEntity character = characterService.findEntityById(bodyLocalization.getCharacterId());
         List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations();
         bodyLocalizations.stream()
                 .filter(o -> o.getBodyLocalization().getName().equals(bodyLocalization.getBodyLocalization().getName()))

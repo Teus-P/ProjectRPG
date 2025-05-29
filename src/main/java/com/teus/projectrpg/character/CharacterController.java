@@ -30,6 +30,15 @@ public class CharacterController {
 		return ResponseEntity.ok(characterDtos);
 	}
 
+	@GetMapping("/character/{id}")
+	public ResponseEntity<CharacterDto> getCharacter(@PathVariable Long id) {
+		CharacterDto characterDto = characterService.findDtoById(id);
+		if (characterDto == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(characterDto);
+	}
+
 	@PutMapping("/character")
 	public ResponseEntity<CharacterDto> putCharacter(@Valid @RequestBody CharacterDto newCharacter) {
 		return ResponseEntity.ok(characterService.saveDto(newCharacter));

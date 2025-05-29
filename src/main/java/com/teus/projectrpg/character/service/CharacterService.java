@@ -8,7 +8,9 @@ public interface CharacterService {
 
 	List<CharacterDto> findAll();
 
-	CharacterEntity findById(Long id);
+	CharacterEntity findEntityById(Long id);
+
+	CharacterDto findDtoById(Long id);
 
 	CharacterDto saveDto(CharacterDto newCharacter);
 

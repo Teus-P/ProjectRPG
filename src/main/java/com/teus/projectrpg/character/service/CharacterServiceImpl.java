@@ -33,8 +33,14 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public CharacterEntity findById(Long id) {
+    public CharacterEntity findEntityById(Long id) {
         return characterRepository.findById(id).orElseThrow(() -> new ElementNotFoundException(id));
+    }
+
+    @Override
+    public CharacterDto findDtoById(Long id) {
+        CharacterEntity characterEntity = characterRepository.findById(id).orElseThrow(() -> new ElementNotFoundException(id));
+        return characterMapper.toDto(characterEntity, characterContext);
     }
 
     @Override
