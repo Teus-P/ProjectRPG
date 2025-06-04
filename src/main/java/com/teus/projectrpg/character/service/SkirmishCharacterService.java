@@ -15,7 +15,7 @@ public interface SkirmishCharacterService {
 
     List<SkirmishCharacterDto> getAllSortedByInitiative();
 
-    SkirmishCharacterDto save(SkirmishCharacterDto newSkirmishCharacter);
+    SkirmishCharacterDto saveDto(SkirmishCharacterDto newSkirmishCharacter);
 
     List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> skirmishCharacterDtos);
 

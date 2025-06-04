@@ -58,9 +58,35 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
     }
 
     @Override
-    public SkirmishCharacterDto save(SkirmishCharacterDto newSkirmishCharacter) {
+    public SkirmishCharacterDto saveDto(SkirmishCharacterDto newSkirmishCharacter) {
         SkirmishCharacterEntity skirmishCharacterEntity = skirmishCharacterMapper.toEntity(newSkirmishCharacter, characterContext);
 
+        this.prepareCharacterArmor(skirmishCharacterEntity);
+
+        try {
+            SkirmishCharacterEntity savedCharacter = skirmishCharacterRepository.save(skirmishCharacterEntity);
+            return skirmishCharacterMapper.toDto(savedCharacter, characterContext);
+        } catch (DataIntegrityViolationException ex) {
+            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
+        }
+    }
+
+    @Override
+    public List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> skirmishCharacterDtos) {
+        List<SkirmishCharacterEntity> skirmishCharacterEntities = skirmishCharacterMapper.toEntities(skirmishCharacterDtos,
+                characterContext);
+
+        skirmishCharacterEntities.forEach(this::prepareCharacterArmor);
+
+        try {
+            List<SkirmishCharacterEntity> savedCharacters = skirmishCharacterRepository.saveAll(skirmishCharacterEntities);
+            return skirmishCharacterMapper.toDtos(savedCharacters, characterContext);
+        } catch (DataIntegrityViolationException ex) {
+            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
+        }
+    }
+
+    private void prepareCharacterArmor(SkirmishCharacterEntity skirmishCharacterEntity) {
         if (skirmishCharacterEntity.getId() == 0) {
             skirmishCharacterEntity.getCharacter().setId(0L);
             skirmishCharacterEntity.getCharacter().setType("COPY");
@@ -71,13 +97,6 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
         }
 
         calculateArmorPoints(skirmishCharacterEntity);
-
-        try {
-            SkirmishCharacterEntity savedCharacter = skirmishCharacterRepository.save(skirmishCharacterEntity);
-            return skirmishCharacterMapper.toDto(savedCharacter, characterContext);
-        } catch (DataIntegrityViolationException ex) {
-            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
-        }
     }
 
     @Override
@@ -90,19 +109,6 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
                         bodyLocalization.setArmorPoints(bodyLocalization.getArmorPoints() + armorBodyLocalization.getArmorPoints());
                     }
                 })));
-    }
-
-    @Override
-    public List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> skirmishCharacterDtos) {
-        List<SkirmishCharacterEntity> skirmishCharacterEntities = skirmishCharacterMapper.toEntities(skirmishCharacterDtos,
-                characterContext);
-        skirmishCharacterEntities.forEach(s -> s.getCharacter().setType("COPY"));
-        try {
-            List<SkirmishCharacterEntity> savedCharacters = skirmishCharacterRepository.saveAll(skirmishCharacterEntities);
-            return skirmishCharacterMapper.toDtos(savedCharacters, characterContext);
-        } catch (DataIntegrityViolationException ex) {
-            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
-        }
     }
 
     @Override

@@ -369,7 +369,7 @@ public class SkirmishServiceImpl implements SkirmishService {
         if (receivedDamage.getDestroyArmorValue() > 0) {
             destroyArmor(receivedDamage, character);
         }
-        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
+        skirmishCharacterService.saveDto(skirmishCharacterMapper.toDto(character, characterContext));
     }
 
     private void destroyArmor(ReceivedDamageDto receivedDamage, SkirmishCharacterEntity character) {
@@ -444,7 +444,7 @@ public class SkirmishServiceImpl implements SkirmishService {
         int newAdvantage = character.getAdvantage() + 1;
         character.setAdvantage(newAdvantage);
 
-        skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
+        skirmishCharacterService.saveDto(skirmishCharacterMapper.toDto(character, characterContext));
     }
 
     public void removeAdvantagePoint(Long skirmishCharacterId) {
@@ -452,7 +452,7 @@ public class SkirmishServiceImpl implements SkirmishService {
         int newAdvantage = character.getAdvantage() - 1;
         if (newAdvantage >= 0) {
             character.setAdvantage(newAdvantage);
-            skirmishCharacterService.save(skirmishCharacterMapper.toDto(character, characterContext));
+            skirmishCharacterService.saveDto(skirmishCharacterMapper.toDto(character, characterContext));
         }
     }
 

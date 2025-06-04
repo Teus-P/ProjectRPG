@@ -28,7 +28,7 @@ public class SkirmishCharacterController {
 
     @PutMapping("/skirmishCharacter")
     public ResponseEntity<SkirmishCharacterDto> putSkirmishCharacter(@Valid @RequestBody SkirmishCharacterDto newSkirmishCharacter) {
-        return ResponseEntity.ok(skirmishCharacterService.save(newSkirmishCharacter));
+        return ResponseEntity.ok(skirmishCharacterService.saveDto(newSkirmishCharacter));
     }
 
     @PutMapping("/skirmishCharacters")
