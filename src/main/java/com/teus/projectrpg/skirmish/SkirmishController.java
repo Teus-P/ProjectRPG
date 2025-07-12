@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +39,16 @@ public class SkirmishController {
     @PostMapping("/receiveDamage")
     public void receiveDamage(@RequestBody ReceivedDamageDto receivedDamage) {
         this.skirmishService.receiveDamage(receivedDamage);
+    }
+
+    @PostMapping("/addWoundPoint")
+    public void addWoundPoint(@RequestBody Long skirmishCharacterId) {
+        this.skirmishService.addWoundPoint(skirmishCharacterId);
+    }
+
+    @PostMapping("/removeWoundPoint")
+    public void removeWoundPoint(@RequestBody Long skirmishCharacterId) {
+        this.skirmishService.removeWoundPoint(skirmishCharacterId);
     }
 
     @PostMapping("/addAdvantagePoint")
@@ -73,6 +84,13 @@ public class SkirmishController {
     @PostMapping("/addConditions")
     public ResponseEntity<List<SkirmishCharacterDto>> putSkirmishCharacters(@Valid @RequestBody AddConditionsDto addConditions) {
         return ResponseEntity.ok(this.skirmishService.addConditions(addConditions));
+    }
+
+    @PostMapping("/changeIsDeadValue")
+    public void changeIsDeadValue(@Valid @RequestBody Map<String, Object> payload) {
+        int skirmishCharacterId = (Integer) payload.get("id");
+        Boolean value = (Boolean) payload.get("value");
+        this.skirmishService.changeIsDeadValue((long) skirmishCharacterId, value);
     }
 
     @GetMapping("/skirmishGroups")

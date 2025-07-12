@@ -439,6 +439,32 @@ public class SkirmishServiceImpl implements SkirmishService {
         }
     }
 
+    public void addWoundPoint(Long skirmishCharacterId) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
+        int newWounds = character.getCurrentWounds() + 1;
+
+        if(character.getCurrentWounds() == 0) {
+            character.removeConditionByType(ConditionType.PRONE);
+            character.removeConditionByType(ConditionType.UNCONSCIOUS);
+        }
+
+        character.setCurrentWounds(newWounds);
+
+        skirmishCharacterService.saveDto(skirmishCharacterMapper.toDto(character, characterContext));
+    }
+
+    public void removeWoundPoint(Long skirmishCharacterId) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
+        int newWounds = character.getCurrentWounds() - 1;
+        if (newWounds >= 0) {
+            character.setCurrentWounds(newWounds);
+            if(character.getCurrentWounds() == 0) {
+                this.checkIfProne(character);
+            }
+            skirmishCharacterService.saveDto(skirmishCharacterMapper.toDto(character, characterContext));
+        }
+    }
+
     public void addAdvantagePoint(Long skirmishCharacterId) {
         SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
         int newAdvantage = character.getAdvantage() + 1;
@@ -506,5 +532,11 @@ public class SkirmishServiceImpl implements SkirmishService {
         return skirmishCharacterService.saveAllEntities(characters);
     }
 
+    @Override
+    public void changeIsDeadValue(Long skirmishCharacterId, Boolean value) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
+        character.setIsDead(value);
+        skirmishCharacterService.saveDto(skirmishCharacterMapper.toDto(character, characterContext));
+    }
 }
 

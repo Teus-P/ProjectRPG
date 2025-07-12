@@ -15,6 +15,10 @@ public interface SkirmishService {
 
     void receiveDamage(ReceivedDamageDto receivedDamage);
 
+    void addWoundPoint(Long skirmishCharacterId);
+
+    void removeWoundPoint(Long skirmishCharacterId);
+
     void addAdvantagePoint(Long skirmishCharacterId);
 
     void removeAdvantagePoint(Long skirmishCharacterId);
@@ -24,4 +28,6 @@ public interface SkirmishService {
     void removeAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization);
 
     List<SkirmishCharacterDto> addConditions(AddConditionsDto addConditions);
+
+    void changeIsDeadValue(Long skirmishCharacterId, Boolean value);
 }
