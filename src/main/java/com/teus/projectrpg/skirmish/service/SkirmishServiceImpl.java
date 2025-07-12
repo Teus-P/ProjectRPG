@@ -3,7 +3,6 @@ package com.teus.projectrpg.skirmish.service;
 import com.teus.projectrpg.armor.entity.CharacterArmorBodyLocalizationEntity;
 import com.teus.projectrpg.armor.type.ArmorType;
 import com.teus.projectrpg.bodylocalization.type.BodyLocalizationType;
-import com.teus.projectrpg.character.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.character.entity.*;
 import com.teus.projectrpg.character.mapper.CharacterContext;
@@ -443,7 +442,7 @@ public class SkirmishServiceImpl implements SkirmishService {
         SkirmishCharacterEntity character = skirmishCharacterService.findById(skirmishCharacterId);
         int newWounds = character.getCurrentWounds() + 1;
 
-        if(character.getCurrentWounds() == 0) {
+        if (character.getCurrentWounds() == 0) {
             character.removeConditionByType(ConditionType.PRONE);
             character.removeConditionByType(ConditionType.UNCONSCIOUS);
         }
@@ -458,7 +457,7 @@ public class SkirmishServiceImpl implements SkirmishService {
         int newWounds = character.getCurrentWounds() - 1;
         if (newWounds >= 0) {
             character.setCurrentWounds(newWounds);
-            if(character.getCurrentWounds() == 0) {
+            if (character.getCurrentWounds() == 0) {
                 this.checkIfProne(character);
             }
             skirmishCharacterService.saveDto(skirmishCharacterMapper.toDto(character, characterContext));
@@ -484,30 +483,6 @@ public class SkirmishServiceImpl implements SkirmishService {
 
     public int getBonusPoints(int value) {
         return (value / 10) % 100;
-    }
-
-    public void addAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization) {
-        CharacterEntity character = characterService.findEntityById(bodyLocalization.getCharacterId());
-        List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations();
-        bodyLocalizations.stream()
-                .filter(o -> o.getBodyLocalization().getName().equals(bodyLocalization.getBodyLocalization().getName()))
-                .findFirst()
-                .ifPresent(o -> o.setAdditionalArmorPoints(o.getAdditionalArmorPoints() + 1));
-
-        character.setBodyLocalizations(bodyLocalizations);
-        characterService.saveEntity(character);
-    }
-
-    public void removeAdditionalArmorPoint(CharacterBodyLocalizationDto bodyLocalization) {
-        CharacterEntity character = characterService.findEntityById(bodyLocalization.getCharacterId());
-        List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations();
-        bodyLocalizations.stream()
-                .filter(o -> o.getBodyLocalization().getName().equals(bodyLocalization.getBodyLocalization().getName()))
-                .findFirst()
-                .ifPresent(o -> o.setAdditionalArmorPoints(o.getAdditionalArmorPoints() - 1));
-
-        character.setBodyLocalizations(bodyLocalizations);
-        characterService.saveEntity(character);
     }
 
     public List<SkirmishCharacterDto> addConditions(AddConditionsDto addConditions) {

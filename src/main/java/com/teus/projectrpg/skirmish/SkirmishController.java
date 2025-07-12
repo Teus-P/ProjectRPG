@@ -1,6 +1,5 @@
 package com.teus.projectrpg.skirmish;
 
-import com.teus.projectrpg.character.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
@@ -71,16 +70,6 @@ public class SkirmishController {
         this.skirmishGroupService.removeGroupAdvantagePoint(groupId);
     }
 
-    @PostMapping("/addAdditionalArmorPoint")
-    public void addAdditionalArmorPoint(@RequestBody CharacterBodyLocalizationDto bodyLocalization) {
-        this.skirmishService.addAdditionalArmorPoint(bodyLocalization);
-    }
-
-    @PostMapping("/removeAdditionalArmorPoint")
-    public void removeAdditionalArmorPoint(@RequestBody CharacterBodyLocalizationDto bodyLocalization) {
-        this.skirmishService.removeAdditionalArmorPoint(bodyLocalization);
-    }
-
     @PostMapping("/addConditions")
     public ResponseEntity<List<SkirmishCharacterDto>> putSkirmishCharacters(@Valid @RequestBody AddConditionsDto addConditions) {
         return ResponseEntity.ok(this.skirmishService.addConditions(addConditions));
@@ -96,7 +85,7 @@ public class SkirmishController {
     @GetMapping("/skirmishGroups")
     public ResponseEntity<List<SkirmishGroupDto>> getSkirmishGroups() {
         List<SkirmishGroupDto> skirmishGroupDtos = skirmishGroupService.findAll();
-        if(skirmishGroupDtos.isEmpty()) {
+        if (skirmishGroupDtos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(skirmishGroupDtos);

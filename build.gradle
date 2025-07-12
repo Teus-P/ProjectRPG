@@ -22,8 +22,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
-    implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
-    implementation 'org.mockito:mockito-junit-jupiter:4.8.0'
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.3.Final'
     implementation 'javax.validation:validation-api:2.0.1.Final'
