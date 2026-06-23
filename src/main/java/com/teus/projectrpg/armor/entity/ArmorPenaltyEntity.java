@@ -5,7 +5,7 @@ import com.teus.projectrpg.armor.type.ArmorPenaltyType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter

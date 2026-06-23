@@ -4,7 +4,7 @@ import com.teus.projectrpg.skill.entity.SkillEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Setter

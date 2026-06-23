@@ -1,10 +1,10 @@
 package com.teus.projectrpg.character.entity;
 
 import com.teus.projectrpg.injury.entity.InjuryEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 
 @Getter
 @Setter

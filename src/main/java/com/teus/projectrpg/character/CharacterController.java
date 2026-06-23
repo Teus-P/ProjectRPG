@@ -3,7 +3,7 @@ package com.teus.projectrpg.character;
 import com.teus.projectrpg.character.dto.CharacterDto;
 import com.teus.projectrpg.character.service.CharacterService;
 import java.util.List;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

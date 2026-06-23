@@ -2,7 +2,7 @@ package com.teus.projectrpg.skirmish.service;
 
 import com.teus.projectrpg.skirmish.dto.SkirmishGroupDto;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 public interface SkirmishGroupService {

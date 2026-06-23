@@ -5,7 +5,7 @@ import com.teus.projectrpg.spell.type.SpellGroupType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Setter

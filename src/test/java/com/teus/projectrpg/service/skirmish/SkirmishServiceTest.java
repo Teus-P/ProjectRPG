@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.*;
 
@@ -40,10 +40,10 @@ class SkirmishServiceTest {
     @Autowired
     private CharacterContext characterContext;
 
-    @MockBean
+    @MockitoBean
     private SkirmishCharacterService skirmishCharacterService;
 
-    @MockBean
+    @MockitoBean
     private CharacterService characterService;
 
     private EndTurnCheckDto endTurnCheck;
@@ -65,7 +65,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenDead_dontCreateTests() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setCurrentWounds(0);
         character.setIsDead(true);
         addCondition(ConditionType.BLEEDING, 3, 0, character);
@@ -80,7 +80,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenBleeding_receiveThreeDamage() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BLEEDING, 3, 0, character);
         int woundsBefore = character.getCurrentWounds();
 
@@ -92,7 +92,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenBleeding_receiveUnconscious() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BLEEDING, 4, 0, character);
         character.setCurrentWounds(3);
 
@@ -107,7 +107,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenBleedingAndUnconscious_createTest() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BLEEDING, 4, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
         character.setCurrentWounds(0);
@@ -121,7 +121,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenDeafened_removeOneStatus() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.DEAFENED, 2, 0, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -134,7 +134,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenDeafened_removeWholeCondition() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.DEAFENED, 1, 0, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -145,7 +145,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenStunned_createTest() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.STUNNED, 1, 0, character);
         TestDto test = createTestDto(character, ConditionType.STUNNED);
 
@@ -157,7 +157,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenBlinded_removeOneCounter() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BLINDED, 1, 2, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -170,7 +170,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenBlinded_removeWholeCondition() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BLINDED, 1, 1, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -182,7 +182,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenBlinded_removeOneCondition() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BLINDED, 2, 1, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -195,7 +195,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenBroken_createTest() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BROKEN, 1, 0, character);
         TestDto test = createTestDto(character, ConditionType.BROKEN);
 
@@ -207,7 +207,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenAblaze_createTest() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.ABLAZE, 3, 0, character);
         TestDto test = createTestDto(character, ConditionType.ABLAZE);
 
@@ -219,7 +219,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenSurprised_removeCondition() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.SURPRISED, 1, 0, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -230,7 +230,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenPoison_removeThreeWoundsAndCreateTest() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.POISON, 3, 0, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -248,7 +248,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenUnconsciousWithZeroValue_decreaseCounter() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.UNCONSCIOUS, 0, 3, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -262,7 +262,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheck_whenUnconsciousWithZeroValue_setOneValueAfterCounterIsDown() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.UNCONSCIOUS, 0, 1, character);
 
         mockFindAllCharacters(Collections.singletonList(character));
@@ -276,7 +276,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenBleeding_remainAlive_ifResultHigherThanStatusLevel() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setCurrentWounds(0);
         addCondition(ConditionType.BLEEDING, 2, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
@@ -293,7 +293,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenBleeding_becomeDead_ifResultLowerThanStatusLevel() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setCurrentWounds(0);
         addCondition(ConditionType.BLEEDING, 2, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
@@ -310,7 +310,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenBleeding_removeOneCondition_IfDouble() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setCurrentWounds(0);
         addCondition(ConditionType.BLEEDING, 2, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
@@ -328,7 +328,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenBleeding_removeWholeCondition_IfDouble() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setCurrentWounds(0);
         addCondition(ConditionType.BLEEDING, 1, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
@@ -345,7 +345,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenStunned_removeOneCondition_ifZeroSuccessPoints() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.STUNNED, 4, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.ENDURANCE,
@@ -361,7 +361,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenStunned_removeTwoConditions_ifOneSuccessPoint() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.STUNNED, 4, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.ENDURANCE,
@@ -377,7 +377,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenStunned_removeWholeCondition() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.STUNNED, 3, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.ENDURANCE,
@@ -394,7 +394,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenBroken_removeOneCondition_ifZeroSuccessPoints() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BROKEN, 2, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.COOL, ConditionType.BROKEN, 0,
@@ -410,7 +410,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenBroken_removeWholeCondition() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BROKEN, 2, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.COOL, ConditionType.BROKEN, 0,
@@ -427,7 +427,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenBrokenAndFatigued_addOneLevelToFatiguedAfterRemovingBroken() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BROKEN, 1, 0, character);
         addCondition(ConditionType.FATIGUED, 1, 0, character);
 
@@ -445,7 +445,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenStunnedAndBrokenWithTestWhichIsNotFeasible_removeStunnedLeaveBroken() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.BROKEN, 2, 0, character);
         addCondition(ConditionType.STUNNED, 1, 0, character);
 
@@ -469,7 +469,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenAblaze_receiveFourDamage() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.ABLAZE, 2, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), null, ConditionType.ABLAZE, 0, 8, true);
@@ -485,7 +485,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenAblaze_setDead() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.ABLAZE, 6, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), null, ConditionType.ABLAZE, 0, 10, true);
@@ -501,7 +501,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenPoison_removeOneCondition_ifZeroSuccessPoints() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.POISON, 4, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.ENDURANCE, ConditionType.POISON,
@@ -517,7 +517,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenPoison_removeThreeCondition_ifTwoSuccessPoints() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.POISON, 4, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.ENDURANCE, ConditionType.POISON,
@@ -533,7 +533,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenPoison_removeWholeCondition() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.POISON, 3, 0, character);
 
         TestDto testDto = new TestDto(skirmishCharacterMapper.toDto(character, characterContext), SkillType.ENDURANCE, ConditionType.POISON,
@@ -550,7 +550,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenPoison_setIsDeadIfUnconsciousAndTestFailed() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.POISON, 3, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
@@ -568,7 +568,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenPoison_dontSetIsDeadIfUnconsciousAndTestSucceeded() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.POISON, 3, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 1, 0, character);
 
@@ -586,7 +586,7 @@ class SkirmishServiceTest {
 
     @Test
     void endTurnCheckAfterTests_whenPoison_dontSetIsDeadIfUnconsciousAreOnlyCounterAndTestFailed() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.POISON, 3, 0, character);
         addCondition(ConditionType.UNCONSCIOUS, 0, 3, character);
 
@@ -604,7 +604,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_removeFourWounds_ifWeaponIsDamaging() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(2);
 
         ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
@@ -625,7 +625,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_removeSurprised() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         addCondition(ConditionType.SURPRISED, 1, 0, character);
         character.setAdvantage(2);
 
@@ -648,7 +648,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_removeAtLeastOneWound_ifWeaponIsDamaging() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(2);
 
         ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
@@ -669,7 +669,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_removeFourWounds_ifWeaponIsUndamaging() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(2);
 
         ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
@@ -691,7 +691,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_removeAdvantages_ifWeaponIsUndamagingAndLosingTest() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(2);
 
         ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
@@ -712,7 +712,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_dontRemoveAdvantages_ifWeaponIsUndamagingAndNotLosingTest() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(2);
 
         ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
@@ -733,7 +733,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_proneCharacter_ifWoundsAreEqualToZeroAndSuddenDeathIsOff() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(2);
 
         ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
@@ -758,7 +758,7 @@ class SkirmishServiceTest {
 
     @Test
     void receiveDamage_killCharacter_ifWoundsAreEqualToZeroAndSuddenDeathIsOn() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(2);
 
         ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
@@ -780,7 +780,7 @@ class SkirmishServiceTest {
 
     @Test
     void addAdvantagePoint_addOnePoint() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(0);
 
         mockFindSkirmishCharacterById(character);
@@ -791,7 +791,7 @@ class SkirmishServiceTest {
 
     @Test
     void removeAdvantagePoint_removeOnePoint() {
-        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().get(0);
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
         character.setAdvantage(1);
 
         mockFindSkirmishCharacterById(character);

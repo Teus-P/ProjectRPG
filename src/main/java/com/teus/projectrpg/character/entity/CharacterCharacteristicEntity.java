@@ -1,10 +1,9 @@
 package com.teus.projectrpg.character.entity;
 
 import com.teus.projectrpg.characteristic.entity.CharacteristicEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
 
 @Getter
 @Setter

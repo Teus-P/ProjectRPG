@@ -5,7 +5,7 @@ import com.teus.projectrpg.character.entity.SkirmishCharacterEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Getter
