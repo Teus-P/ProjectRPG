@@ -1,6 +1,7 @@
 package com.teus.projectrpg.skirmish;
 
 import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
+import com.teus.projectrpg.condition.dto.ConditionDto;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
@@ -33,6 +34,11 @@ public class SkirmishController {
     @PostMapping("/endTurnTestsCheck")
     public EndTurnCheckDto endTurnTestsCheck(@RequestBody EndTurnCheckDto endTurnCheck) {
         return this.skirmishService.endTurnCheckAfterTests(endTurnCheck);
+    }
+
+    @PostMapping("/testCondition")
+    public ConditionDto testCondition(@RequestBody ConditionDto condition) {
+        return condition;
     }
 
     @PostMapping("/receiveDamage")
@@ -93,7 +99,7 @@ public class SkirmishController {
 
     @PostMapping("/skirmishGroups")
     public ResponseEntity<SkirmishGroupDto> createSkirmishGroup(@Valid @RequestBody SkirmishGroupDto skirmishGroupDto) {
-        return ResponseEntity.ok(skirmishGroupService.save(skirmishGroupDto));
+        return ResponseEntity.ok(skirmishGroupService.saveDto(skirmishGroupDto));
     }
 
     @DeleteMapping("/skirmishGroups")

@@ -1,5 +1,6 @@
 package com.teus.projectrpg.skirmish.service;
 
+import com.teus.projectrpg.exception.ElementNotFoundException;
 import com.teus.projectrpg.exception.FieldCannotBeNullException;
 import com.teus.projectrpg.skirmish.dto.SkirmishGroupDto;
 import com.teus.projectrpg.skirmish.entity.SkirmishGroupEntity;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,18 +22,32 @@ public class SkirmishGroupServiceImpl implements SkirmishGroupService {
     private final SkirmishGroupMapper skirmishGroupMapper;
 
     @Override
+    public SkirmishGroupEntity findEntityById(Long id) {
+        return this.skirmishGroupRepository.findById(id).orElseThrow(() -> new ElementNotFoundException(id));
+    }
+
+    @Override
     public List<SkirmishGroupDto> findAll() {
         return skirmishGroupMapper.toDtos(skirmishGroupRepository.findAll());
     }
 
     @Override
-    public SkirmishGroupDto save(SkirmishGroupDto newSkirmishGroupDto) {
-        SkirmishGroupEntity skirmishGroupEntity = skirmishGroupMapper.toEntity(newSkirmishGroupDto);
+    @Transactional
+    public SkirmishGroupDto saveDto(SkirmishGroupDto newSkirmishGroupDto) {
         try {
+            SkirmishGroupEntity skirmishGroupEntity;
+
+            if(newSkirmishGroupDto.getId() != null) {
+                skirmishGroupEntity = findEntityById(newSkirmishGroupDto.getId());
+                skirmishGroupMapper.updateEntityFromDto(newSkirmishGroupDto, skirmishGroupEntity);
+            } else {
+                skirmishGroupEntity = skirmishGroupMapper.toEntity(newSkirmishGroupDto);
+            }
+
             SkirmishGroupEntity savedSkirmishGroupEntity = skirmishGroupRepository.save(skirmishGroupEntity);
             return skirmishGroupMapper.toDto(savedSkirmishGroupEntity);
-        } catch (DataIntegrityViolationException ex) {
-            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
+        } catch (DataIntegrityViolationException e) {
+            throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
         }
     }
 

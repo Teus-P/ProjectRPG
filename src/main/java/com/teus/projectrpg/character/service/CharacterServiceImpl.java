@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +44,21 @@ public class CharacterServiceImpl implements CharacterService {
         return characterMapper.toDto(characterEntity, characterContext);
     }
 
+
     @Override
+    @Transactional
     public CharacterDto saveDto(CharacterDto newCharacter) {
-        CharacterEntity characterEntity = characterMapper.toEntity(newCharacter, characterContext);
-        calculateArmorPoints(characterEntity);
         try {
+            CharacterEntity characterEntity;
+
+            if(newCharacter.getId() != null) {
+                characterEntity = findEntityById(newCharacter.getId());
+                characterMapper.updateEntityFromDto(newCharacter, characterEntity, characterContext);
+            } else {
+                characterEntity = characterMapper.toEntity(newCharacter, characterContext);
+            }
+
+            calculateArmorPoints(characterEntity);
             CharacterEntity savedCharacterEntity = characterRepository.save(characterEntity);
             return characterMapper.toDto(savedCharacterEntity, characterContext);
         } catch (DataIntegrityViolationException e) {

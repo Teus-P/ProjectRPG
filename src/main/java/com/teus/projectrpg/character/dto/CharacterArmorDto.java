@@ -11,5 +11,5 @@ public class CharacterArmorDto {
     private Long id;
     private ArmorDto armor;
     private List<CharacterArmorBodyLocalizationDto> armorBodyLocalizations;
-    private int duration;
+    private Integer duration;
 }

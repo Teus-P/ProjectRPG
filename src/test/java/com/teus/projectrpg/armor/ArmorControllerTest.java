@@ -81,14 +81,14 @@ public class ArmorControllerTest {
         ArmorDto newArmorDto = new ArmorDto();
         ArmorDto savedArmorDto = new ArmorDto();
 
-        Mockito.when(armorService.save(newArmorDto)).thenReturn(savedArmorDto);
+        Mockito.when(armorService.saveDto(newArmorDto)).thenReturn(savedArmorDto);
 
         // Wywołanie metody i sprawdzenie wyniku
         ResponseEntity<ArmorDto> response = armorController.putArmor(newArmorDto);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(savedArmorDto, response.getBody());
-        Mockito.verify(armorService).save(newArmorDto);
+        Mockito.verify(armorService).saveDto(newArmorDto);
     }
 
     @Test

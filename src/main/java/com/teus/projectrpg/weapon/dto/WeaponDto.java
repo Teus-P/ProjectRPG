@@ -19,7 +19,7 @@ public class WeaponDto implements Serializable {
     private BaseDto<WeaponType> weaponType;
     private BaseDto<WeaponGroupType> weaponGroup;
     private BaseDto<WeaponReachType> weaponReach;
-    private float weaponRange;
+    private Float weaponRange;
     private Boolean isUsingStrength;
     private Boolean isUsingStrengthInRange;
     private int damage;

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SkirmishCharacterService {
 
-    SkirmishCharacterEntity findById(Long id);
+    SkirmishCharacterEntity findEntityById(Long id);
 
     List<SkirmishCharacterEntity> findAllById(List<Long> ids);
 

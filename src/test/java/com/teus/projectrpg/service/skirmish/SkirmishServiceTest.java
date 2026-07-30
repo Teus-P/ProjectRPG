@@ -51,7 +51,7 @@ class SkirmishServiceTest {
     private TestDto createTestDto(SkirmishCharacterEntity character, ConditionType bleeding) {
         TestDto test = new TestDto();
         test.setSkirmishCharacter(skirmishCharacterMapper.toDto(character, characterContext));
-        test.setConditionType(new ConditionDto(bleeding));
+        test.setCondition(new ConditionDto(bleeding));
         test.setModifier(0);
         test.setFeasible(true);
         return test;
@@ -238,7 +238,7 @@ class SkirmishServiceTest {
 
         Optional<TestDto> poisonTest = endTurnCheck.getTests()
                 .stream()
-                .filter(t -> t.getConditionType().getName().equals(ConditionType.POISON))
+                .filter(t -> t.getCondition().getName().equals(ConditionType.POISON))
                 .findFirst();
 
         assertTrue(poisonTest.isPresent());
@@ -805,7 +805,7 @@ class SkirmishServiceTest {
     }
 
     private void mockFindSkirmishCharacterById(SkirmishCharacterEntity character) {
-        Mockito.when(skirmishCharacterService.findById(character.getId())).thenReturn(character);
+        Mockito.when(skirmishCharacterService.findEntityById(character.getId())).thenReturn(character);
     }
 
     private List<SkirmishCharacterEntity> createSkirmishCharacterTestList() {

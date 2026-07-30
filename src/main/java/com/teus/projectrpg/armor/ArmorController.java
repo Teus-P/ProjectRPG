@@ -41,7 +41,7 @@ public class ArmorController {
 
     @PutMapping("/armor")
     public ResponseEntity<ArmorDto> putArmor(@Valid @RequestBody ArmorDto newArmor) {
-        return ResponseEntity.ok(armorService.save(newArmor));
+        return ResponseEntity.ok(armorService.saveDto(newArmor));
     }
 
     @DeleteMapping("/armor/{id}")

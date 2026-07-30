@@ -9,9 +9,11 @@ public interface ArmorService {
 
     List<ArmorDto> findAll();
 
-    ArmorDto save(ArmorDto newArmor);
+    ArmorDto saveDto(ArmorDto newArmor);
 
     void deleteById(Long id);
 
     ArmorEntity findByName(String name);
+
+    ArmorEntity findEntityById(Long id);
 }

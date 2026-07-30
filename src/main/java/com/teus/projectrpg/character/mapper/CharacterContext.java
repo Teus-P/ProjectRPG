@@ -3,9 +3,22 @@ package com.teus.projectrpg.character.mapper;
 import com.teus.projectrpg.armor.entity.CharacterArmorBodyLocalizationEntity;
 import com.teus.projectrpg.armor.service.armor.ArmorService;
 import com.teus.projectrpg.bodylocalization.service.BodyLocalizationService;
+import com.teus.projectrpg.character.dto.CharacterArmorDto;
 import com.teus.projectrpg.character.dto.CharacterBodyLocalizationDto;
 import com.teus.projectrpg.character.dto.CharacterDto;
-import com.teus.projectrpg.character.entity.*;
+import com.teus.projectrpg.character.entity.CharacterArmorEntity;
+import com.teus.projectrpg.character.entity.CharacterBodyLocalizationEntity;
+import com.teus.projectrpg.character.entity.CharacterBodyLocalizationInjuryEntity;
+import com.teus.projectrpg.character.entity.CharacterCharacteristicEntity;
+import com.teus.projectrpg.character.entity.CharacterConditionEntity;
+import com.teus.projectrpg.character.entity.CharacterCreatureTraitEntity;
+import com.teus.projectrpg.character.entity.CharacterEntity;
+import com.teus.projectrpg.character.entity.CharacterSkillEntity;
+import com.teus.projectrpg.character.entity.CharacterTalentEntity;
+import com.teus.projectrpg.character.entity.CharacterWeaponEntity;
+import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
+import com.teus.projectrpg.character.entity.NoteEntity;
+import com.teus.projectrpg.character.entity.SkirmishCharacterEntity;
 import com.teus.projectrpg.characteristic.service.CharacteristicService;
 import com.teus.projectrpg.condition.service.ConditionService;
 import com.teus.projectrpg.creaturetrait.service.CreatureTraitService;
@@ -16,6 +29,10 @@ import com.teus.projectrpg.spell.service.SpellService;
 import com.teus.projectrpg.talent.service.TalentService;
 import com.teus.projectrpg.weapon.service.weapon.WeaponService;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.MappingTarget;
@@ -38,114 +55,205 @@ public class CharacterContext {
 
 	@AfterMapping
 	public void setCharacterDtoParameters(@MappingTarget CharacterDto characterDto) {
-		characterDto.setBodyLocalizations(this.setBodyLocalizations(characterDto));
+		characterDto.setBodyLocalizations(enrichBodyLocalizations(characterDto));
 	}
 
-	protected List<CharacterBodyLocalizationDto> setBodyLocalizations(CharacterDto character) {
-		return character.getBodyLocalizations().stream().peek(element -> element.setCharacterId(character.getId())).toList();
-
+	private List<CharacterBodyLocalizationDto> enrichBodyLocalizations(CharacterDto character) {
+		return character.getBodyLocalizations().stream()
+				.peek(element -> element.setCharacterId(character.getId()))
+				.toList();
 	}
 
 	@AfterMapping
-	public void setCharacterEntityParameters(@MappingTarget CharacterEntity character) {
-		setCharacteristics(character);
-		setSkills(character);
-		setTalents(character);
-		setTraits(character);
-		setSpells(character);
-		setWeapons(character);
-		setArmor(character);
-		setBodyLocalizations(character);
-		setConditions(character);
-		setNotes(character);
+	public void setCharacterEntityParameters(CharacterDto dto, @MappingTarget CharacterEntity character) {
+		setCharacteristics(dto, character);
+		setSkills(dto, character);
+		setTalents(dto, character);
+		setTraits(dto, character);
+		setSpells(dto, character);
+		setWeapons(dto, character);
+		setArmor(dto, character);
+		setBodyLocalizations(dto, character);
+		setConditions(dto, character);
+		setNotes(dto, character);
 	}
 
-	protected void setCharacteristics(CharacterEntity character) {
-		List<CharacterCharacteristicEntity> characteristics = character.getCharacteristics().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setCharacteristic(characteristicService.findByName(element.getCharacteristic().getName()));
+	@AfterMapping
+	public void setSkirmishCharacterEntityParameters(SkirmishCharacterDto dto, @MappingTarget SkirmishCharacterEntity skirmishCharacter) {
+		CharacterEntity character = skirmishCharacter.getCharacter();
+		if (character == null) {
+			character = new CharacterEntity();
+			skirmishCharacter.setCharacter(character);
+		}
+		CharacterDto characterDto = dto.getCharacter();
+		character.setName(characterDto.getName());
+		character.setDescription(characterDto.getDescription());
+		character.setGroupType(characterDto.getGroupType());
+		character.setGroup(characterDto.getGroup());
+		character.setStatus(characterDto.getStatus());
+		character.setIsRightHanded(characterDto.getIsRightHanded());
+		character.setType(characterDto.getType());
+		setCharacterEntityParameters(characterDto, character);
+	}
+
+	protected void setCharacteristics(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterCharacteristicEntity> existingById = toIdMap(character.getCharacteristics(), CharacterCharacteristicEntity::getId);
+		List<CharacterCharacteristicEntity> merged = dto.getCharacteristics().stream().map(d -> {
+			CharacterCharacteristicEntity e = getOrCreate(existingById, d.getId(), CharacterCharacteristicEntity::new);
+			e.setCharacter(character);
+			e.setCharacteristic(characteristicService.findByName(d.getCharacteristic().getName()));
+			e.setValue(d.getValue());
+			return e;
 		}).toList();
-		character.setCharacteristics(characteristics);
+		replaceCollection(character.getCharacteristics(), merged);
 	}
 
-	protected void setSkills(CharacterEntity character) {
-		List<CharacterSkillEntity> skills = character.getSkills().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setModel(skillService.findByName(element.getModel().getName()));
+	protected void setSkills(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterSkillEntity> existingById = toIdMap(character.getSkills(), CharacterSkillEntity::getId);
+		List<CharacterSkillEntity> merged = dto.getSkills().stream().map(d -> {
+			CharacterSkillEntity e = getOrCreate(existingById, d.getId(), CharacterSkillEntity::new);
+			e.setCharacter(character);
+			e.setModel(skillService.findByName(d.getModel().getName()));
+			e.setValue(d.getValue());
+			e.setSpecialisation(d.getSpecialisation());
+			return e;
 		}).toList();
-		character.setSkills(skills);
+		replaceCollection(character.getSkills(), merged);
 	}
 
-	protected void setTalents(CharacterEntity character) {
-		List<CharacterTalentEntity> talents = character.getTalents().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setModel(talentService.findByName(element.getModel().getName()));
+	protected void setTalents(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterTalentEntity> existingById = toIdMap(character.getTalents(), CharacterTalentEntity::getId);
+		List<CharacterTalentEntity> merged = dto.getTalents().stream().map(d -> {
+			CharacterTalentEntity e = getOrCreate(existingById, d.getId(), CharacterTalentEntity::new);
+			e.setCharacter(character);
+			e.setModel(talentService.findByName(d.getModel().getName()));
+			e.setValue(d.getValue());
+			e.setSpecialisation(d.getSpecialisation());
+			return e;
 		}).toList();
-		character.setTalents(talents);
+		replaceCollection(character.getTalents(), merged);
 	}
 
-	protected void setTraits(CharacterEntity character) {
-		List<CharacterCreatureTraitEntity> traits = character.getTraits().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setModel(creatureTraitService.findByName(element.getModel().getName()));
+	protected void setTraits(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterCreatureTraitEntity> existingById = toIdMap(character.getTraits(), CharacterCreatureTraitEntity::getId);
+		List<CharacterCreatureTraitEntity> merged = dto.getTraits().stream().map(d -> {
+			CharacterCreatureTraitEntity e = getOrCreate(existingById, d.getId(), CharacterCreatureTraitEntity::new);
+			e.setCharacter(character);
+			e.setModel(creatureTraitService.findByName(d.getModel().getName()));
+			e.setValue(d.getValue());
+			return e;
 		}).toList();
-		character.setTraits(traits);
+		replaceCollection(character.getTraits(), merged);
 	}
 
-	protected void setSpells(CharacterEntity character) {
-		List<SpellEntity> spells = character.getSpells().stream().map(element -> spellService.findByName(element.getName())).toList();
+	protected void setSpells(CharacterDto dto, CharacterEntity character) {
+		List<SpellEntity> spells = dto.getSpells().stream()
+				.map(s -> spellService.findByName(s.getName()))
+				.toList();
 		character.setSpells(spells);
 	}
 
-	protected void setWeapons(CharacterEntity character) {
-		List<CharacterWeaponEntity> weapons = character.getWeapons().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setWeapon(weaponService.findByName(element.getWeapon().getName()));
+	protected void setWeapons(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterWeaponEntity> existingById = toIdMap(character.getWeapons(), CharacterWeaponEntity::getId);
+		List<CharacterWeaponEntity> merged = dto.getWeapons().stream().map(d -> {
+			CharacterWeaponEntity e = getOrCreate(existingById, d.getId(), CharacterWeaponEntity::new);
+			e.setCharacter(character);
+			e.setWeapon(weaponService.findByName(d.getWeapon().getName()));
+			e.setValue(d.getValue());
+			return e;
 		}).toList();
-		character.setWeapons(weapons);
+		replaceCollection(character.getWeapons(), merged);
 	}
 
-	protected void setArmor(CharacterEntity character) {
-		List<CharacterArmorEntity> armors = character.getArmors().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setArmor(armorService.findByName(element.getArmor().getName()));
-			List<CharacterArmorBodyLocalizationEntity> list = element.getArmorBodyLocalizations().stream()
-					.peek(armorBodyLocalization -> armorBodyLocalization.setCharacterArmor(element)).toList();
-			element.setArmorBodyLocalizations(list);
+	protected void setArmor(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterArmorEntity> existingById = toIdMap(character.getArmors(), CharacterArmorEntity::getId);
+		List<CharacterArmorEntity> merged = dto.getArmors().stream().map(d -> {
+			CharacterArmorEntity e = getOrCreate(existingById, d.getId(), CharacterArmorEntity::new);
+			e.setCharacter(character);
+			e.setArmor(armorService.findByName(d.getArmor().getName()));
+			e.setDuration(d.getDuration());
+			setArmorBodyLocalizations(d, e);
+			return e;
 		}).toList();
-		character.setArmors(armors);
+		replaceCollection(character.getArmors(), merged);
 	}
 
-	protected void setBodyLocalizations(CharacterEntity character) {
-		List<CharacterBodyLocalizationEntity> bodyLocalizations = character.getBodyLocalizations().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setBodyLocalization(bodyLocalizationService.findByName(element.getBodyLocalization().getName()));
-			this.setInjuries(element);
+	private void setArmorBodyLocalizations(CharacterArmorDto dto, CharacterArmorEntity armor) {
+		Map<Long, CharacterArmorBodyLocalizationEntity> existingById = toIdMap(armor.getArmorBodyLocalizations(), CharacterArmorBodyLocalizationEntity::getId);
+		List<CharacterArmorBodyLocalizationEntity> merged = dto.getArmorBodyLocalizations().stream().map(d -> {
+			CharacterArmorBodyLocalizationEntity e = getOrCreate(existingById, d.getId(), CharacterArmorBodyLocalizationEntity::new);
+			e.setCharacterArmor(armor);
+			e.setBodyLocalization(bodyLocalizationService.findByName(d.getBodyLocalization().getName()));
+			e.setArmorPoints(d.getArmorPoints());
+			return e;
 		}).toList();
-		character.setBodyLocalizations(bodyLocalizations);
+		replaceCollection(armor.getArmorBodyLocalizations(), merged);
 	}
 
-	protected void setInjuries(CharacterBodyLocalizationEntity bodyLocalization) {
-		List<CharacterBodyLocalizationInjuryEntity> injuries = bodyLocalization.getInjuries().stream().peek(element -> {
-			element.setCharacterBodyLocalization(bodyLocalization);
-			element.setModel(injuryService.findByName(element.getModel().getName()));
+	protected void setBodyLocalizations(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterBodyLocalizationEntity> existingById = toIdMap(character.getBodyLocalizations(), CharacterBodyLocalizationEntity::getId);
+		List<CharacterBodyLocalizationEntity> merged = dto.getBodyLocalizations().stream().map(d -> {
+			CharacterBodyLocalizationEntity e = getOrCreate(existingById, d.getId(), CharacterBodyLocalizationEntity::new);
+			e.setCharacter(character);
+			e.setBodyLocalization(bodyLocalizationService.findByName(d.getBodyLocalization().getName()));
+			setInjuries(d, e);
+			return e;
 		}).toList();
-
-		bodyLocalization.setInjuries(injuries);
+		replaceCollection(character.getBodyLocalizations(), merged);
 	}
 
-	protected void setConditions(CharacterEntity character) {
-		List<CharacterConditionEntity> conditions = character.getConditions().stream().peek(element -> {
-			element.setCharacter(character);
-			element.setCondition(conditionService.findByName(element.getCondition().getName()));
+	protected void setInjuries(CharacterBodyLocalizationDto dto, CharacterBodyLocalizationEntity bodyLocalization) {
+		Map<Long, CharacterBodyLocalizationInjuryEntity> existingById = toIdMap(bodyLocalization.getInjuries(), CharacterBodyLocalizationInjuryEntity::getId);
+		List<CharacterBodyLocalizationInjuryEntity> merged = dto.getInjuries().stream().map(d -> {
+			CharacterBodyLocalizationInjuryEntity e = getOrCreate(existingById, d.getId(), CharacterBodyLocalizationInjuryEntity::new);
+			e.setCharacterBodyLocalization(bodyLocalization);
+			e.setModel(injuryService.findByName(d.getModel().getName()));
+			e.setValue(d.getValue());
+			return e;
 		}).toList();
-		character.setConditions(conditions);
+		replaceCollection(bodyLocalization.getInjuries(), merged);
 	}
 
-	protected void setNotes(CharacterEntity character) {
-		List<NoteEntity> notes = character.getNotes().stream().peek(note -> note.setCharacter(character)).toList();
-
-		character.setNotes(notes);
+	protected void setConditions(CharacterDto dto, CharacterEntity character) {
+		Map<Long, CharacterConditionEntity> existingById = toIdMap(character.getConditions(), CharacterConditionEntity::getId);
+		List<CharacterConditionEntity> merged = dto.getConditions().stream().map(d -> {
+			CharacterConditionEntity e = getOrCreate(existingById, d.getId(), CharacterConditionEntity::new);
+			e.setCharacter(character);
+			e.setCondition(conditionService.findByName(d.getCondition().getName()));
+			e.setValue(d.getValue());
+			e.setCounter(d.getCounter());
+			return e;
+		}).collect(Collectors.toList());
+		replaceCollection(character.getConditions(), merged);
 	}
 
+	protected void setNotes(CharacterDto dto, CharacterEntity character) {
+		Map<Long, NoteEntity> existingById = toIdMap(character.getNotes(), NoteEntity::getId);
+		List<NoteEntity> merged = dto.getNotes().stream().map(d -> {
+			NoteEntity e = getOrCreate(existingById, d.getId(), NoteEntity::new);
+			e.setCharacter(character);
+			e.setNote(d.getNote());
+			return e;
+		}).toList();
+		replaceCollection(character.getNotes(), merged);
+	}
+
+	private <E> Map<Long, E> toIdMap(List<E> entities, Function<E, Long> idGetter) {
+		return entities.stream()
+				.filter(e -> idGetter.apply(e) != null)
+				.collect(Collectors.toMap(idGetter, Function.identity()));
+	}
+
+	private <E> E getOrCreate(Map<Long, E> existingById, Long id, Supplier<E> factory) {
+		if (id != null) {
+			E existing = existingById.get(id);
+			if (existing != null) return existing;
+		}
+		return factory.get();
+	}
+
+	private <E> void replaceCollection(List<E> collection, List<E> newItems) {
+		collection.clear();
+		collection.addAll(newItems);
+	}
 }

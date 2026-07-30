@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SkirmishGroupDto {
-    private int id;
+    private Long id;
     private String name;
     private int advantages;
     private int colorR;

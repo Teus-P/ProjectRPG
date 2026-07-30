@@ -4,6 +4,7 @@ import com.teus.projectrpg.skirmish.dto.SkirmishGroupDto;
 import com.teus.projectrpg.skirmish.entity.SkirmishGroupEntity;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface SkirmishGroupMapper {
     List<SkirmishGroupDto> toDtos(List<SkirmishGroupEntity> entities);
 
     SkirmishGroupEntity toEntity(SkirmishGroupDto dto);
+
+    void updateEntityFromDto(SkirmishGroupDto newSkirmishGroupDto, @MappingTarget SkirmishGroupEntity skirmishGroupEntity);
 }

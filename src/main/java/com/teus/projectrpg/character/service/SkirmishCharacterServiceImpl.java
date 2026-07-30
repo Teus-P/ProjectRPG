@@ -2,6 +2,7 @@ package com.teus.projectrpg.character.service;
 
 import com.google.common.collect.ComparisonChain;
 import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
+import com.teus.projectrpg.character.entity.CharacterEntity;
 import com.teus.projectrpg.character.entity.SkirmishCharacterEntity;
 import com.teus.projectrpg.character.mapper.CharacterContext;
 import com.teus.projectrpg.character.mapper.SkirmishCharacterMapper;
@@ -9,12 +10,18 @@ import com.teus.projectrpg.character.repository.SkirmishCharacterRepository;
 import com.teus.projectrpg.characteristic.type.CharacteristicType;
 import com.teus.projectrpg.exception.ElementNotFoundException;
 import com.teus.projectrpg.exception.FieldCannotBeNullException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +32,7 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
     private final CharacterContext characterContext;
 
     @Override
-    public SkirmishCharacterEntity findById(Long id) {
+    public SkirmishCharacterEntity findEntityById(Long id) {
         return this.skirmishCharacterRepository.findById(id).orElseThrow(() -> new ElementNotFoundException(id));
     }
 
@@ -58,45 +65,105 @@ public class SkirmishCharacterServiceImpl implements SkirmishCharacterService {
     }
 
     @Override
-    public SkirmishCharacterDto saveDto(SkirmishCharacterDto newSkirmishCharacter) {
-        SkirmishCharacterEntity skirmishCharacterEntity = skirmishCharacterMapper.toEntity(newSkirmishCharacter, characterContext);
+    @Transactional
+    public SkirmishCharacterDto saveDto(SkirmishCharacterDto dto) {
+        SkirmishCharacterEntity existing = dto.getId() != null
+                ? findEntityById(dto.getId())
+                : null;
 
-        this.prepareCharacterArmor(skirmishCharacterEntity);
+        SkirmishCharacterEntity entity =
+                toManagedEntity(dto, existing);
 
-        try {
-            SkirmishCharacterEntity savedCharacter = skirmishCharacterRepository.save(skirmishCharacterEntity);
-            return skirmishCharacterMapper.toDto(savedCharacter, characterContext);
-        } catch (DataIntegrityViolationException ex) {
-            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
+        if (entity.getId() == null) {
+            skirmishCharacterRepository.save(entity);
         }
+
+        return skirmishCharacterMapper.toDto(entity, characterContext);
     }
 
     @Override
-    public List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> skirmishCharacterDtos) {
-        List<SkirmishCharacterEntity> skirmishCharacterEntities = skirmishCharacterMapper.toEntities(skirmishCharacterDtos,
-                characterContext);
-
-        skirmishCharacterEntities.forEach(this::prepareCharacterArmor);
-
+    @Transactional
+    public List<SkirmishCharacterDto> saveAllDtos(List<SkirmishCharacterDto> dtos) {
         try {
-            List<SkirmishCharacterEntity> savedCharacters = skirmishCharacterRepository.saveAll(skirmishCharacterEntities);
-            return skirmishCharacterMapper.toDtos(savedCharacters, characterContext);
-        } catch (DataIntegrityViolationException ex) {
-            throw new FieldCannotBeNullException((PropertyValueException) ex.getCause());
+
+            List<Long> ids = dtos.stream()
+                    .map(SkirmishCharacterDto::getId)
+                    .filter(Objects::nonNull)
+                    .toList();
+
+            Map<Long, SkirmishCharacterEntity> existingEntities =
+                    skirmishCharacterRepository.findAllById(ids).stream()
+                            .collect(Collectors.toMap(
+                                    SkirmishCharacterEntity::getId,
+                                    Function.identity()));
+
+            List<SkirmishCharacterEntity> entities = dtos.stream()
+                    .map(dto -> toManagedEntity(
+                            dto,
+                            existingEntities.get(dto.getId())
+                    ))
+                    .toList();
+
+            List<SkirmishCharacterEntity> newEntities = entities.stream()
+                    .filter(e -> e.getId() == null)
+                    .toList();
+
+            skirmishCharacterRepository.saveAll(newEntities);
+
+            return skirmishCharacterMapper.toDtos(entities, characterContext);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new FieldCannotBeNullException((PropertyValueException) e.getCause());
         }
     }
 
-    private void prepareCharacterArmor(SkirmishCharacterEntity skirmishCharacterEntity) {
-        if (skirmishCharacterEntity.getId() == 0) {
-            skirmishCharacterEntity.getCharacter().setId(0L);
-            skirmishCharacterEntity.getCharacter().setType("COPY");
-            skirmishCharacterEntity.getCharacter().getArmors().forEach(armor -> {
-                armor.setId(-1L);
-                armor.getArmorBodyLocalizations().forEach(armorBodyLocalization -> armorBodyLocalization.setId(-1L));
+    private SkirmishCharacterEntity toManagedEntity(
+            SkirmishCharacterDto dto,
+            SkirmishCharacterEntity existingEntity) {
+
+        SkirmishCharacterEntity entity;
+
+        if (dto.getId() != null) {
+
+            if (existingEntity == null) {
+                throw new EntityNotFoundException(
+                        "SkirmishCharacter not found: " + dto.getId()
+                );
+            }
+
+            entity = existingEntity;
+
+            skirmishCharacterMapper.updateEntityFromDto(
+                    dto,
+                    entity,
+                    characterContext
+            );
+
+        } else {
+            entity = skirmishCharacterMapper.toEntity(
+                    dto,
+                    characterContext
+            );
+        }
+
+        prepareCharacterArmor(entity);
+
+        return entity;
+    }
+
+    private void prepareCharacterArmor(SkirmishCharacterEntity entity) {
+        if (entity.getId() == null) {
+            CharacterEntity character = entity.getCharacter();
+            character.setId(null);
+            character.setType("COPY");
+            character.getArmors().forEach(armor -> {
+                armor.setId(null);
+                armor.getArmorBodyLocalizations()
+                        .forEach(localization -> localization.setId(null));
             });
         }
 
-        calculateArmorPoints(skirmishCharacterEntity);
+        calculateArmorPoints(entity);
     }
 
     @Override
