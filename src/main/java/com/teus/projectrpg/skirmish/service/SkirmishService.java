@@ -2,8 +2,11 @@ package com.teus.projectrpg.skirmish.service;
 
 import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
+import com.teus.projectrpg.skirmish.dto.AttackResultDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
+
+import com.teus.projectrpg.weapon.dto.WeaponDto;
 
 import java.util.List;
 
@@ -12,7 +15,11 @@ public interface SkirmishService {
 
     EndTurnCheckDto endTurnCheckAfterTests(EndTurnCheckDto endTurnCheck);
 
-    void receiveDamage(ReceivedDamageDto receivedDamage);
+    AttackResultDto receiveDamage(ReceivedDamageDto receivedDamage);
+
+    AttackResultDto previewDamage(ReceivedDamageDto receivedDamage);
+
+    List<WeaponDto> findAttackWeapons(Long skirmishCharacterId);
 
     void addWoundPoint(Long skirmishCharacterId);
 

@@ -72,4 +72,11 @@ public class WeaponEntity {
 
     @Column(name = "is_base_weapon", nullable = false)
     private Boolean isBaseWeapon;
+
+    /**
+     * A copy of a shield with a lower Shield value, created when a shield gets damaged during a fight.
+     * Such weapons are only used in equipment and are not shown in the weapon list.
+     */
+    @Column(name = "is_damaged_variant", columnDefinition = "boolean default false")
+    private Boolean isDamagedVariant = false;
 }

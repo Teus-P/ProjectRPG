@@ -16,12 +16,20 @@ import com.teus.projectrpg.condition.type.ConditionType;
 import com.teus.projectrpg.skill.service.SkillService;
 import com.teus.projectrpg.skill.type.SkillType;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
+import com.teus.projectrpg.skirmish.dto.AttackResultDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
 import com.teus.projectrpg.skirmish.dto.TestDto;
+import com.teus.projectrpg.skirmish.type.DamageMode;
+import com.teus.projectrpg.weapon.dto.WeaponDto;
+import com.teus.projectrpg.weapon.entity.WeaponEntity;
+import com.teus.projectrpg.weapon.mapper.WeaponMapper;
+import com.teus.projectrpg.weapon.repository.WeaponRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -35,6 +43,12 @@ public class SkirmishServiceImpl implements SkirmishService {
     private final ConditionService conditionService;
     private final SkirmishCharacterMapper skirmishCharacterMapper;
     private final CharacterContext characterContext;
+    private final AttackCalculator attackCalculator;
+    private final ShieldDamageService shieldDamageService;
+    private final WeaponRepository weaponRepository;
+    private final WeaponMapper weaponMapper;
+
+    private static final String UNARMED = "UNARMED";
 
     private EndTurnCheckDto endTurnCheck = new EndTurnCheckDto();
 
@@ -327,19 +341,122 @@ public class SkirmishServiceImpl implements SkirmishService {
     }
 
     @Transactional
-    public void receiveDamage(ReceivedDamageDto receivedDamage) {
-        int finalDamage;
-        SkirmishCharacterEntity character = skirmishCharacterService.findEntityById(receivedDamage.getCharacterId());
-        int toughnessBonus = ((character.getCharacteristicValueByType(CharacteristicType.TOUGHNESS) / 10) % 100);
-
-        int armorForLocalization = 0;
-        if (!receivedDamage.getIsIgnoringArmor()) {
-            armorForLocalization = character.getArmorForLocalization(receivedDamage.getBodyLocalization()) + receivedDamage.getShield();
+    public AttackResultDto receiveDamage(ReceivedDamageDto receivedDamage) {
+        AttackResultDto result = this.resolveDamage(receivedDamage);
+        this.applyDamage(receivedDamage, result.getIgnoredArmorPoints());
+        if (result.isDamagesShield()) {
+            SkirmishCharacterEntity target = skirmishCharacterService.findEntityById(receivedDamage.getCharacterId());
+            result.setShieldChange(shieldDamageService.apply(target, receivedDamage.getShieldWeaponId(),
+                    result.getShieldPoints()));
         }
+        return result;
+    }
 
-        if (receivedDamage.getIsWeaponUndamaging()) {
-            armorForLocalization *= 2;
-            finalDamage = receivedDamage.getDamage() - toughnessBonus - armorForLocalization;
+    @Transactional(readOnly = true)
+    public AttackResultDto previewDamage(ReceivedDamageDto receivedDamage) {
+        return this.resolveDamage(receivedDamage);
+    }
+
+    /**
+     * In ATTACK mode fills the request with values calculated from the weapon qualities.
+     * Does not change any entity.
+     */
+    private AttackResultDto resolveDamage(ReceivedDamageDto request) {
+        if (request.getShieldWeaponId() != null) {
+            SkirmishCharacterEntity shieldOwner = skirmishCharacterService.findEntityById(request.getCharacterId());
+            request.setShield(shieldDamageService.shieldValue(shieldOwner, request.getShieldWeaponId()));
+        }
+        if (request.getMode() != DamageMode.ATTACK) {
+            AttackResultDto manual = new AttackResultDto();
+            manual.setDamage(request.getDamage() == null ? 0 : request.getDamage());
+            manual.setDamageOverridden(true);
+            manual.setDestroyArmorValue(request.getDestroyArmorValue());
+            if (request.getShieldWeaponId() != null && request.getDestroyArmorValue() > 0) {
+                // the shield the target parried with takes the damage instead of the armor
+                manual.setDamagesShield(true);
+                manual.setShieldPoints(request.getDestroyArmorValue());
+                manual.setDestroyArmorValue(0);
+                request.setDestroyArmorValue(0);
+                SkirmishCharacterEntity shieldOwner = skirmishCharacterService.findEntityById(request.getCharacterId());
+                manual.setShieldChange(shieldDamageService.describe(shieldOwner, request.getShieldWeaponId(),
+                        manual.getShieldPoints()));
+            }
+            manual.setIsWeaponUndamaging(request.getIsWeaponUndamaging());
+            manual.setIsIgnoringArmor(request.getIsIgnoringArmor());
+            if (request.getBodyLocalization() != null) {
+                SkirmishCharacterEntity target = skirmishCharacterService.findEntityById(request.getCharacterId());
+                AttackCalculator.Mitigation mitigation = attackCalculator.mitigate(manual.getDamage(), target, request,
+                        0, Boolean.TRUE.equals(request.getIsIgnoringArmor()),
+                        Boolean.TRUE.equals(request.getIsWeaponUndamaging()));
+                manual.setToughnessBonus(mitigation.toughnessBonus());
+                manual.setArmorReduction(mitigation.armorReduction());
+                manual.setWoundsLost(mitigation.woundsLost());
+            }
+            return manual;
+        }
+        if (request.getAttackerId() == null || request.getWeaponId() == null || request.getBodyLocalization() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "attackerId, weaponId and bodyLocalization are required in ATTACK mode");
+        }
+        SkirmishCharacterEntity attacker = skirmishCharacterService.findEntityById(request.getAttackerId());
+        SkirmishCharacterEntity target = skirmishCharacterService.findEntityById(request.getCharacterId());
+        WeaponEntity weapon = this.findAttackWeapon(attacker, request.getWeaponId());
+
+        AttackResultDto result = attackCalculator.calculate(attacker, weapon, target, request);
+        if (result.isDamagesShield()) {
+            result.setShieldChange(shieldDamageService.describe(target, request.getShieldWeaponId(),
+                    result.getShieldPoints()));
+        }
+        request.setDamage(result.getDamage());
+        request.setDestroyArmorValue(result.getDestroyArmorValue());
+        request.setIsWeaponUndamaging(result.getIsWeaponUndamaging());
+        request.setIsIgnoringArmor(result.getIsIgnoringArmor());
+        if (request.getIsSuddenDeath() == null) {
+            request.setIsSuddenDeath(true);
+        }
+        if (request.getIsLosingTest() == null) {
+            request.setIsLosingTest(true);
+        }
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public List<WeaponDto> findAttackWeapons(Long skirmishCharacterId) {
+        SkirmishCharacterEntity character = skirmishCharacterService.findEntityById(skirmishCharacterId);
+        return weaponMapper.toDtos(this.listAttackWeapons(character));
+    }
+
+    /**
+     * The attacker may use any weapon from the equipment, and always the default unarmed attack
+     * (unless the equipment already has its own).
+     */
+    private List<WeaponEntity> listAttackWeapons(SkirmishCharacterEntity attacker) {
+        List<WeaponEntity> weapons = new ArrayList<>(attacker.getCharacter().getWeapons().stream()
+                .map(CharacterWeaponEntity::getWeapon)
+                .toList());
+        if (weapons.stream().noneMatch(weapon -> UNARMED.equals(weapon.getName()))) {
+            Optional.ofNullable(weaponRepository.findWeaponEntityByName(UNARMED)).ifPresent(weapons::add);
+        }
+        return weapons;
+    }
+
+    private WeaponEntity findAttackWeapon(SkirmishCharacterEntity attacker, Long weaponId) {
+        return this.listAttackWeapons(attacker).stream()
+                .filter(weapon -> weapon.getId().equals(weaponId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "The attacker cannot use weapon " + weaponId));
+    }
+
+    private void applyDamage(ReceivedDamageDto receivedDamage, int ignoredArmorPoints) {
+        int finalDamage;
+        int damage = receivedDamage.getDamage() == null ? 0 : receivedDamage.getDamage();
+        SkirmishCharacterEntity character = skirmishCharacterService.findEntityById(receivedDamage.getCharacterId());
+        boolean isUndamaging = Boolean.TRUE.equals(receivedDamage.getIsWeaponUndamaging());
+        finalDamage = attackCalculator.mitigate(damage, character, receivedDamage, ignoredArmorPoints,
+                Boolean.TRUE.equals(receivedDamage.getIsIgnoringArmor()), isUndamaging).finalDamage();
+
+        if (isUndamaging) {
             if (finalDamage > 0) {
                 character.setCurrentWounds(character.getCurrentWounds() - finalDamage);
                 character.setAdvantage(0);
@@ -349,7 +466,6 @@ public class SkirmishServiceImpl implements SkirmishService {
                 }
             }
         } else {
-            finalDamage = receivedDamage.getDamage() - toughnessBonus - armorForLocalization;
             if (finalDamage >= 1) {
                 character.setCurrentWounds(character.getCurrentWounds() - finalDamage);
             } else {

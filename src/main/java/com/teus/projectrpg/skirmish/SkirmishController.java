@@ -3,11 +3,13 @@ package com.teus.projectrpg.skirmish;
 import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.condition.dto.ConditionDto;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
+import com.teus.projectrpg.skirmish.dto.AttackResultDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
 import com.teus.projectrpg.skirmish.dto.SkirmishGroupDto;
 import com.teus.projectrpg.skirmish.service.SkirmishGroupService;
 import com.teus.projectrpg.skirmish.service.SkirmishService;
+import com.teus.projectrpg.weapon.dto.WeaponDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -42,8 +44,16 @@ public class SkirmishController {
     }
 
     @PostMapping("/receiveDamage")
-    public void receiveDamage(@RequestBody ReceivedDamageDto receivedDamage) {
-        this.skirmishService.receiveDamage(receivedDamage);
+    public AttackResultDto receiveDamage(@RequestBody ReceivedDamageDto receivedDamage,
+                                         @RequestParam(defaultValue = "false") boolean preview) {
+        return preview
+                ? this.skirmishService.previewDamage(receivedDamage)
+                : this.skirmishService.receiveDamage(receivedDamage);
+    }
+
+    @GetMapping("/attackWeapons/{skirmishCharacterId}")
+    public List<WeaponDto> attackWeapons(@PathVariable Long skirmishCharacterId) {
+        return this.skirmishService.findAttackWeapons(skirmishCharacterId);
     }
 
     @PostMapping("/addWoundPoint")

@@ -19,7 +19,9 @@ public class WeaponServiceImpl implements WeaponService {
 
     @Override
     public List<WeaponDto> findAll() {
-        return weaponMapper.toDtos(weaponRepository.findAll());
+        return weaponMapper.toDtos(weaponRepository.findAll().stream()
+                .filter(weapon -> !Boolean.TRUE.equals(weapon.getIsDamagedVariant()))
+                .toList());
     }
 
     @Override

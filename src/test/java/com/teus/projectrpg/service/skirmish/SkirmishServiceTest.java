@@ -13,6 +13,15 @@ import com.teus.projectrpg.condition.dto.ConditionDto;
 import com.teus.projectrpg.condition.entity.ConditionEntity;
 import com.teus.projectrpg.condition.type.ConditionType;
 import com.teus.projectrpg.skill.type.SkillType;
+import com.teus.projectrpg.skirmish.dto.AttackResultDto;
+import com.teus.projectrpg.skirmish.dto.ShieldChangeDto;
+import com.teus.projectrpg.skirmish.type.DamageMode;
+import com.teus.projectrpg.weapon.entity.WeaponEntity;
+import com.teus.projectrpg.weapon.entity.WeaponQualityEntity;
+import com.teus.projectrpg.weapon.entity.WeaponQualityValueEntity;
+import com.teus.projectrpg.weapon.entity.WeaponTypeEntity;
+import com.teus.projectrpg.weapon.type.WeaponQualityType;
+import com.teus.projectrpg.weapon.type.WeaponType;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
 import com.teus.projectrpg.skirmish.dto.TestDto;
@@ -621,6 +630,134 @@ class SkirmishServiceTest {
 
         assertEquals(6, character.getCurrentWounds());
         assertEquals(0, character.getAdvantage());
+    }
+
+    @Test
+    void previewDamage_manualMode_showsWhatTheTargetMitigatesWithoutChangingWounds() {
+        SkirmishCharacterEntity character = this.createSkirmishCharacterTestList().getFirst();
+
+        ReceivedDamageDto receivedDamageDto = new ReceivedDamageDto();
+        receivedDamageDto.setDamage(10);
+        receivedDamageDto.setCharacterId(character.getId());
+        receivedDamageDto.setBodyLocalization(BodyLocalizationType.BODY);
+        receivedDamageDto.setIsWeaponUndamaging(false);
+        receivedDamageDto.setIsIgnoringArmor(false);
+
+        mockFindSkirmishCharacterById(character);
+        AttackResultDto result = skirmishService.previewDamage(receivedDamageDto);
+
+        assertEquals(10, result.getDamage());
+        assertEquals(4, result.getToughnessBonus());
+        assertEquals(2, result.getArmorReduction());
+        assertEquals(4, result.getWoundsLost());
+        assertEquals(10, character.getCurrentWounds());
+    }
+
+    @Test
+    void previewDamage_attackWithHackAgainstAShield_damagesTheShieldInsteadOfTheArmor() {
+        SkirmishCharacterEntity attacker = this.createSkirmishCharacterTestList().getFirst();
+        attacker.setId(1L);
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        target.setId(2L);
+
+        WeaponEntity axe = testWeapon(10L, "AXE", "Topór", "HACK", WeaponQualityType.HACK, null);
+        WeaponEntity shield = testWeapon(5L, "SHIELD", "Tarcza", "SHIELD", WeaponQualityType.SHIELD, "2");
+        addTestWeapon(attacker, axe);
+        addTestWeapon(target, shield);
+
+        ReceivedDamageDto request = new ReceivedDamageDto();
+        request.setMode(DamageMode.ATTACK);
+        request.setAttackerId(1L);
+        request.setWeaponId(10L);
+        request.setCharacterId(2L);
+        request.setBodyLocalization(BodyLocalizationType.BODY);
+        request.setShieldWeaponId(5L);
+
+        mockFindSkirmishCharacterById(attacker);
+        mockFindSkirmishCharacterById(target);
+        AttackResultDto result = skirmishService.previewDamage(request);
+
+        assertTrue(result.isDamagesShield());
+        assertEquals(0, result.getDestroyArmorValue());
+        assertEquals(new ShieldChangeDto("Tarcza", 2, 1), result.getShieldChange());
+        assertEquals(2 + 2, result.getArmorReduction());
+        assertEquals(1, target.getCharacter().getWeapons().size());
+        assertEquals(shield, target.getCharacter().getWeapons().getFirst().getWeapon());
+    }
+
+    private WeaponEntity testWeapon(Long id, String name, String nameTranslation, String group,
+                                    WeaponQualityType qualityType, String qualityValue) {
+        WeaponEntity weapon = new WeaponEntity();
+        weapon.setId(id);
+        weapon.setName(name);
+        weapon.setNameTranslation(nameTranslation);
+        weapon.setIsBaseWeapon(true);
+        weapon.setIsDamagedVariant(false);
+        weapon.setDamage(4);
+        weapon.setIsUsingStrength(true);
+        WeaponTypeEntity type = new WeaponTypeEntity();
+        type.setName(WeaponType.MELEE);
+        weapon.setWeaponType(type);
+        WeaponQualityEntity quality = new WeaponQualityEntity();
+        quality.setName(qualityType);
+        WeaponQualityValueEntity value = new WeaponQualityValueEntity();
+        value.setWeapon(weapon);
+        value.setWeaponQuality(quality);
+        value.setValue(qualityValue);
+        weapon.setWeaponQualities(new ArrayList<>(List.of(value)));
+        return weapon;
+    }
+
+    private void addTestWeapon(SkirmishCharacterEntity character, WeaponEntity weapon) {
+        CharacterWeaponEntity owned = new CharacterWeaponEntity();
+        owned.setCharacter(character.getCharacter());
+        owned.setWeapon(weapon);
+        owned.setValue(1);
+        character.getCharacter().setWeapons(new ArrayList<>(List.of(owned)));
+    }
+
+    @Test
+    void previewDamage_manualDestroyArmorWithAShield_damagesTheShieldInsteadOfTheArmor() {
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        addTestWeapon(target, testWeapon(5L, "SHIELD", "Tarcza", "SHIELD", WeaponQualityType.SHIELD, "2"));
+
+        ReceivedDamageDto request = new ReceivedDamageDto();
+        request.setDamage(10);
+        request.setCharacterId(target.getId());
+        request.setBodyLocalization(BodyLocalizationType.BODY);
+        request.setIsWeaponUndamaging(false);
+        request.setIsIgnoringArmor(false);
+        request.setDestroyArmorValue(1);
+        request.setShieldWeaponId(5L);
+
+        mockFindSkirmishCharacterById(target);
+        AttackResultDto result = skirmishService.previewDamage(request);
+
+        assertTrue(result.isDamagesShield());
+        assertEquals(0, result.getDestroyArmorValue());
+        assertEquals(new ShieldChangeDto("Tarcza", 2, 1), result.getShieldChange());
+        assertEquals(2 + 2, result.getArmorReduction());
+    }
+
+    @Test
+    void previewDamage_manualWithAShieldButNothingToDestroy_leavesTheShieldAlone() {
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        addTestWeapon(target, testWeapon(5L, "SHIELD", "Tarcza", "SHIELD", WeaponQualityType.SHIELD, "2"));
+
+        ReceivedDamageDto request = new ReceivedDamageDto();
+        request.setDamage(10);
+        request.setCharacterId(target.getId());
+        request.setBodyLocalization(BodyLocalizationType.BODY);
+        request.setIsWeaponUndamaging(false);
+        request.setIsIgnoringArmor(false);
+        request.setDestroyArmorValue(0);
+        request.setShieldWeaponId(5L);
+
+        mockFindSkirmishCharacterById(target);
+        AttackResultDto result = skirmishService.previewDamage(request);
+
+        assertFalse(result.isDamagesShield());
+        assertNull(result.getShieldChange());
     }
 
     @Test
