@@ -4,6 +4,9 @@ import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.condition.dto.ConditionDto;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
 import com.teus.projectrpg.skirmish.dto.AttackResultDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestRequestDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestResultDto;
+import com.teus.projectrpg.skirmish.dto.DefenderOptionDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
 import com.teus.projectrpg.skirmish.dto.SkirmishGroupDto;
@@ -49,6 +52,16 @@ public class SkirmishController {
         return preview
                 ? this.skirmishService.previewDamage(receivedDamage)
                 : this.skirmishService.receiveDamage(receivedDamage);
+    }
+
+    @PostMapping("/attackTest")
+    public AttackTestResultDto attackTest(@RequestBody AttackTestRequestDto request) {
+        return this.skirmishService.resolveAttackTest(request);
+    }
+
+    @GetMapping("/defenderOptions/{skirmishCharacterId}")
+    public List<DefenderOptionDto> defenderOptions(@PathVariable Long skirmishCharacterId) {
+        return this.skirmishService.findDefenderOptions(skirmishCharacterId);
     }
 
     @GetMapping("/attackWeapons/{skirmishCharacterId}")

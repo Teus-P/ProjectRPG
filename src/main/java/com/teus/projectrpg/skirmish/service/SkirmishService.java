@@ -3,6 +3,9 @@ package com.teus.projectrpg.skirmish.service;
 import com.teus.projectrpg.character.dto.SkirmishCharacterDto;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
 import com.teus.projectrpg.skirmish.dto.AttackResultDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestRequestDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestResultDto;
+import com.teus.projectrpg.skirmish.dto.DefenderOptionDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
 
@@ -20,6 +23,10 @@ public interface SkirmishService {
     AttackResultDto previewDamage(ReceivedDamageDto receivedDamage);
 
     List<WeaponDto> findAttackWeapons(Long skirmishCharacterId);
+
+    AttackTestResultDto resolveAttackTest(AttackTestRequestDto request);
+
+    List<DefenderOptionDto> findDefenderOptions(Long skirmishCharacterId);
 
     void addWoundPoint(Long skirmishCharacterId);
 

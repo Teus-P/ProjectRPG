@@ -17,6 +17,9 @@ import com.teus.projectrpg.skill.service.SkillService;
 import com.teus.projectrpg.skill.type.SkillType;
 import com.teus.projectrpg.skirmish.dto.AddConditionsDto;
 import com.teus.projectrpg.skirmish.dto.AttackResultDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestRequestDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestResultDto;
+import com.teus.projectrpg.skirmish.dto.DefenderOptionDto;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
 import com.teus.projectrpg.skirmish.dto.ReceivedDamageDto;
 import com.teus.projectrpg.skirmish.dto.TestDto;
@@ -25,6 +28,7 @@ import com.teus.projectrpg.weapon.dto.WeaponDto;
 import com.teus.projectrpg.weapon.entity.WeaponEntity;
 import com.teus.projectrpg.weapon.mapper.WeaponMapper;
 import com.teus.projectrpg.weapon.repository.WeaponRepository;
+import com.teus.projectrpg.weapon.type.WeaponType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -44,6 +48,7 @@ public class SkirmishServiceImpl implements SkirmishService {
     private final SkirmishCharacterMapper skirmishCharacterMapper;
     private final CharacterContext characterContext;
     private final AttackCalculator attackCalculator;
+    private final AttackTestResolver attackTestResolver;
     private final ShieldDamageService shieldDamageService;
     private final WeaponRepository weaponRepository;
     private final WeaponMapper weaponMapper;
@@ -428,7 +433,7 @@ public class SkirmishServiceImpl implements SkirmishService {
 
     /**
      * The attacker may use any weapon from the equipment, and always the default unarmed attack
-     * (unless the equipment already has its own).
+     * (unless the equipment already has its own). The strongest one comes first.
      */
     private List<WeaponEntity> listAttackWeapons(SkirmishCharacterEntity attacker) {
         List<WeaponEntity> weapons = new ArrayList<>(attacker.getCharacter().getWeapons().stream()
@@ -437,7 +442,94 @@ public class SkirmishServiceImpl implements SkirmishService {
         if (weapons.stream().noneMatch(weapon -> UNARMED.equals(weapon.getName()))) {
             Optional.ofNullable(weaponRepository.findWeaponEntityByName(UNARMED)).ifPresent(weapons::add);
         }
+        // the strongest weapon first, so it is the one chosen by default; weapons that tie keep the order of the equipment
+        weapons.sort(Comparator.comparingInt((WeaponEntity weapon) -> attackCalculator.baseDamage(attacker, weapon)).reversed());
         return weapons;
+    }
+
+    /**
+     * Rolls (or takes the entered rolls of) the attack test: the attacker against the skill of the weapon, and in melee
+     * the target against the better of its defences. Does not change any entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public AttackTestResultDto resolveAttackTest(AttackTestRequestDto request) {
+        if (request.getAttackerId() == null || request.getTargetId() == null || request.getWeaponId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "attackerId, targetId and weaponId are required");
+        }
+        SkirmishCharacterEntity attacker = skirmishCharacterService.findEntityById(request.getAttackerId());
+        SkirmishCharacterEntity target = skirmishCharacterService.findEntityById(request.getTargetId());
+        WeaponEntity weapon = this.findAttackWeapon(attacker, request.getWeaponId());
+        boolean isMelee = weapon.getWeaponType().getName() == WeaponType.MELEE;
+
+        CharacteristicType attackCharacteristic = isMelee ? CharacteristicType.WEAPON_SKILL : CharacteristicType.BALLISTIC_SKILL;
+        AttackTestResolver.Participant attackerSide = this.participant(attacker,
+                AttackTestResolver.skillFor(weapon), attackCharacteristic,
+                request.getAttackerModifier(), request.getAttackerRoll());
+        if (!isMelee) {
+            return attackTestResolver.resolveRanged(attackerSide);
+        }
+
+        List<DefenderOptionDto> options = this.defenderOptions(target);
+        DefenderOptionDto chosen = options.stream()
+                .filter(option -> request.getDefenderSkill() == null || option.skillType() == request.getDefenderSkill())
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "The target cannot defend with " + request.getDefenderSkill()));
+        AttackTestResolver.Participant defenderSide = new AttackTestResolver.Participant(
+                chosen.characteristicType() == null ? chosen.skillType() : null,
+                chosen.characteristicType(), chosen.value(), target.getAdvantage(),
+                request.getDefenderModifier(), request.getDefenderRoll());
+        return attackTestResolver.resolveMelee(attackerSide, defenderSide, options);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DefenderOptionDto> findDefenderOptions(Long skirmishCharacterId) {
+        return this.defenderOptions(skirmishCharacterService.findEntityById(skirmishCharacterId));
+    }
+
+    /**
+     * Dodge and the melee skill of every weapon the target carries (the fists when it carries none), best first.
+     */
+    private List<DefenderOptionDto> defenderOptions(SkirmishCharacterEntity target) {
+        Map<SkillType, DefenderOptionDto> options = new LinkedHashMap<>();
+        this.addOption(options, target, SkillType.DODGE, CharacteristicType.AGILITY);
+
+        List<WeaponEntity> meleeWeapons = target.getCharacter().getWeapons().stream()
+                .map(CharacterWeaponEntity::getWeapon)
+                .filter(weapon -> weapon.getWeaponType().getName() == WeaponType.MELEE)
+                .toList();
+        meleeWeapons.forEach(weapon -> this.addOption(options, target,
+                Optional.ofNullable(AttackTestResolver.skillFor(weapon)).orElse(SkillType.MELEE_BASIC),
+                CharacteristicType.WEAPON_SKILL));
+        if (meleeWeapons.isEmpty()) {
+            this.addOption(options, target, SkillType.MELEE_BRAWLING, CharacteristicType.WEAPON_SKILL);
+        }
+        return options.values().stream()
+                .sorted(Comparator.comparingInt(DefenderOptionDto::value).reversed())
+                .toList();
+    }
+
+    private void addOption(Map<SkillType, DefenderOptionDto> options, SkirmishCharacterEntity character,
+                           SkillType skillType, CharacteristicType fallback) {
+        AttackTestResolver.Participant side = this.participant(character, skillType, fallback, 0, null);
+        options.putIfAbsent(skillType, new DefenderOptionDto(skillType, side.characteristicType(), side.skillValue()));
+    }
+
+    /**
+     * The character's skill, or its characteristic when it does not have the skill (an NPC usually has only the latter).
+     */
+    private AttackTestResolver.Participant participant(SkirmishCharacterEntity character, SkillType skillType,
+                                                       CharacteristicType fallback, int modifier, Integer roll) {
+        Optional<CharacterSkillEntity> skill = skillType == null ? Optional.empty()
+                : skillService.getSkillByType(character.getCharacter().getSkills(), skillType);
+        if (skill.isPresent()) {
+            return new AttackTestResolver.Participant(skillType, null, skill.get().getValue(),
+                    character.getAdvantage(), modifier, roll);
+        }
+        return new AttackTestResolver.Participant(null, fallback, character.getCharacteristicValueByType(fallback),
+                character.getAdvantage(), modifier, roll);
     }
 
     private WeaponEntity findAttackWeapon(SkirmishCharacterEntity attacker, Long weaponId) {

@@ -12,14 +12,21 @@ import com.teus.projectrpg.characteristic.type.CharacteristicType;
 import com.teus.projectrpg.condition.dto.ConditionDto;
 import com.teus.projectrpg.condition.entity.ConditionEntity;
 import com.teus.projectrpg.condition.type.ConditionType;
+import com.teus.projectrpg.skill.entity.SkillEntity;
 import com.teus.projectrpg.skill.type.SkillType;
 import com.teus.projectrpg.skirmish.dto.AttackResultDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestRequestDto;
+import com.teus.projectrpg.skirmish.dto.AttackTestResultDto;
+import com.teus.projectrpg.skirmish.dto.DefenderOptionDto;
 import com.teus.projectrpg.skirmish.dto.ShieldChangeDto;
+import com.teus.projectrpg.skirmish.type.AttackTestOutcome;
 import com.teus.projectrpg.skirmish.type.DamageMode;
 import com.teus.projectrpg.weapon.entity.WeaponEntity;
+import com.teus.projectrpg.weapon.entity.WeaponGroupEntity;
 import com.teus.projectrpg.weapon.entity.WeaponQualityEntity;
 import com.teus.projectrpg.weapon.entity.WeaponQualityValueEntity;
 import com.teus.projectrpg.weapon.entity.WeaponTypeEntity;
+import com.teus.projectrpg.weapon.type.WeaponGroupType;
 import com.teus.projectrpg.weapon.type.WeaponQualityType;
 import com.teus.projectrpg.weapon.type.WeaponType;
 import com.teus.projectrpg.skirmish.dto.EndTurnCheckDto;
@@ -32,6 +39,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -683,6 +691,185 @@ class SkirmishServiceTest {
         assertEquals(2 + 2, result.getArmorReduction());
         assertEquals(1, target.getCharacter().getWeapons().size());
         assertEquals(shield, target.getCharacter().getWeapons().getFirst().getWeapon());
+    }
+
+    @Test
+    void resolveAttackTest_melee_usesTheSkillOfTheWeaponGroupAndFallsBackToCharacteristics() {
+        SkirmishCharacterEntity attacker = this.createSkirmishCharacterTestList().getFirst();
+        attacker.setId(1L);
+        attacker.setAdvantage(1);
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        target.setId(2L);
+        WeaponEntity rapier = groupedWeapon(10L, WeaponGroupType.FENCING);
+        addTestWeapon(attacker, rapier);
+        addTestSkill(attacker, SkillType.MELEE_FENCING, 55);
+        mockFindSkirmishCharacterById(attacker);
+        mockFindSkirmishCharacterById(target);
+
+        AttackTestResultDto result = skirmishService.resolveAttackTest(attackTestRequest(10L, 30, 50));
+
+        assertTrue(result.isOpposed());
+        assertEquals(SkillType.MELEE_FENCING, result.getAttacker().skillType());
+        assertNull(result.getAttacker().characteristicType());
+        assertEquals(55 + 10, result.getAttacker().target());
+        assertEquals(3, result.getAttacker().successLevel());
+        assertNull(result.getDefender().skillType());
+        assertEquals(CharacteristicType.AGILITY, result.getDefender().characteristicType());
+        assertEquals(-1, result.getDefender().successLevel());
+        assertEquals(AttackTestOutcome.HIT, result.getOutcome());
+        assertEquals(4, result.getDamageSuccessLevel());
+        assertEquals(BodyLocalizationType.HEAD, result.getBodyLocalization());
+    }
+
+    @Test
+    void resolveAttackTest_melee_defendsWithTheBestOptionUnlessAnotherIsChosen() {
+        SkirmishCharacterEntity attacker = this.createSkirmishCharacterTestList().getFirst();
+        attacker.setId(1L);
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        target.setId(2L);
+        addTestWeapon(attacker, groupedWeapon(10L, WeaponGroupType.BASIC));
+        addTestWeapon(target, groupedWeapon(11L, WeaponGroupType.PARRY));
+        addTestSkill(target, SkillType.DODGE, 35);
+        addTestSkill(target, SkillType.MELEE_PARRY, 62);
+        mockFindSkirmishCharacterById(attacker);
+        mockFindSkirmishCharacterById(target);
+
+        AttackTestResultDto best = skirmishService.resolveAttackTest(attackTestRequest(10L, 30, 50));
+        AttackTestRequestDto dodgeRequest = attackTestRequest(10L, 30, 50);
+        dodgeRequest.setDefenderSkill(SkillType.DODGE);
+        AttackTestResultDto dodge = skirmishService.resolveAttackTest(dodgeRequest);
+
+        assertEquals(SkillType.MELEE_PARRY, best.getDefender().skillType());
+        assertEquals(62, best.getDefender().target());
+        assertEquals(SkillType.DODGE, dodge.getDefender().skillType());
+        assertEquals(35, dodge.getDefender().target());
+        assertEquals(List.of(SkillType.MELEE_PARRY, SkillType.DODGE),
+                best.getDefenderOptions().stream().map(option -> option.skillType()).toList());
+    }
+
+    @Test
+    void findAttackWeapons_listsTheStrongestWeaponFirst() {
+        SkirmishCharacterEntity attacker = this.createSkirmishCharacterTestList().getFirst();
+        attacker.setId(1L);
+        WeaponEntity dagger = groupedWeapon(10L, WeaponGroupType.BASIC);
+        dagger.setDamage(1);
+        WeaponEntity sword = groupedWeapon(11L, WeaponGroupType.BASIC);
+        sword.setDamage(6);
+        WeaponEntity club = groupedWeapon(12L, WeaponGroupType.BASIC);
+        club.setDamage(3);
+        attacker.getCharacter().setWeapons(new ArrayList<>(List.of(owned(attacker, dagger), owned(attacker, sword), owned(attacker, club))));
+        mockFindSkirmishCharacterById(attacker);
+
+        List<Long> ids = skirmishService.findAttackWeapons(1L).stream().map(weapon -> weapon.getId()).toList();
+
+        assertEquals(List.of(11L, 12L, 10L), ids.subList(0, 3));
+    }
+
+    private CharacterWeaponEntity owned(SkirmishCharacterEntity character, WeaponEntity weapon) {
+        CharacterWeaponEntity owned = new CharacterWeaponEntity();
+        owned.setCharacter(character.getCharacter());
+        owned.setWeapon(weapon);
+        owned.setValue(1);
+        return owned;
+    }
+
+    @Test
+    void findDefenderOptions_listsTheDefencesBestFirst() {
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        target.setId(2L);
+        addTestWeapon(target, groupedWeapon(11L, WeaponGroupType.PARRY));
+        addTestSkill(target, SkillType.DODGE, 35);
+        addTestSkill(target, SkillType.MELEE_PARRY, 62);
+        mockFindSkirmishCharacterById(target);
+
+        List<DefenderOptionDto> options = skirmishService.findDefenderOptions(2L);
+
+        assertEquals(List.of(SkillType.MELEE_PARRY, SkillType.DODGE), options.stream().map(DefenderOptionDto::skillType).toList());
+        assertEquals(List.of(62, 35), options.stream().map(DefenderOptionDto::value).toList());
+    }
+
+    @Test
+    void resolveAttackTest_melee_targetWithoutWeaponsCanDefendWithItsFists() {
+        SkirmishCharacterEntity attacker = this.createSkirmishCharacterTestList().getFirst();
+        attacker.setId(1L);
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        target.setId(2L);
+        addTestWeapon(attacker, groupedWeapon(10L, WeaponGroupType.BASIC));
+        mockFindSkirmishCharacterById(attacker);
+        mockFindSkirmishCharacterById(target);
+        AttackTestRequestDto request = attackTestRequest(10L, 30, 50);
+        request.setDefenderSkill(SkillType.MELEE_BRAWLING);
+
+        AttackTestResultDto result = skirmishService.resolveAttackTest(request);
+
+        assertEquals(CharacteristicType.WEAPON_SKILL, result.getDefender().characteristicType());
+        assertEquals(40, result.getDefender().target());
+    }
+
+    @Test
+    void resolveAttackTest_ranged_isASingleTestAgainstTheBallisticSkill() {
+        SkirmishCharacterEntity attacker = this.createSkirmishCharacterTestList().getFirst();
+        attacker.setId(1L);
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        target.setId(2L);
+        WeaponEntity bow = groupedWeapon(10L, WeaponGroupType.BOW);
+        bow.getWeaponType().setName(WeaponType.RANGED);
+        addTestWeapon(attacker, bow);
+        mockFindSkirmishCharacterById(attacker);
+        mockFindSkirmishCharacterById(target);
+
+        AttackTestResultDto result = skirmishService.resolveAttackTest(attackTestRequest(10L, 20, null));
+
+        assertFalse(result.isOpposed());
+        assertNull(result.getDefender());
+        assertEquals(CharacteristicType.BALLISTIC_SKILL, result.getAttacker().characteristicType());
+        assertEquals(AttackTestOutcome.HIT, result.getOutcome());
+        assertEquals(2, result.getDamageSuccessLevel());
+    }
+
+    @Test
+    void resolveAttackTest_rejectsAMissingParticipantAndAnUnknownDefence() {
+        SkirmishCharacterEntity attacker = this.createSkirmishCharacterTestList().getFirst();
+        attacker.setId(1L);
+        SkirmishCharacterEntity target = this.createSkirmishCharacterTestList().getFirst();
+        target.setId(2L);
+        addTestWeapon(attacker, groupedWeapon(10L, WeaponGroupType.BASIC));
+        mockFindSkirmishCharacterById(attacker);
+        mockFindSkirmishCharacterById(target);
+        AttackTestRequestDto unknownDefence = attackTestRequest(10L, 30, 50);
+        unknownDefence.setDefenderSkill(SkillType.MELEE_POLEARM);
+        AttackTestRequestDto withoutWeapon = attackTestRequest(null, 30, 50);
+
+        assertThrows(ResponseStatusException.class, () -> skirmishService.resolveAttackTest(unknownDefence));
+        assertThrows(ResponseStatusException.class, () -> skirmishService.resolveAttackTest(withoutWeapon));
+    }
+
+    private AttackTestRequestDto attackTestRequest(Long weaponId, Integer attackerRoll, Integer defenderRoll) {
+        AttackTestRequestDto request = new AttackTestRequestDto();
+        request.setAttackerId(1L);
+        request.setTargetId(2L);
+        request.setWeaponId(weaponId);
+        request.setAttackerRoll(attackerRoll);
+        request.setDefenderRoll(defenderRoll);
+        return request;
+    }
+
+    private WeaponEntity groupedWeapon(Long id, WeaponGroupType group) {
+        WeaponEntity weapon = testWeapon(id, "WEAPON_" + id, "Broń " + id, group.name(), WeaponQualityType.PRECISE, null);
+        WeaponGroupEntity weaponGroup = new WeaponGroupEntity();
+        weaponGroup.setName(group);
+        weapon.setWeaponGroup(weaponGroup);
+        return weapon;
+    }
+
+    private void addTestSkill(SkirmishCharacterEntity character, SkillType skillType, int value) {
+        SkillEntity skill = new SkillEntity();
+        skill.setName(skillType);
+        CharacterSkillEntity owned = new CharacterSkillEntity();
+        owned.setCharacter(character.getCharacter());
+        owned.setModel(skill);
+        owned.setValue(value);
+        character.getCharacter().getSkills().add(owned);
     }
 
     private WeaponEntity testWeapon(Long id, String name, String nameTranslation, String group,

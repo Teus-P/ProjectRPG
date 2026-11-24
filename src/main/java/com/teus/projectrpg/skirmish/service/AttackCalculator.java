@@ -70,6 +70,14 @@ public class AttackCalculator {
         return new Mitigation(toughnessBonus, armor, finalDamage, woundsLost);
     }
 
+    /**
+     * The damage the weapon does before any roll: Strength bonus, weapon damage and the talent. It tells which of
+     * the attacker's weapons is the strongest.
+     */
+    public int baseDamage(SkirmishCharacterEntity attacker, WeaponEntity weapon) {
+        return baseStrengthDamage(attacker, weapon) + weapon.getDamage() + talentDamage(attacker, weapon);
+    }
+
     public AttackResultDto calculate(SkirmishCharacterEntity attacker, WeaponEntity weapon,
                                      SkirmishCharacterEntity target, ReceivedDamageDto request) {
         AttackResultDto result = new AttackResultDto();
